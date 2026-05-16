@@ -40,7 +40,7 @@ function Get-LatestRun {
 
 function Move-CurrentArtifacts {
   Get-ChildItem -LiteralPath $artifactDir |
-    Where-Object { $_.Name -ne "old" } |
+    Where-Object { $_.Name -ne "old" -and $_.Name -ne ".gitkeep" } |
     ForEach-Object { Move-Item -LiteralPath $_.FullName -Destination $oldDir -Force }
 }
 
