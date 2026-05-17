@@ -2,6 +2,12 @@ plugins {
     id "com.android.application"
 }
 
+def uploadKeyProperties = new Properties()
+def uploadKeyPropertiesFile = rootProject.file("upload-key.properties")
+if (uploadKeyPropertiesFile.exists()) {
+    uploadKeyProperties.load(new FileInputStream(uploadKeyPropertiesFile))
+}
+
 android {
     namespace "com.dmkr.inspiraciondia"
     compileSdk 35
@@ -12,5 +18,24 @@ android {
         targetSdk 35
         versionCode 1
         versionName "1.0"
+    }
+
+    signingConfigs {
+        release {
+            if (uploadKeyPropertiesFile.exists()) {
+                storeFile rootProject.file(uploadKeyProperties["storeFile"])
+                storePassword uploadKeyProperties["storePassword"]
+                keyAlias uploadKeyProperties["keyAlias"]
+                keyPassword uploadKeyProperties["keyPassword"]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources false
+            signingConfig uploadKeyPropertiesFile.exists() ? signingConfigs.release : null
+        }
     }
 }

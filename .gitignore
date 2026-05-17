@@ -10,6 +10,9 @@ android/.gradle/
 android/app/debug.keystore
 android/app/build/
 android/build/
+android/keystore/
+android/upload-key.properties
+*.aab
 
 native-ios/*.xcodeproj/
 native-ios/*.xcworkspace/
