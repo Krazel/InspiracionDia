@@ -27,8 +27,10 @@ Copiar a `artifact/` con nombre versionado:
 artifact/InspiracionDia-Android-v1.0-local.apk
 ```
 
-GitHub Actions genera y publica:
+El artifact Android se genera localmente y se copia a:
 
 ```text
-artifact/InspiracionDia-Android-v1.0-build-N.apk
+artifact/InspiracionDia-Android-v1.0-local.apk
 ```
+
+No crear workflow de GitHub Actions para Android en este proyecto.

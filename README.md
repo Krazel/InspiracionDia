@@ -5,7 +5,7 @@ App movil nativa para iPhone y Android.
 ## Estado actual
 
 - iPhone: app SwiftUI nativa en `native-ios/`, con build IPA por GitHub Actions.
-- Android: app nativa Java/Android en `android/`, con build APK local y GitHub Actions.
+- Android: app nativa Java/Android en `android/`, con build APK local desde Windows.
 - IDs fijos:
   - iOS Bundle ID: `com.dmkr.inspiraciondia`
   - Android Package ID: `com.dmkr.inspiraciondia`
@@ -72,7 +72,7 @@ cd android
 El APK versionado debe quedar en:
 
 ```text
-artifact/InspiracionDia-Android-v1.0-build-N.apk
+artifact/InspiracionDia-Android-v1.0-local.apk
 artifact/old/
 ```
 
