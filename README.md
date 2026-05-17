@@ -1,11 +1,11 @@
 # Inspiracion Dia Native
 
-App movil para iPhone y Android. No es una web/PWA.
+App movil nativa para iPhone y Android.
 
 ## Estado actual
 
 - iPhone: app SwiftUI nativa en `native-ios/`, con build IPA por GitHub Actions.
-- Android: estructura Android/React Native generada en `android/`.
+- Android: app nativa Java/Android en `android/`, con build APK local y GitHub Actions.
 - IDs fijos:
   - iOS Bundle ID: `com.dmkr.inspiraciondia`
   - Android Package ID: `com.dmkr.inspiraciondia`
@@ -19,7 +19,7 @@ App movil para iPhone y Android. No es una web/PWA.
 - Compartir con el panel nativo del movil.
 - Notificacion local diaria con hora configurable.
 - Boton para probar notificacion.
-- iOS premium con imagenes de fondo en `native-ios/Resources/`.
+- UI premium con imagenes de fondo en iOS y Android.
 
 ## Regla De Paridad
 
@@ -27,17 +27,17 @@ La app debe mantenerse para iPhone y Android.
 
 Cuando se cambie UI o funcionalidad en iOS, hay que replicarlo en Android o dejar una issue clara pendiente.
 
-La UI premium actual esta aplicada en iOS SwiftUI. Android conserva la base React Native inicial y debe recibir el mismo rediseno para paridad visual.
+La UI premium debe mantenerse en iOS SwiftUI y Android nativo.
 
 ## iOS Como En Alarma
 
 Este proyecto incluye una app iOS SwiftUI en `native-ios/`, igual que el flujo usado en `Alarma`.
 
-Antes de subir cambios:
+Antes de subir cambios de frases:
 
 ```powershell
-npm run check:quotes
-npm run export:ios-content
+node scripts/check-quotes.mjs
+node scripts/export-ios-content.mjs
 ```
 
 El workflow `.github/workflows/build-ios-unsigned.yml` genera la IPA en macOS.
@@ -56,25 +56,20 @@ artifact/InspiracionDia-iPhone-v1.0-build-N.ipa
 
 ## Android
 
-Android nativo ya esta generado en:
+Android nativo esta en:
 
 ```text
 android/
 ```
 
-Para instalar dependencias:
+Para compilar en Android:
 
 ```powershell
-npm install
+cd android
+.\gradlew.bat assembleDebug
 ```
 
-Para ejecutar en Android:
-
-```powershell
-npm run android
-```
-
-Objetivo pendiente: generar un APK/AAB versionado y dejarlo en `artifact/` siguiendo la misma regla que iOS:
+El APK versionado debe quedar en:
 
 ```text
 artifact/InspiracionDia-Android-v1.0-build-N.apk
@@ -84,5 +79,5 @@ artifact/old/
 ## Revisar Frases
 
 ```powershell
-npm run check:quotes
+node scripts/check-quotes.mjs
 ```
