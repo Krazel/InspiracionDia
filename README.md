@@ -1,60 +1,87 @@
 # Inspiracion Dia Native
 
-App nativa para iPhone y Android hecha con React Native y Expo. No es una web/PWA.
+App movil para iPhone y Android. No es una web/PWA.
 
-## Qué incluye
+## Estado actual
+
+- iPhone: app SwiftUI nativa en `native-ios/`, con build IPA por GitHub Actions.
+- Android: estructura Android/React Native generada en `android/`.
+- IDs fijos:
+  - iOS Bundle ID: `com.dmkr.inspiraciondia`
+  - Android Package ID: `com.dmkr.inspiraciondia`
+
+## Incluye
 
 - 180 frases originales.
-- 12 categorías: Animo, Foco, Calma, Disciplina, Autoestima, Gratitud, Valentia, Habitos, Creatividad, Resiliencia, Relaciones y Energia.
-- Tarjetitas nativas con colores por categoría.
+- 12 categorias: Animo, Foco, Calma, Disciplina, Autoestima, Gratitud, Valentia, Habitos, Creatividad, Resiliencia, Relaciones y Energia.
+- Tarjetas por categoria.
 - Favoritos.
-- Compartir con el panel nativo del móvil.
-- Notificación local diaria con hora configurable.
-- Botón para probar notificación.
+- Compartir con el panel nativo del movil.
+- Notificacion local diaria con hora configurable.
+- Boton para probar notificacion.
+- iOS premium con imagenes de fondo en `native-ios/Resources/`.
 
-## iOS como en Alarma
+## Regla De Paridad
+
+La app debe mantenerse para iPhone y Android.
+
+Cuando se cambie UI o funcionalidad en iOS, hay que replicarlo en Android o dejar una issue clara pendiente.
+
+La UI premium actual esta aplicada en iOS SwiftUI. Android conserva la base React Native inicial y debe recibir el mismo rediseno para paridad visual.
+
+## iOS Como En Alarma
 
 Este proyecto incluye una app iOS SwiftUI en `native-ios/`, igual que el flujo usado en `Alarma`.
+
+Antes de subir cambios:
 
 ```powershell
 npm run check:quotes
 npm run export:ios-content
 ```
 
-Después se sube el repo público a GitHub y el workflow `.github/workflows/build-ios-unsigned.yml` genera la IPA en macOS. Ver detalles en `BUILD_IOS_DESDE_GITHUB.md`.
+El workflow `.github/workflows/build-ios-unsigned.yml` genera la IPA en macOS.
 
-## Probar en móvil
+Descargar IPA:
 
-Instala dependencias:
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\watch-latest-ipa.ps1 -Repo "Krazel/InspiracionDia"
+```
+
+La IPA queda en:
+
+```text
+artifact/InspiracionDia-iPhone-v1.0-build-N.ipa
+```
+
+## Android
+
+Android nativo ya esta generado en:
+
+```text
+android/
+```
+
+Para instalar dependencias:
 
 ```powershell
 npm install
 ```
 
-Arranca Expo:
-
-```powershell
-npm start
-```
-
-Android nativo ya está generado en la carpeta `android`.
-
-Para compilar Android:
+Para ejecutar en Android:
 
 ```powershell
 npm run android
 ```
 
-Para iPhone:
+Objetivo pendiente: generar un APK/AAB versionado y dejarlo en `artifact/` siguiendo la misma regla que iOS:
 
-```powershell
-npm run prebuild:ios
-npm run ios
+```text
+artifact/InspiracionDia-Android-v1.0-build-N.apk
+artifact/old/
 ```
 
-La carpeta `ios` no se puede generar desde este Windows: Expo exige macOS o Linux para crear el proyecto iOS nativo. El proyecto ya tiene `bundleIdentifier` y configuración iOS; al abrirlo en macOS, `npm run prebuild:ios` generará la carpeta `ios`.
-
-## Revisar frases
+## Revisar Frases
 
 ```powershell
 npm run check:quotes
