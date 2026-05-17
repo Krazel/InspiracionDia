@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import UserNotifications
 
 struct Category: Codable, Identifiable, Hashable {
@@ -560,9 +561,7 @@ struct QuoteHero: View {
   var body: some View {
     let category = store.category(for: quote.category)
     ZStack(alignment: .bottom) {
-      Image("premium-mountains")
-        .resizable()
-        .scaledToFill()
+      BundledImage(name: "premium-mountains", fallback: PremiumBackground())
         .frame(maxWidth: .infinity, minHeight: 430)
         .clipped()
         .overlay(
@@ -804,14 +803,42 @@ struct SettingsBackground: View {
   var body: some View {
     ZStack(alignment: .bottom) {
       PremiumBackground()
-      Image("premium-stones")
-        .resizable()
-        .scaledToFill()
+      BundledImage(name: "premium-stones", fallback: Color.clear)
         .frame(height: 300)
         .clipped()
         .opacity(0.62)
         .ignoresSafeArea(edges: .bottom)
     }
+  }
+}
+
+struct BundledImage<Fallback: View>: View {
+  let name: String
+  let fallback: Fallback
+
+  var body: some View {
+    if let image = uiImage {
+      Image(uiImage: image)
+        .resizable()
+        .scaledToFill()
+    } else {
+      fallback
+    }
+  }
+
+  private var uiImage: UIImage? {
+    if let image = UIImage(named: name) {
+      return image
+    }
+    if let url = Bundle.main.url(forResource: name, withExtension: "png"),
+       let image = UIImage(contentsOfFile: url.path) {
+      return image
+    }
+    if let url = Bundle.main.url(forResource: name, withExtension: "jpg"),
+       let image = UIImage(contentsOfFile: url.path) {
+      return image
+    }
+    return nil
   }
 }
 
