@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-09**
-Estado: **IPA unsigned iOS 1.0 compilada y verificada para instalación con Sideloadly**
+Estado: **IPA unsigned iOS 1.0 build 10 compilada y verificada para instalación con Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `1c62729` sobre la base `c8fac196d53c889b2125e0760ced49fd26c9666e`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `eb30074`.
 - El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -50,15 +50,22 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Inspección local del archivo confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 9, `AppIcon`, catálogo inglés y privacy manifest.
 - La IPA está unsigned a propósito: Sideloadly debe firmarla al instalarla. La prueba física en iPhone sigue pendiente.
 
-## Cambio 1.1 implementado — pendiente de compilación macOS
+## Cambio 1.1 cerrado en build 10
 
-- La IPA actual corresponde al commit `1c62729` y no incluye todavía este cambio.
+- La IPA actual corresponde al commit `eb30074` e incluye este cambio.
 - Today ya no contiene la franja “Thoughtful quotes / Easy to share / One each day” ni “Explore categories”.
 - El motor añade días ISO estables, próximas 60 ocurrencias filtradas, clean-install onboarding versionado, siete días por defecto, guardado atómico y migración de instalaciones anteriores sin pedir permiso al iniciar.
 - El modelo permite crear una categoría personal con su primera frase, persistirla y retirarla al borrar su última frase. El ShareLink existente ya comparte frases personales como texto.
 - Las cuatro propuestas de `docs/design/reminder-v2/` fueron aprobadas e implementadas: Today compacto, onboarding, Settings y nueva categoría inline.
 - El formulario personal es desplazable, limita cada frase a 240 caracteres y avisa si borrar la última frase elimina también su categoría. Denegar el permiso de notificaciones muestra feedback inmediato.
-- Validadores Windows y checks de contenido pasan; queda ejecutar Swift/XCTest y compilar la nueva IPA en macOS.
+- Validadores Windows, checks de contenido, Swift/XCTest y build Release pasan.
+
+## Compilación macOS actual
+
+- GitHub Actions run `31332232856`, job `93292207354`, completó correctamente en macOS el 2026-08-09.
+- Pasaron Xcode/SDK 26+, XcodeGen, validadores, XCTest, build Release unsigned, empaquetado y upload del artifact.
+- IPA verificada: `dist/Warm-Words-Sideloadly-build-10.ipa`, 6,025,533 bytes, SHA-256 `E1048A8114FCBCED4A259FCD6ABD6F2E821F1C111073D17313295C5A5BCFB11D`.
+- Inspección interna confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 10, `AppIcon`, catálogo inglés, assets compilados y privacy manifest.
 
 ## Primer bloqueo material de App Store
 
@@ -71,6 +78,8 @@ El nombre público **Warm Words** y el AppIcon **C — Protected thought** ya es
 3. Confirmar Apple Developer/App Store Connect, team, bundle ID y firma.
 4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas y ficha inglesa.
 5. Revisar el candidato con el propietario. TestFlight, App Store y App Review siguen necesitando autorización expresa en ese momento.
+
+El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 
 ## Limitación aceptada del MVP local
 

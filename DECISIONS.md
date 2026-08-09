@@ -138,6 +138,14 @@ Resuelve la antigua PEND-013:
 - El propietario autorizó continuar hasta aplicación completa, tests y nueva IPA sin más preguntas; cualquier imagen adicional estrictamente necesaria para este alcance queda aprobada directamente.
 - Esta continuidad no autoriza TestFlight, App Store, App Review ni publicación oficial.
 
+### DEC-020 — Apoyo voluntario futuro, sin bloquear el candidato actual
+
+- Cuando se implemente, vivirá dentro de Settings bajo el nombre “Support the app” o “Support development”; nunca será una pantalla obligatoria ni bloqueará las funciones principales gratuitas.
+- El formato preferido será una suscripción mensual auto-renovable con niveles equivalentes. El beneficio mínimo será el estado activo de supporter, agradecimiento y explicación de que contribuye al mantenimiento y las actualizaciones.
+- Antes de comprar se mostrarán precio, duración, renovación automática, cancelación, restauración de compras, privacidad y términos. Las reseñas de App Store serán un sistema separado con enlace persistente en Settings.
+- Un aviso ocasional podrá aparecer con frecuencia baja, nunca en el primer uso ni durante una tarea crítica, y siempre tendrá “Not now” y “Don’t ask again”.
+- Warm Words no tiene anuncios, por lo que no se inventarán ventajas grandes. StoreKit, pantallas finales, productos de App Store Connect y envío de IAP quedan fuera del candidato build 10 y necesitan autorización separada.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Derechos de contenido y assets
