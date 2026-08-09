@@ -75,6 +75,8 @@ assert.match(swift, /customCategories: \[Category\]/);
 assert.match(swift, /func isCustomCategory/);
 assert.match(swift, /Create a new category…/);
 assert.match(swift, /let minimumHeight: CGFloat = dynamicTypeSize\.isAccessibilitySize \? 430 : 330/);
+assert.match(swift, /struct QuoteHero[\s\S]*\.frame\(maxWidth: \.infinity, minHeight: minimumHeight\)\s*\.background \{/);
+assert.doesNotMatch(swift, /BundledImage\(name: "premium-mountains"[\s\S]{0,160}minHeight: minimumHeight/);
 assert.match(swift, /identifier: "test-inspiration"/);
 assert.match(swift, /notificationPermissionAlertPending = true/);
 assert.match(swift, /ScrollView \{\s*VStack\(alignment: \.leading, spacing: 18\)/);

@@ -146,6 +146,12 @@ Resuelve la antigua PEND-013:
 - Un aviso ocasional podrá aparecer con frecuencia baja, nunca en el primer uso ni durante una tarea crítica, y siempre tendrá “Not now” y “Don’t ask again”.
 - Warm Words no tiene anuncios, por lo que no se inventarán ventajas grandes. StoreKit, pantallas finales, productos de App Store Connect y envío de IAP quedan fuera del candidato build 10 y necesitan autorización separada.
 
+### DEC-021 — Skill estándar obligatoria para lanzamiento iOS
+
+- Todo trabajo futuro de TestFlight, App Store Connect, App Review, AdMob, StoreKit/IAP, supporter subscriptions, privacidad, soporte, firma, workflow de subida, capturas, icono o checklist de publicación debe aplicar `C:\Users\dmkra\Documents\ChatGPT\Brain\.agents\skills\ios-app-launch\SKILL.md`.
+- Para Warm Words, las rutas públicas recomendadas son `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` dentro del sitio GitHub Pages compartido; siguen pendientes hasta que existan y se verifiquen.
+- La skill estandariza preparación y verificación, pero no autoriza acciones rojas. Crear productos, usar secretos, aceptar contratos, subir builds, enviar IAP/App Review o publicar requiere autorización expresa del propietario en ese momento.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Derechos de contenido y assets

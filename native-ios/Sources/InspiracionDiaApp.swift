@@ -1229,9 +1229,32 @@ struct QuoteHero: View {
   var body: some View {
     let category = store.category(for: quote.category)
     let minimumHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 430 : 330
-    ZStack {
+    VStack(spacing: 14) {
+      Text("\"")
+        .font(.system(size: 38, weight: .semibold, design: .serif))
+        .foregroundStyle(Premium.gold)
+      Text(quote.text)
+        .font(.system(.title2, design: .serif, weight: .regular))
+        .multilineTextAlignment(.center)
+        .lineSpacing(4)
+        .foregroundStyle(Premium.ink)
+        .minimumScaleFactor(0.82)
+      Divider()
+        .frame(width: 46)
+        .overlay(Premium.gold)
+      Text(store.localizedCategoryName(category))
+        .font(.system(size: 14, weight: .medium))
+        .padding(.horizontal, 18)
+        .padding(.vertical, 7)
+        .background(Premium.gold.opacity(0.14), in: Capsule())
+        .foregroundStyle(Premium.gold)
+    }
+    .padding(.horizontal, 26)
+    .padding(.vertical, 24)
+    .frame(maxWidth: .infinity, minHeight: minimumHeight)
+    .background {
       BundledImage(name: "premium-mountains", fallback: PremiumBackground())
-        .frame(maxWidth: .infinity, minHeight: minimumHeight)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityHidden(true)
         .clipped()
         .overlay(
@@ -1241,31 +1264,7 @@ struct QuoteHero: View {
             endPoint: .bottom
           )
         )
-
-      VStack(spacing: 14) {
-        Text("\"")
-          .font(.system(size: 38, weight: .semibold, design: .serif))
-          .foregroundStyle(Premium.gold)
-        Text(quote.text)
-          .font(.system(.title2, design: .serif, weight: .regular))
-          .multilineTextAlignment(.center)
-          .lineSpacing(4)
-          .foregroundStyle(Premium.ink)
-          .minimumScaleFactor(0.82)
-        Divider()
-          .frame(width: 46)
-          .overlay(Premium.gold)
-        Text(store.localizedCategoryName(category))
-          .font(.system(size: 14, weight: .medium))
-          .padding(.horizontal, 18)
-          .padding(.vertical, 7)
-          .background(Premium.gold.opacity(0.14), in: Capsule())
-          .foregroundStyle(Premium.gold)
-      }
-      .padding(.horizontal, 26)
-      .padding(.vertical, 24)
     }
-    .frame(maxWidth: .infinity, minHeight: minimumHeight)
     .clipShape(RoundedRectangle(cornerRadius: 26))
     .overlay(RoundedRectangle(cornerRadius: 26).stroke(.white.opacity(0.8), lineWidth: 1))
     .shadow(color: Color.black.opacity(0.13), radius: 24, x: 0, y: 16)

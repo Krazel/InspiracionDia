@@ -12,6 +12,8 @@ Antes de planificar o encargar trabajo:
 4. Verificar el estado real del repositorio antes de confiar en la documentación.
 5. Leer la ficha general `C:\Users\dmkra\Documents\ChatGPT\Brain\projects\inspiracion-dia.md` cuando exista acceso y el encargo venga de Brain o afecte a la cartera.
 
+Cuando el trabajo afecte TestFlight, App Store Connect, App Review, AdMob, StoreKit/IAP, suscripciones de apoyo, privacidad, soporte, firma, workflows de subida, capturas, icono o checklist de publicación, leer y aplicar también completa la skill `C:\Users\dmkra\Documents\ChatGPT\Brain\.agents\skills\ios-app-launch\SKILL.md` y únicamente las referencias que esta enrute para la tarea.
+
 El repositorio real prevalece sobre una fotografía documental antigua. Si cambia una conclusión material, actualizar `STATUS.md`; si cambia una decisión, actualizar `DECISIONS.md`.
 
 ## Relación con Brain general
@@ -73,6 +75,9 @@ El repositorio real prevalece sobre una fotografía documental antigua. Si cambi
 - No hacer commit, push, merge, release, despliegue, upload, TestFlight, envío a App Review ni publicación sin que el encargo lo autorice expresamente.
 - **Publicar o enviar a revisión requiere autorización expresa en ese momento**, aunque todos los checks sean verdes.
 - La IPA unsigned de GitHub es un artefacto de QA; no representa una build firmada ni lista para App Store.
+- Los workflows normales de build/test deben permanecer separados de cualquier workflow manual de TestFlight o publicación. Los secretos Apple solo pueden vivir en un GitHub Environment protegido y nunca aparecer en CI general, logs o pull requests.
+- Las páginas públicas de privacidad y soporte deben vivir en el sitio GitHub Pages compartido, con rutas recomendadas `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/`; no afirmar que existen hasta verificarlas.
+- Crear productos StoreKit, cuentas/servicios, secretos, certificados o perfiles; aceptar acuerdos; subir builds; enviar IAP/App Review; y publicar o gastar dinero son acciones rojas que requieren autorización expresa en ese momento.
 
 ## Mantenimiento de contexto durable
 
