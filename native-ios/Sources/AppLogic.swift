@@ -60,42 +60,130 @@ enum ReminderDatePlanner {
     count: Int,
     minutes: Int,
     after now: Date,
+    weekdays: Set<ReminderWeekday> = ReminderWeekdays.all,
     calendar: Calendar = .autoupdatingCurrent
   ) -> [Date] {
     guard count > 0 else { return [] }
+    let allowedWeekdays = weekdays.intersection(ReminderWeekdays.all)
+    guard !allowedWeekdays.isEmpty else { return [] }
     let normalized = ReminderTimeCodec.normalizedMinutes(minutes)
     var matching = DateComponents()
     matching.hour = normalized / 60
     matching.minute = normalized % 60
 
-    guard let firstDate = calendar.nextDate(
-      after: now,
-      matching: matching,
-      matchingPolicy: .nextTime,
-      repeatedTimePolicy: .first,
-      direction: .forward
-    ) else {
-      return []
-    }
+    var dates: [Date] = []
+    var searchDate = now
+    let attemptLimit = count * 8 + 8
+    var attempts = 0
 
-    return (0..<count).compactMap { offset in
-      guard let day = calendar.date(byAdding: .day, value: offset, to: firstDate) else { return nil }
-      let startOfDay = calendar.startOfDay(for: day).addingTimeInterval(-1)
-      return calendar.nextDate(
-        after: startOfDay,
+    while dates.count < count, attempts < attemptLimit {
+      guard let candidate = calendar.nextDate(
+        after: searchDate,
         matching: matching,
         matchingPolicy: .nextTime,
         repeatedTimePolicy: .first,
         direction: .forward
-      )
+      ) else {
+        break
+      }
+
+      if let weekday = ReminderWeekday(calendarWeekday: calendar.component(.weekday, from: candidate)),
+         allowedWeekdays.contains(weekday) {
+        dates.append(candidate)
+      }
+      searchDate = candidate.addingTimeInterval(1)
+      attempts += 1
+    }
+
+    return dates
+  }
+}
+
+enum ReminderWeekday: Int, Codable, CaseIterable, Hashable {
+  case monday = 1
+  case tuesday
+  case wednesday
+  case thursday
+  case friday
+  case saturday
+  case sunday
+
+  init?(calendarWeekday: Int) {
+    self.init(rawValue: calendarWeekday == 1 ? 7 : calendarWeekday - 1)
+  }
+
+  var shortLabel: String {
+    switch self {
+    case .monday: return "M"
+    case .tuesday: return "T"
+    case .wednesday: return "W"
+    case .thursday: return "T"
+    case .friday: return "F"
+    case .saturday: return "S"
+    case .sunday: return "S"
+    }
+  }
+
+  var fullLabel: String {
+    switch self {
+    case .monday: return "Monday"
+    case .tuesday: return "Tuesday"
+    case .wednesday: return "Wednesday"
+    case .thursday: return "Thursday"
+    case .friday: return "Friday"
+    case .saturday: return "Saturday"
+    case .sunday: return "Sunday"
     }
   }
 }
 
+enum ReminderWeekdays {
+  static let all = Set(ReminderWeekday.allCases)
+
+  static func normalized(_ rawValues: [Int]) -> Set<ReminderWeekday> {
+    let valid = Set(rawValues.compactMap(ReminderWeekday.init(rawValue:)))
+    return valid.isEmpty ? all : valid
+  }
+
+  static func persisted(_ values: Set<ReminderWeekday>) -> [Int] {
+    let normalized = values.isEmpty ? all : values
+    return normalized.map(\.rawValue).sorted()
+  }
+}
+
 enum CustomQuoteValidator {
+  static let maximumLength = 240
+
   static func normalizedText(_ text: String, category: String, validCategoryIds: Set<String>) -> String? {
     let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !trimmed.isEmpty, validCategoryIds.contains(category) else { return nil }
+    guard
+      !trimmed.isEmpty,
+      trimmed.count <= maximumLength,
+      validCategoryIds.contains(category)
+    else { return nil }
     return trimmed
+  }
+}
+
+enum CustomCategoryValidator {
+  static let maximumLength = 24
+  static let maximumCategoryCount = 12
+
+  static func normalizedName(_ name: String, existingNames: [String]) -> String? {
+    let normalized = name
+      .split(whereSeparator: \.isWhitespace)
+      .joined(separator: " ")
+    guard !normalized.isEmpty, normalized.count <= maximumLength else { return nil }
+
+    let comparisonName = comparable(normalized)
+    guard !existingNames.contains(where: { comparable($0) == comparisonName }) else { return nil }
+    return normalized
+  }
+
+  private static func comparable(_ value: String) -> String {
+    value.folding(
+      options: [.caseInsensitive, .diacriticInsensitive],
+      locale: Locale(identifier: "en_US")
+    )
   }
 }

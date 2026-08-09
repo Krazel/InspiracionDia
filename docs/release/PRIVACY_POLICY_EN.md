@@ -10,11 +10,11 @@ The developer does not collect, receive, sell, or use personal data from the app
 
 ## Data stored on the device
 
-Favorites, reminder settings, category choices, and personal quotes are stored locally on the user's device. The developer cannot access this information. Removing the app may remove this local data according to normal iOS behavior.
+Favorites, reminder settings, selected weekdays, category choices, personal-category names, and personal quotes are stored locally on the user's device. The developer cannot access this information. Removing the app may remove this local data according to normal iOS behavior.
 
 ## Notifications
 
-If the user enables reminders, the app asks iOS for notification permission and schedules notifications locally on the device. Notification preferences can be changed in the app or in iOS Settings.
+If the user confirms a reminder, the app asks iOS for notification permission and schedules notifications locally on the chosen weekdays. Notification preferences can be changed in the app or in iOS Settings.
 
 ## Sharing
 

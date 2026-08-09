@@ -33,7 +33,8 @@ Use the app to:
 - Save favorites on your device.
 - Share any quote as text.
 - Add and remove your own personal quotes.
-- Set a gentle local reminder at the time you choose.
+- Create personal categories for your own quotes.
+- Set a gentle local reminder for the time and weekdays you choose.
 - Choose which categories can appear in reminders.
 
 No account is required. The app works without a service connection, and its preferences and personal quotes remain on the device.
@@ -44,7 +45,7 @@ No account is required. The app works without a service connection, and its pref
 
 ### App Review notes
 
-The app requires no account and contains no purchases. All catalog content is bundled with the app. Favorites, reminder preferences, and user-created quotes are stored locally. Notifications are scheduled locally and permission is requested only after the user enables reminders or sends a test notification. The share button opens the standard iOS share sheet.
+The app requires no account and contains no purchases. All catalog content is bundled with the app. Favorites, reminder preferences, selected weekdays, personal-category names, and user-created quotes are stored locally. Notifications are scheduled locally and permission is requested only after the user confirms a reminder or sends a test notification. The share button opens the standard iOS share sheet, including for personal quotes.
 
 ## Privacy answers — provisional until archive inspection
 

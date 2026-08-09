@@ -122,6 +122,22 @@ Resuelve la antigua PEND-013:
 - GitHub Actions run `31329591743` compiló y probó el commit de app `1c62729`; el artifact se descargó como `dist/Warm-Words-Sideloadly.ipa`.
 - Esta autorización no incluye GitHub Release, TestFlight, App Store, App Review ni publicación.
 
+### DEC-018 — Alcance solicitado para recordatorios y categorías personales
+
+- El propietario pidió retirar de Today “Thoughtful quotes”, “Easy to share”, “One each day” y “Explore categories”; no se añade reemplazo promocional.
+- El primer arranque propondrá un recordatorio a las 07:30 con los siete días seleccionados y todos recomendados. El permiso de iOS solo se solicita tras confirmación explícita.
+- Settings editará recordatorio, hora, días y categorías como borrador y aplicará todo una vez al guardar.
+- Una categoría personal se crea junto con su primera frase, con nombre único de hasta 24 caracteres y estilo neutro automático; no se abre gestión avanzada.
+- Las frases personales ya se comparten como texto mediante el Share sheet de iOS. Se descartan cuentas, servidor, importación y tarjeta-imagen por no ser cierre simple.
+- El propietario añadió que Today debe caber sin desplazamiento; se reducirá la tarjeta y el espacio interno sin cambiar sus funciones.
+
+### DEC-019 — Set visual 1.1 aprobado y continuidad automática
+
+- El propietario aprobó el 2026-08-09 las cuatro propuestas completas de `docs/design/reminder-v2/`: Today compacto, onboarding, Settings y nueva categoría inline.
+- No pidió ajustes. Se permite adaptar tamaños y controles para Dynamic Type, VoiceOver y límites reales de SwiftUI sin cambiar la dirección aprobada.
+- El propietario autorizó continuar hasta aplicación completa, tests y nueva IPA sin más preguntas; cualquier imagen adicional estrictamente necesaria para este alcance queda aprobada directamente.
+- Esta continuidad no autoriza TestFlight, App Store, App Review ni publicación oficial.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Derechos de contenido y assets

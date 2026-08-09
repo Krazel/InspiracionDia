@@ -21,27 +21,38 @@ This checklist is for the first signed English iPhone build. It does not authori
 Use at least one device on the minimum supported iOS 16 release and one on the current iOS 26 release when those devices are available.
 
 - [ ] Clean install opens without a crash, blank state, or Spanish public copy.
+- [ ] Clean install shows one-screen reminder setup with 07:30 and all seven days selected; no notification prompt appears before Set reminder.
+- [ ] Not now completes onboarding, leaves reminders off, and does not ask for permission.
 - [ ] `Warm Words` and the approved C — Protected thought icon are correct on the Home Screen, Spotlight/Search, notifications, share sheet, and system settings.
 - [ ] The icon remains clear at small sizes and in default, dark, tinted, and clear system presentations on iOS 16 and iOS 26 where each presentation is available.
 - [ ] Today shows a valid English date, quote, and category.
+- [ ] Today shows the complete quote card, favorite/share actions, and tab bar without scrolling at the default text size on the smallest supported iPhone.
 - [ ] Tomorrow/date override selects the next deterministic quote and the sequence crosses year end without resetting.
 - [ ] All 12 categories open and together expose 180 unique English quotes.
 - [ ] Save and unsave work from Today, Categories, and Favorites and survive relaunch.
 - [ ] Sharing from Today and a list opens the iOS share sheet with the correct quote and `Warm Words`.
 - [ ] A whitespace-only personal quote cannot be added.
+- [ ] A personal quote over 240 characters is rejected with a visible counter/error and the sheet remains usable with the keyboard open.
 - [ ] A valid personal quote is trimmed, saved, shown under Personal, and survives relaunch.
+- [ ] A personal category can be created with its first quote, appears in Categories, and survives relaunch.
+- [ ] Empty, duplicate, reserved, over-24-character, and thirteenth personal-category names are rejected without leaving an empty category.
+- [ ] A personal quote shares through the standard iOS share sheet as its text followed by `Warm Words`.
+- [ ] Deleting the last quote in a personal category warns that the category will also be removed, then removes the empty category and any reminder-category reference.
 - [ ] Deleting a personal quote requires confirmation, removes it from favorites, and survives relaunch.
 - [ ] Existing valid legacy favorites and personal quotes survive an upgrade install.
 
 ## Notification gate
 
-- [ ] Enabling reminders is the first action that asks for permission; clean launch does not ask.
-- [ ] Allow: a 60-day local schedule is created without errors.
+- [ ] Set reminder in onboarding or Save reminder in Settings is the first action that asks for permission; clean launch and draft edits do not ask.
+- [ ] Allow: 60 future local occurrences are created without errors and only on the selected weekdays.
 - [ ] Deny: the app stays usable, disables the setting, and shows clear feedback.
 - [ ] Test notification appears while the app is foregrounded and in the background.
 - [ ] Scheduled notification has an English title and the expected quote.
 - [ ] Changing time replaces the owned schedule without touching unrelated notifications.
-- [ ] Rapid enable/disable and repeated time/category changes leave only the final requested schedule.
+- [ ] Selecting only Monday creates 60 Monday occurrences; selecting several days never schedules an unselected day.
+- [ ] All seven days are the default and clearly recommended; an enabled reminder cannot be saved with zero days.
+- [ ] Closing Settings without Save discards toggle, time, day, and category drafts without changing pending requests.
+- [ ] Saving rapid time/day/category changes leaves only the final requested schedule.
 - [ ] Selecting categories changes the scheduled quote pool; selecting none uses all categories.
 - [ ] Changing time zone or returning from inactive refreshes the schedule.
 - [ ] Spring-forward and fall-back behavior matches the unit-test policy.

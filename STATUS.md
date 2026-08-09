@@ -50,6 +50,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Inspección local del archivo confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 9, `AppIcon`, catálogo inglés y privacy manifest.
 - La IPA está unsigned a propósito: Sideloadly debe firmarla al instalarla. La prueba física en iPhone sigue pendiente.
 
+## Cambio 1.1 implementado — pendiente de compilación macOS
+
+- La IPA actual corresponde al commit `1c62729` y no incluye todavía este cambio.
+- Today ya no contiene la franja “Thoughtful quotes / Easy to share / One each day” ni “Explore categories”.
+- El motor añade días ISO estables, próximas 60 ocurrencias filtradas, clean-install onboarding versionado, siete días por defecto, guardado atómico y migración de instalaciones anteriores sin pedir permiso al iniciar.
+- El modelo permite crear una categoría personal con su primera frase, persistirla y retirarla al borrar su última frase. El ShareLink existente ya comparte frases personales como texto.
+- Las cuatro propuestas de `docs/design/reminder-v2/` fueron aprobadas e implementadas: Today compacto, onboarding, Settings y nueva categoría inline.
+- El formulario personal es desplazable, limita cada frase a 240 caracteres y avisa si borrar la última frase elimina también su categoría. Denegar el permiso de notificaciones muestra feedback inmediato.
+- Validadores Windows y checks de contenido pasan; queda ejecutar Swift/XCTest y compilar la nueva IPA en macOS.
+
 ## Primer bloqueo material de App Store
 
 El nombre público **Warm Words** y el AppIcon **C — Protected thought** ya están cerrados localmente. La primera puerta material restante es confirmar por escrito la autoría/licencia y el permiso comercial de las 180 frases inglesas y españolas y de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.

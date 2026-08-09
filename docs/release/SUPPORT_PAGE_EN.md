@@ -17,7 +17,7 @@ Do not include private or sensitive information.
 
 ### How do I enable the daily reminder?
 
-Open Settings in the app, enable the daily notification, choose a time and any preferred categories, then save the reminder. iOS will ask for notification permission when needed.
+On first launch, choose a time and the days you want, then select Set reminder. Every day is preselected and recommended. Later, open Settings to change the reminder, time, weekdays, or quote categories and select Save reminder. iOS asks for notification permission only after one of these explicit actions.
 
 ### Why did reminders stop?
 
@@ -26,6 +26,14 @@ Check notification permission in iOS Settings and open the app again so it can r
 ### Where are favorites and personal quotes stored?
 
 They remain locally on the device. The app does not use an account or cloud synchronization.
+
+### Can I create my own category?
+
+Yes. Open New personal quote, choose Create a new category, enter a name, and add the first quote. The category remains on this device and is removed automatically if its last quote is deleted.
+
+### Can I share a personal quote?
+
+Yes. Use Share on the personal quote to open the standard iOS share sheet. Warm Words shares the quote as text; it does not transfer app data or create an account.
 
 ### How do I remove a personal quote?
 

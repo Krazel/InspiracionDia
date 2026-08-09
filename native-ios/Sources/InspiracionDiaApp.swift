@@ -64,22 +64,32 @@ final class AppStore: ObservableObject {
   @Published var selectedCategory = "all"
   @Published var favoriteIds: Set<String> = []
   @Published var customQuotes: [Quote] = []
+  @Published var customCategories: [Category] = []
   @Published var deliveryCategoryIds: Set<String> = []
+  @Published var deliveryUsesAllCategories = true
+  @Published var reminderWeekdays = ReminderWeekdays.all
   @Published var reminderEnabled = false
+  @Published private(set) var reminderOnboardingVersion = 0
   @Published private(set) var reminderMinutes = ReminderTimeCodec.defaultMinutes
   @Published var notificationStatus = ""
+  @Published var notificationPermissionAlertPending = false
   @Published private(set) var currentDate = Date()
 
   private let favoritesKey = "favoriteIds"
   private let selectedCategoryKey = "selectedCategory"
   private let customQuotesKey = "customQuotes"
+  private let customCategoriesKey = "customCategories"
   private let deliveryCategoriesKey = "deliveryCategoryIds"
+  private let deliveryUsesAllCategoriesKey = "deliveryUsesAllCategories"
+  private let reminderWeekdaysKey = "reminderWeekdays"
   private let reminderEnabledKey = "reminderEnabled"
+  private let reminderOnboardingVersionKey = "reminderOnboardingVersion"
   private let reminderMinutesKey = "reminderMinutes"
   private let legacyReminderTimeKey = "reminderTime"
   private let legacyNotificationId = "daily-inspiration"
   private let notificationIdPrefix = "daily-inspiration-"
   private let scheduledReminderCount = 60
+  private let currentReminderOnboardingVersion = 1
   private var reminderSchedulingTask: Task<Void, Never>?
 
   init() {
@@ -92,8 +102,16 @@ final class AppStore: ObservableObject {
     content.quotes + customQuotes
   }
 
+  var allCategories: [Category] {
+    content.categories + customCategories
+  }
+
   var reminderDate: Date {
     ReminderTimeCodec.date(for: reminderMinutes)
+  }
+
+  var needsReminderOnboarding: Bool {
+    reminderOnboardingVersion < currentReminderOnboardingVersion
   }
 
   var todayQuote: Quote {
@@ -104,7 +122,8 @@ final class AppStore: ObservableObject {
     let previewDate = ReminderDatePlanner.dates(
       count: 1,
       minutes: reminderMinutes,
-      after: currentDate
+      after: currentDate,
+      weekdays: reminderWeekdays
     ).first ?? currentDate
     return quote(for: previewDate, candidates: quotesForDelivery())
   }
@@ -135,7 +154,7 @@ final class AppStore: ObservableObject {
   }
 
   func category(for id: String) -> Category {
-    content.categories.first(where: { $0.id == id }) ??
+    allCategories.first(where: { $0.id == id }) ??
       Category(
         id: "animo",
         name: "Motivation",
@@ -163,34 +182,82 @@ final class AppStore: ObservableObject {
     UserDefaults.standard.set(id, forKey: selectedCategoryKey)
   }
 
-  func toggleDeliveryCategory(_ id: String) {
-    guard content.categories.contains(where: { $0.id == id }) else { return }
-    if deliveryCategoryIds.contains(id) {
-      deliveryCategoryIds.remove(id)
-    } else {
-      deliveryCategoryIds.insert(id)
-    }
-    UserDefaults.standard.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
-    refreshReminderIfEnabled()
-  }
-
   @discardableResult
-  func addCustomQuote(text: String, category: String) -> Bool {
-    let validCategoryIds = Set(content.categories.map(\.id))
+  func addCustomQuote(
+    text: String,
+    category: String,
+    newCategoryName: String? = nil
+  ) -> Bool {
+    let pendingCategory: Category?
+    let targetCategoryId: String
+    if let newCategoryName {
+      guard let category = makeCustomCategory(name: newCategoryName) else { return false }
+      pendingCategory = category
+      targetCategoryId = category.id
+    } else {
+      pendingCategory = nil
+      targetCategoryId = category
+    }
+
+    var validCategoryIds = Set(allCategories.map(\.id))
+    if let pendingCategory {
+      validCategoryIds.insert(pendingCategory.id)
+    }
     guard let normalizedText = CustomQuoteValidator.normalizedText(
       text,
-      category: category,
+      category: targetCategoryId,
       validCategoryIds: validCategoryIds
     ) else {
       return false
     }
 
-    let quote = Quote(id: "custom-\(UUID().uuidString)", category: category, text: normalizedText)
+    if let pendingCategory {
+      customCategories.append(pendingCategory)
+      persistCustomCategories()
+    }
+    let quote = Quote(
+      id: "custom-\(UUID().uuidString)",
+      category: targetCategoryId,
+      text: normalizedText
+    )
     customQuotes.insert(quote, at: 0)
     selectCategory("custom")
     persistCustomQuotes()
     refreshReminderIfEnabled()
     return true
+  }
+
+  private func makeCustomCategory(name: String) -> Category? {
+    guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return nil }
+    let reservedNames = allCategories.map { localizedCategoryName($0) } + [
+      t("all"), t("favorites"), t("manualCards")
+    ]
+    guard let normalizedName = CustomCategoryValidator.normalizedName(
+      name,
+      existingNames: reservedNames
+    ) else {
+      return nil
+    }
+
+    return Category(
+      id: "user-category-\(UUID().uuidString)",
+      name: normalizedName,
+      color: Self.customCategoryStyle.color,
+      softColor: Self.customCategoryStyle.softColor,
+      description: t("personalCategoryDescription")
+    )
+  }
+
+  func canCreateCustomCategory(named name: String) -> Bool {
+    guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return false }
+    let reservedNames = allCategories.map { localizedCategoryName($0) } + [
+      t("all"), t("favorites"), t("manualCards")
+    ]
+    return CustomCategoryValidator.normalizedName(name, existingNames: reservedNames) != nil
+  }
+
+  func isCustomCategory(_ category: Category) -> Bool {
+    category.id.hasPrefix("user-category-")
   }
 
   func isCustomQuote(_ quote: Quote) -> Bool {
@@ -201,12 +268,33 @@ final class AppStore: ObservableObject {
     guard isCustomQuote(quote) else { return }
     customQuotes.removeAll { $0.id == quote.id }
     favoriteIds.remove(quote.id)
+    if let category = customCategories.first(where: { $0.id == quote.category }),
+       !customQuotes.contains(where: { $0.category == category.id }) {
+      customCategories.removeAll { $0.id == category.id }
+      deliveryCategoryIds.remove(category.id)
+      if !deliveryUsesAllCategories, deliveryCategoryIds.isEmpty {
+        deliveryUsesAllCategories = true
+      }
+      if selectedCategory == category.id {
+        selectCategory("custom")
+      }
+      persistCustomCategories()
+      UserDefaults.standard.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
+      UserDefaults.standard.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
+    }
     persistCustomQuotes()
     persistFavorites()
     refreshReminderIfEnabled()
   }
 
-  func setReminder(enabled: Bool) {
+  func deletingQuoteRemovesCategory(_ quote: Quote) -> Bool {
+    guard isCustomQuote(quote), customCategories.contains(where: { $0.id == quote.category }) else {
+      return false
+    }
+    return customQuotes.filter { $0.category == quote.category }.count == 1
+  }
+
+  private func setReminder(enabled: Bool) {
     reminderEnabled = enabled
     UserDefaults.standard.set(enabled, forKey: reminderEnabledKey)
     if enabled {
@@ -217,14 +305,61 @@ final class AppStore: ObservableObject {
     }
   }
 
-  func setReminderTime(_ date: Date) {
-    reminderMinutes = ReminderTimeCodec.minutes(from: date)
-    UserDefaults.standard.set(reminderMinutes, forKey: reminderMinutesKey)
-    refreshReminderIfEnabled()
+  @discardableResult
+  func saveReminderSettings(
+    enabled: Bool,
+    time: Date,
+    weekdays: Set<ReminderWeekday>,
+    deliveryCategories: Set<String>,
+    useAllCategories: Bool
+  ) -> Bool {
+    guard !enabled || !weekdays.isEmpty else { return false }
+    let validCategoryIds = Set(allCategories.map(\.id))
+    let resolvedDeliveryCategories = deliveryCategories.intersection(validCategoryIds)
+    guard !enabled || useAllCategories || !resolvedDeliveryCategories.isEmpty else { return false }
+    reminderMinutes = ReminderTimeCodec.minutes(from: time)
+    reminderWeekdays = weekdays.isEmpty ? ReminderWeekdays.all : weekdays
+    deliveryUsesAllCategories = useAllCategories
+    deliveryCategoryIds = useAllCategories ? [] : resolvedDeliveryCategories
+    reminderEnabled = enabled
+
+    let defaults = UserDefaults.standard
+    defaults.set(reminderMinutes, forKey: reminderMinutesKey)
+    defaults.set(ReminderWeekdays.persisted(reminderWeekdays), forKey: reminderWeekdaysKey)
+    defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
+    defaults.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
+    defaults.set(reminderEnabled, forKey: reminderEnabledKey)
+
+    if enabled {
+      scheduleReminderRequestingPermission()
+    } else {
+      removeOwnedPendingReminders()
+      notificationStatus = t("notificationsOff")
+    }
+    return true
+  }
+
+  func completeInitialReminderSetup(time: Date, weekdays: Set<ReminderWeekday>) {
+    guard !weekdays.isEmpty else { return }
+    reminderOnboardingVersion = currentReminderOnboardingVersion
+    UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
+    _ = saveReminderSettings(
+      enabled: true,
+      time: time,
+      weekdays: weekdays,
+      deliveryCategories: [],
+      useAllCategories: true
+    )
+  }
+
+  func skipInitialReminderSetup() {
+    reminderOnboardingVersion = currentReminderOnboardingVersion
+    UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
+    setReminder(enabled: false)
   }
 
   func refreshReminderIfEnabled() {
-    guard reminderEnabled else { return }
+    guard !needsReminderOnboarding, reminderEnabled else { return }
     replaceReminderSchedulingTask {
       let settings = await UNUserNotificationCenter.current().notificationSettings()
       guard !Task.isCancelled else { return }
@@ -256,7 +391,7 @@ final class AppStore: ObservableObject {
       notification.sound = .default
       let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
       let request = UNNotificationRequest(
-        identifier: "test-inspiration-\(UUID().uuidString)",
+        identifier: "test-inspiration",
         content: notification,
         trigger: trigger
       )
@@ -318,6 +453,7 @@ final class AppStore: ObservableObject {
       count: scheduledReminderCount,
       minutes: reminderMinutes,
       after: now,
+      weekdays: reminderWeekdays,
       calendar: calendar
     ).map { deliveryDate in
       let notification = UNMutableNotificationContent()
@@ -383,18 +519,20 @@ final class AppStore: ObservableObject {
         reminderEnabled = false
         UserDefaults.standard.set(false, forKey: reminderEnabledKey)
         notificationStatus = t("permissionDenied")
+        notificationPermissionAlertPending = true
       }
       return granted
     } catch {
       reminderEnabled = false
       UserDefaults.standard.set(false, forKey: reminderEnabledKey)
       notificationStatus = t("permissionDenied")
+      notificationPermissionAlertPending = true
       return false
     }
   }
 
   private func quotesForDelivery() -> [Quote] {
-    if deliveryCategoryIds.isEmpty {
+    if deliveryUsesAllCategories {
       return allQuotes
     }
     let filtered = allQuotes.filter { deliveryCategoryIds.contains($0.category) }
@@ -408,6 +546,12 @@ final class AppStore: ObservableObject {
   private func persistCustomQuotes() {
     if let data = try? JSONEncoder().encode(customQuotes) {
       UserDefaults.standard.set(data, forKey: customQuotesKey)
+    }
+  }
+
+  private func persistCustomCategories() {
+    if let data = try? JSONEncoder().encode(customCategories) {
+      UserDefaults.standard.set(data, forKey: customCategoriesKey)
     }
   }
 
@@ -425,13 +569,55 @@ final class AppStore: ObservableObject {
 
   private func loadSettings() {
     let defaults = UserDefaults.standard
-    let validCategoryIds = Set(content.categories.map(\.id))
+    let legacyKeys = [
+      favoritesKey,
+      selectedCategoryKey,
+      customQuotesKey,
+      deliveryCategoriesKey,
+      deliveryUsesAllCategoriesKey,
+      reminderEnabledKey,
+      reminderMinutesKey,
+      legacyReminderTimeKey
+    ]
+    let wasExistingInstallation = legacyKeys.contains { defaults.object(forKey: $0) != nil }
+    var existingCategoryNames = content.categories.map { localizedCategoryName($0) }
+    if let data = defaults.data(forKey: customCategoriesKey),
+       let decoded = try? JSONDecoder().decode([Category].self, from: data) {
+      var seenIds = Set<String>()
+      customCategories = decoded.prefix(CustomCategoryValidator.maximumCategoryCount).compactMap { category in
+        guard
+          category.id.hasPrefix("user-category-"),
+          seenIds.insert(category.id).inserted,
+          let normalizedName = CustomCategoryValidator.normalizedName(
+            category.name,
+            existingNames: existingCategoryNames
+          )
+        else {
+          return nil
+        }
+        existingCategoryNames.append(normalizedName)
+        return Category(
+          id: category.id,
+          name: normalizedName,
+          color: category.color,
+          softColor: category.softColor,
+          description: t("personalCategoryDescription")
+        )
+      }
+      persistCustomCategories()
+    }
 
-    let storedDelivery = Set(defaults.stringArray(forKey: deliveryCategoriesKey) ?? [])
-    deliveryCategoryIds = storedDelivery.intersection(validCategoryIds)
-    defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
+    reminderWeekdays = ReminderWeekdays.normalized(
+      defaults.array(forKey: reminderWeekdaysKey) as? [Int] ?? []
+    )
+    defaults.set(ReminderWeekdays.persisted(reminderWeekdays), forKey: reminderWeekdaysKey)
 
-    reminderEnabled = defaults.bool(forKey: reminderEnabledKey)
+    let hasStoredReminderPreference = defaults.object(forKey: reminderEnabledKey) != nil
+    reminderEnabled = hasStoredReminderPreference ? defaults.bool(forKey: reminderEnabledKey) : true
+    reminderOnboardingVersion = defaults.object(forKey: reminderOnboardingVersionKey) != nil
+      ? defaults.integer(forKey: reminderOnboardingVersionKey)
+      : (wasExistingInstallation ? currentReminderOnboardingVersion : 0)
+    defaults.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
     if defaults.object(forKey: reminderMinutesKey) != nil {
       reminderMinutes = ReminderTimeCodec.normalizedMinutes(defaults.integer(forKey: reminderMinutesKey))
     } else {
@@ -444,14 +630,40 @@ final class AppStore: ObservableObject {
     if let data = defaults.data(forKey: customQuotesKey),
        let decoded = try? JSONDecoder().decode([Quote].self, from: data) {
       var seenIds = Set<String>()
-      customQuotes = decoded.filter { quote in
-        quote.id.hasPrefix("custom-") &&
-          !quote.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-          validCategoryIds.contains(quote.category) &&
+      let loadedCategoryIds = Set(allCategories.map(\.id))
+      customQuotes = decoded.compactMap { quote in
+        let normalizedText = quote.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard
+          quote.id.hasPrefix("custom-"),
+          !normalizedText.isEmpty,
           seenIds.insert(quote.id).inserted
+        else {
+          return nil
+        }
+        return Quote(
+          id: quote.id,
+          category: loadedCategoryIds.contains(quote.category) ? quote.category : "animo",
+          text: normalizedText
+        )
       }
       persistCustomQuotes()
     }
+
+    let usedCustomCategoryIds = Set(customQuotes.map(\.category))
+    customCategories.removeAll { !usedCustomCategoryIds.contains($0.id) }
+    persistCustomCategories()
+
+    let validCategoryIds = Set(allCategories.map(\.id))
+    let storedDelivery = Set(defaults.stringArray(forKey: deliveryCategoriesKey) ?? [])
+    deliveryCategoryIds = storedDelivery.intersection(validCategoryIds)
+    deliveryUsesAllCategories = defaults.object(forKey: deliveryUsesAllCategoriesKey) != nil
+      ? defaults.bool(forKey: deliveryUsesAllCategoriesKey)
+      : deliveryCategoryIds.isEmpty
+    if !deliveryUsesAllCategories, deliveryCategoryIds.isEmpty {
+      deliveryUsesAllCategories = true
+    }
+    defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
+    defaults.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
 
     let allowedSelections = validCategoryIds.union(["all", "favorites", "custom"])
     let storedSelection = defaults.string(forKey: selectedCategoryKey) ?? "all"
@@ -462,6 +674,8 @@ final class AppStore: ObservableObject {
     favoriteIds = Set(defaults.stringArray(forKey: favoritesKey) ?? []).intersection(validQuoteIds)
     persistFavorites()
   }
+
+  private static let customCategoryStyle = (color: "#76505D", softColor: "#F3E7EB")
 }
 struct RootView: View {
   @EnvironmentObject private var store: AppStore
@@ -470,23 +684,29 @@ struct RootView: View {
   @State private var showingSettings = false
 
   var body: some View {
-    TabView(selection: $tab) {
-      TodayView(showingSettings: $showingSettings, tab: $tab)
-        .tabItem { Label(store.t("today"), systemImage: "sun.max") }
-        .tag(0)
+    Group {
+      if store.needsReminderOnboarding {
+        ReminderOnboardingView()
+      } else {
+        TabView(selection: $tab) {
+          TodayView(showingSettings: $showingSettings)
+            .tabItem { Label(store.t("today"), systemImage: "sun.max") }
+            .tag(0)
 
-      CategoriesView()
-        .tabItem { Label(store.t("categories"), systemImage: "square.grid.2x2") }
-        .tag(1)
+          CategoriesView()
+            .tabItem { Label(store.t("categories"), systemImage: "square.grid.2x2") }
+            .tag(1)
 
-      FavoritesView()
-        .tabItem { Label(store.t("favorites"), systemImage: "heart") }
-        .tag(2)
-    }
-    .tint(Premium.gold)
-    .sheet(isPresented: $showingSettings) {
-      SettingsView()
-        .environmentObject(store)
+          FavoritesView()
+            .tabItem { Label(store.t("favorites"), systemImage: "heart") }
+            .tag(2)
+        }
+        .tint(Premium.gold)
+        .sheet(isPresented: $showingSettings) {
+          SettingsView()
+            .environmentObject(store)
+        }
+      }
     }
     .onChange(of: scenePhase) { phase in
       if phase == .active {
@@ -498,18 +718,111 @@ struct RootView: View {
       store.refreshCurrentDate()
       store.refreshReminderIfEnabled()
     }
+    .alert(
+      store.t("notificationsAreOffTitle"),
+      isPresented: $store.notificationPermissionAlertPending
+    ) {
+      Button(store.t("continue"), role: .cancel) {}
+    } message: {
+      Text(store.t("notificationsAreOffBody"))
+    }
+  }
+}
+
+struct ReminderOnboardingView: View {
+  @EnvironmentObject private var store: AppStore
+  @State private var draftTime = ReminderTimeCodec.date(for: ReminderTimeCodec.defaultMinutes)
+  @State private var draftWeekdays = ReminderWeekdays.all
+
+  var body: some View {
+    ScrollView {
+      VStack(spacing: 24) {
+        VStack(spacing: 5) {
+          Text(store.t("welcomeToWarmWords"))
+            .font(.caption.weight(.semibold))
+            .tracking(3)
+            .foregroundStyle(Premium.gold)
+          Text(AppBrand.name)
+            .font(Premium.titleFont)
+            .foregroundStyle(Premium.ink)
+        }
+        .accessibilityElement(children: .combine)
+
+        VStack(spacing: 22) {
+          VStack(spacing: 10) {
+            Text(store.t("onboardingTitle"))
+              .font(.system(.largeTitle, design: .serif, weight: .regular))
+              .multilineTextAlignment(.center)
+              .foregroundStyle(Premium.ink)
+              .accessibilityAddTraits(.isHeader)
+            Text(store.t("onboardingBody"))
+              .font(.body)
+              .multilineTextAlignment(.center)
+              .foregroundStyle(.secondary)
+          }
+
+          Divider()
+
+          VStack(alignment: .leading, spacing: 8) {
+            Text(store.t("hour"))
+              .font(.headline)
+            DatePicker(
+              store.t("hour"),
+              selection: $draftTime,
+              displayedComponents: .hourAndMinute
+            )
+            .labelsHidden()
+            .datePickerStyle(.wheel)
+            .frame(maxHeight: 150)
+            .clipped()
+            .accessibilityLabel(store.t("hour"))
+          }
+
+          Divider()
+
+          WeekdayPicker(
+            selection: $draftWeekdays,
+            helper: store.t("everyDayRecommended")
+          )
+
+          Button(store.t("setReminder")) {
+            store.completeInitialReminderSetup(time: draftTime, weekdays: draftWeekdays)
+          }
+          .buttonStyle(PrimaryGoldButtonStyle())
+          .disabled(draftWeekdays.isEmpty)
+        }
+        .padding(22)
+        .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
+        .overlay(RoundedRectangle(cornerRadius: 28).stroke(.white.opacity(0.8), lineWidth: 1))
+        .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 12)
+
+        Button(store.t("notNow")) {
+          store.skipInitialReminderSetup()
+        }
+        .font(.headline)
+        .foregroundStyle(Premium.ink)
+        .frame(minHeight: 44)
+      }
+      .padding(.horizontal, 22)
+      .padding(.top, 28)
+      .padding(.bottom, 24)
+    }
+    .background(PremiumBackground())
+    .onAppear {
+      draftTime = store.reminderDate
+      draftWeekdays = store.reminderWeekdays
+    }
   }
 }
 
 struct TodayView: View {
   @EnvironmentObject private var store: AppStore
   @Binding var showingSettings: Bool
-  @Binding var tab: Int
 
   var body: some View {
     NavigationStack {
       ScrollView {
-        VStack(spacing: 22) {
+        VStack(spacing: 14) {
           HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 5) {
               Text(AppBrand.name)
@@ -533,7 +846,7 @@ struct TodayView: View {
             .accessibilityLabel(store.t("settings"))
           }
 
-          Text(Date.now.formatted(AppFormatters.day))
+          Text(store.currentDate.formatted(AppFormatters.day))
             .font(.system(size: 15))
             .foregroundStyle(Premium.gold)
 
@@ -545,7 +858,7 @@ struct TodayView: View {
             } label: {
               Image(systemName: store.favoriteIds.contains(store.todayQuote.id) ? "heart.fill" : "heart")
                 .font(.title3)
-                .frame(width: 58, height: 58)
+                .frame(width: 54, height: 54)
             }
             .buttonStyle(CircleGoldButtonStyle())
             .accessibilityLabel(
@@ -558,24 +871,16 @@ struct TodayView: View {
             ShareLink(item: "\(store.todayQuote.text)\n\n\(AppBrand.name)") {
               Image(systemName: "square.and.arrow.up")
                 .font(.title3)
-                .frame(width: 58, height: 58)
+                .frame(width: 54, height: 54)
             }
             .buttonStyle(CircleGoldButtonStyle())
             .accessibilityLabel(store.t("share"))
           }
 
-          FeatureStrip()
-
-          Button {
-            tab = 1
-          } label: {
-            Text(store.t("chooseCategories"))
-              .frame(maxWidth: .infinity)
-          }
-          .buttonStyle(GoldOutlineButtonStyle())
         }
-        .padding(22)
-        .padding(.bottom, 28)
+        .padding(.horizontal, 18)
+        .padding(.top, 14)
+        .padding(.bottom, 12)
       }
       .background(PremiumBackground())
     }
@@ -610,6 +915,9 @@ struct CategoriesView: View {
             CategoryTile(id: "all", title: store.t("all"), icon: "sparkles")
             CategoryTile(id: "custom", title: store.t("manualCards"), icon: "plus.square")
             CategoryTile(id: "favorites", title: store.t("favorites"), icon: "heart")
+            ForEach(store.customCategories) { category in
+              CategoryTile(id: category.id, title: category.name, icon: "folder")
+            }
             ForEach(store.content.categories) { category in
               CategoryTile(id: category.id, title: store.localizedCategoryName(category), icon: icon(for: category.id))
             }
@@ -668,60 +976,100 @@ struct SettingsView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dismiss) private var dismiss
   @State private var draftTime = Date()
+  @State private var draftEnabled = true
+  @State private var draftWeekdays = ReminderWeekdays.all
+  @State private var draftDeliveryCategories: Set<String> = []
+  @State private var draftUseAllCategories = true
+  @State private var hasLoadedDraft = false
+
+  private var canSave: Bool {
+    !draftEnabled || (
+      !draftWeekdays.isEmpty &&
+        (draftUseAllCategories || !draftDeliveryCategories.isEmpty)
+    )
+  }
 
   var body: some View {
     NavigationStack {
       ScrollView {
-        VStack(alignment: .leading, spacing: 22) {
-          HStack {
+        VStack(alignment: .leading, spacing: 18) {
+          HStack(spacing: 12) {
             Button {
               dismiss()
             } label: {
-              Label(store.t("settings"), systemImage: "chevron.left")
-                .labelStyle(.titleAndIcon)
+              Image(systemName: "chevron.left")
+                .frame(width: 44, height: 44)
             }
             .foregroundStyle(Premium.gold)
-            .frame(minHeight: 44)
             .accessibilityLabel(store.t("closeSettings"))
             Spacer()
+            Text(store.t("settings"))
+              .font(Premium.sectionFont)
+              .foregroundStyle(Premium.ink)
+              .accessibilityAddTraits(.isHeader)
+            Spacer()
+            Color.clear.frame(width: 44, height: 44)
           }
 
-          Text(store.t("dailyNotification"))
-            .font(Premium.sectionFont)
-            .foregroundStyle(Premium.ink)
-            .accessibilityAddTraits(.isHeader)
+          VStack(alignment: .leading, spacing: 14) {
+            HStack {
+              Text(store.t("reminder"))
+                .font(Premium.sectionFont)
+                .foregroundStyle(Premium.ink)
+              Spacer()
+              Toggle(store.t("reminders"), isOn: $draftEnabled)
+                .labelsHidden()
+                .tint(Premium.gold)
+                .accessibilityLabel(store.t("reminders"))
+            }
+            Text(store.t("receiveChosenDays"))
+              .font(.subheadline)
+              .foregroundStyle(.secondary)
+          }
 
-          Toggle(store.t("receiveDaily"), isOn: Binding(
-            get: { store.reminderEnabled },
-            set: { store.setReminder(enabled: $0) }
-          ))
-          .tint(Premium.gold)
-          .font(Premium.bodyFont)
-
-          VStack(alignment: .leading, spacing: 12) {
-            Text(store.t("hour"))
-              .font(.headline)
-            DatePicker(
-              store.t("hour"),
-              selection: $draftTime,
-              displayedComponents: .hourAndMinute
+          VStack(alignment: .leading, spacing: 18) {
+            HStack {
+              Text(store.t("hour"))
+                .font(.headline)
+              Spacer()
+              DatePicker(
+                store.t("hour"),
+                selection: $draftTime,
+                displayedComponents: .hourAndMinute
+              )
+              .labelsHidden()
+              .datePickerStyle(.compact)
+              .tint(Premium.gold)
+              .accessibilityLabel(store.t("hour"))
+            }
+            Divider()
+            WeekdayPicker(
+              selection: $draftWeekdays,
+              helper: store.t("everyDayRecommended")
             )
-            .labelsHidden()
-            .datePickerStyle(.wheel)
-            .padding()
-            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
-            .accessibilityLabel(store.t("hour"))
           }
           .padding(18)
-          .background(.white.opacity(0.48), in: RoundedRectangle(cornerRadius: 24))
+          .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 24))
+          .opacity(draftEnabled ? 1 : 0.58)
+          .disabled(!draftEnabled)
 
-          DeliveryCategoryPicker()
+          DeliveryCategoryPicker(
+            selection: $draftDeliveryCategories,
+            useAllCategories: $draftUseAllCategories,
+            enabled: draftEnabled
+          )
 
           Button(store.t("saveReminder")) {
-            store.setReminderTime(draftTime)
-            store.setReminder(enabled: store.reminderEnabled)
+            _ = store.saveReminderSettings(
+              enabled: draftEnabled,
+              time: draftTime,
+              weekdays: draftWeekdays,
+              deliveryCategories: draftDeliveryCategories,
+              useAllCategories: draftUseAllCategories
+            )
           }
           .buttonStyle(PrimaryGoldButtonStyle())
+          .disabled(!canSave)
 
           Button(store.t("testNotification")) {
             store.sendTestNotification()
@@ -729,9 +1077,20 @@ struct SettingsView: View {
           .buttonStyle(GoldOutlineButtonStyle())
 
           if !store.notificationStatus.isEmpty {
-            Text(store.notificationStatus)
-              .font(.footnote)
-              .foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 8) {
+              Text(store.notificationStatus)
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+              if store.notificationStatus == store.t("permissionDenied") {
+                Button(store.t("openIOSSettings")) {
+                  guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+                  UIApplication.shared.open(url)
+                }
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(Premium.gold)
+                .frame(minHeight: 44)
+              }
+            }
           }
 
           NotificationPreview()
@@ -740,7 +1099,15 @@ struct SettingsView: View {
         .padding(.bottom, 36)
       }
       .background(SettingsBackground())
-      .onAppear { draftTime = store.reminderDate }
+      .onAppear {
+        guard !hasLoadedDraft else { return }
+        draftTime = store.reminderDate
+        draftEnabled = store.reminderEnabled
+        draftWeekdays = store.reminderWeekdays
+        draftDeliveryCategories = store.deliveryCategoryIds
+        draftUseAllCategories = store.deliveryUsesAllCategories
+        hasLoadedDraft = true
+      }
     }
   }
 }
@@ -749,56 +1116,122 @@ struct AddCardView: View {
   @Environment(\.dismiss) private var dismiss
   @State private var text = ""
   @State private var category = "animo"
+  @State private var newCategoryName = ""
+  private let newCategoryId = "create-new-category"
 
   private var canAdd: Bool {
-    !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-      store.content.categories.contains(where: { $0.id == category })
+    let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !trimmedText.isEmpty, trimmedText.count <= CustomQuoteValidator.maximumLength else {
+      return false
+    }
+    if category == newCategoryId {
+      return store.canCreateCustomCategory(named: newCategoryName)
+    }
+    return store.allCategories.contains(where: { $0.id == category })
   }
 
   var body: some View {
     NavigationStack {
-      VStack(alignment: .leading, spacing: 18) {
-        Text(store.t("newManualCard"))
-          .font(Premium.sectionFont)
-          .accessibilityAddTraits(.isHeader)
-
-        TextEditor(text: $text)
-          .font(Premium.bodyFont)
-          .frame(minHeight: 160)
-          .padding(12)
-          .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 18))
-          .accessibilityLabel(store.t("cardText"))
-
-        Picker(store.t("category"), selection: $category) {
-          ForEach(store.content.categories) { item in
-            Text(store.localizedCategoryName(item)).tag(item.id)
+      ScrollView {
+        VStack(alignment: .leading, spacing: 18) {
+          HStack {
+            Text(store.t("newManualCard"))
+              .font(Premium.sectionFont)
+              .accessibilityAddTraits(.isHeader)
+            Spacer()
+            Button(store.t("close")) {
+              dismiss()
+            }
+            .foregroundStyle(Premium.gold)
+            .frame(minHeight: 44)
           }
-        }
 
-        Button(store.t("addCard")) {
-          if store.addCustomQuote(text: text, category: category) {
-            dismiss()
+          VStack(alignment: .leading, spacing: 8) {
+            Text(store.t("cardText"))
+              .font(.headline)
+            TextEditor(text: $text)
+              .font(Premium.bodyFont)
+              .frame(minHeight: 150)
+              .padding(12)
+              .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 18))
+              .accessibilityLabel(store.t("cardText"))
+            HStack {
+              if text.trimmingCharacters(in: .whitespacesAndNewlines).count > CustomQuoteValidator.maximumLength {
+                Text(store.t("quoteTooLong"))
+                  .foregroundStyle(.red)
+              }
+              Spacer()
+              Text("\(text.trimmingCharacters(in: .whitespacesAndNewlines).count)/\(CustomQuoteValidator.maximumLength)")
+                .monospacedDigit()
+            }
+            .font(.footnote)
+            .foregroundStyle(.secondary)
           }
-        }
-        .buttonStyle(PrimaryGoldButtonStyle())
-        .disabled(!canAdd)
 
-        Spacer()
+          VStack(alignment: .leading, spacing: 8) {
+            Text(store.t("category"))
+              .font(.headline)
+            Picker(store.t("category"), selection: $category) {
+              ForEach(store.allCategories) { item in
+                Text(store.localizedCategoryName(item)).tag(item.id)
+              }
+              Text(store.t("createNewCategory")).tag(newCategoryId)
+            }
+            .pickerStyle(.menu)
+            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
+            .padding(.horizontal, 14)
+            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+          }
+
+          if category == newCategoryId {
+            VStack(alignment: .leading, spacing: 8) {
+              Text(store.t("categoryName"))
+                .font(.headline)
+              TextField(store.t("categoryNameExample"), text: $newCategoryName)
+                .textInputAutocapitalization(.words)
+                .padding(14)
+                .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+              Text(store.t("categoryNameHelp"))
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+              if !newCategoryName.isEmpty && !store.canCreateCustomCategory(named: newCategoryName) {
+                Text(store.t("categoryNameInvalid"))
+                  .font(.footnote)
+                  .foregroundStyle(.red)
+              }
+            }
+          }
+
+          Button(store.t("addCard")) {
+            if store.addCustomQuote(
+              text: text,
+              category: category,
+              newCategoryName: category == newCategoryId ? newCategoryName : nil
+            ) {
+              dismiss()
+            }
+          }
+          .buttonStyle(PrimaryGoldButtonStyle())
+          .disabled(!canAdd)
+        }
+        .padding(22)
       }
-      .padding(22)
       .background(PremiumBackground())
+      .scrollDismissesKeyboard(.interactively)
     }
   }
 }
 struct QuoteHero: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   let quote: Quote
 
   var body: some View {
     let category = store.category(for: quote.category)
-    ZStack(alignment: .bottom) {
+    let minimumHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 430 : 330
+    ZStack {
       BundledImage(name: "premium-mountains", fallback: PremiumBackground())
-        .frame(maxWidth: .infinity, minHeight: 430)
+        .frame(maxWidth: .infinity, minHeight: minimumHeight)
         .accessibilityHidden(true)
         .clipped()
         .overlay(
@@ -809,15 +1242,16 @@ struct QuoteHero: View {
           )
         )
 
-      VStack(spacing: 18) {
+      VStack(spacing: 14) {
         Text("\"")
-          .font(.system(size: 48, weight: .semibold, design: .serif))
+          .font(.system(size: 38, weight: .semibold, design: .serif))
           .foregroundStyle(Premium.gold)
         Text(quote.text)
-          .font(.system(.title, design: .serif, weight: .regular))
+          .font(.system(.title2, design: .serif, weight: .regular))
           .multilineTextAlignment(.center)
-          .lineSpacing(5)
+          .lineSpacing(4)
           .foregroundStyle(Premium.ink)
+          .minimumScaleFactor(0.82)
         Divider()
           .frame(width: 46)
           .overlay(Premium.gold)
@@ -828,11 +1262,10 @@ struct QuoteHero: View {
           .background(Premium.gold.opacity(0.14), in: Capsule())
           .foregroundStyle(Premium.gold)
       }
-      .padding(.horizontal, 30)
-      .padding(.top, 36)
-      .padding(.bottom, 118)
+      .padding(.horizontal, 26)
+      .padding(.vertical, 24)
     }
-    .frame(maxWidth: .infinity, minHeight: 430)
+    .frame(maxWidth: .infinity, minHeight: minimumHeight)
     .clipShape(RoundedRectangle(cornerRadius: 26))
     .overlay(RoundedRectangle(cornerRadius: 26).stroke(.white.opacity(0.8), lineWidth: 1))
     .shadow(color: Color.black.opacity(0.13), radius: 24, x: 0, y: 16)
@@ -888,7 +1321,13 @@ struct QuoteCard: View {
       }
       Button(store.t("cancel"), role: .cancel) {}
     } message: {
-      Text(store.t("deleteCardMessage"))
+      Text(
+        store.t(
+          store.deletingQuoteRemovesCategory(quote)
+            ? "deleteLastQuoteMessage"
+            : "deleteCardMessage"
+        )
+      )
     }
   }
 }
@@ -927,9 +1366,60 @@ struct CategoryTile: View {
   }
 }
 
+struct WeekdayPicker: View {
+  @Binding var selection: Set<ReminderWeekday>
+  let helper: String
+
+  var body: some View {
+    VStack(alignment: .leading, spacing: 10) {
+      Text("Days")
+        .font(.headline)
+      Text(helper)
+        .font(.footnote)
+        .foregroundStyle(.secondary)
+      ViewThatFits(in: .horizontal) {
+        HStack(spacing: 7) {
+          ForEach(ReminderWeekday.allCases, id: \.self) { day in
+            dayButton(day)
+          }
+        }
+        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 8) {
+          ForEach(ReminderWeekday.allCases, id: \.self) { day in
+            dayButton(day)
+          }
+        }
+      }
+    }
+  }
+
+  private func dayButton(_ day: ReminderWeekday) -> some View {
+    let selected = selection.contains(day)
+    return Button {
+      if selected {
+        selection.remove(day)
+      } else {
+        selection.insert(day)
+      }
+    } label: {
+      Text(day.shortLabel)
+        .font(.subheadline.weight(.semibold))
+        .frame(width: 44, height: 44)
+        .background(selected ? Premium.gold : .white.opacity(0.72), in: Circle())
+        .foregroundStyle(selected ? .white : Premium.ink)
+        .overlay(Circle().stroke(Premium.gold.opacity(0.55), lineWidth: 1))
+    }
+    .accessibilityLabel(day.fullLabel)
+    .accessibilityValue(selected ? "Selected" : "Not selected")
+    .accessibilityAddTraits(selected ? .isSelected : [])
+  }
+}
+
 struct DeliveryCategoryPicker: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+  @Binding var selection: Set<String>
+  @Binding var useAllCategories: Bool
+  let enabled: Bool
 
   private var columns: [GridItem] {
     dynamicTypeSize.isAccessibilitySize
@@ -940,36 +1430,74 @@ struct DeliveryCategoryPicker: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
       Text(store.t("deliveryTypes"))
-        .font(.headline)
-      Text(store.t("deliveryHelp"))
+        .font(Premium.sectionFont)
+        .foregroundStyle(Premium.ink)
+
+      Button {
+        if useAllCategories {
+          useAllCategories = false
+          selection = Set(store.allCategories.map(\.id))
+        } else {
+          useAllCategories = true
+          selection = []
+        }
+      } label: {
+        HStack {
+          Text(store.t("allCategories"))
+          Spacer()
+          Image(systemName: useAllCategories ? "checkmark.circle.fill" : "circle")
+        }
+        .font(.body.weight(.medium))
+        .foregroundStyle(useAllCategories ? Premium.gold : Premium.ink)
+        .frame(minHeight: 44)
+      }
+      .accessibilityValue(store.t(useAllCategories ? "selected" : "notSelected"))
+      .accessibilityAddTraits(useAllCategories ? .isSelected : [])
+
+      Text(store.t("allCategoriesRecommended"))
         .font(.footnote)
         .foregroundStyle(.secondary)
-      LazyVGrid(columns: columns, spacing: 8) {
-        ForEach(store.content.categories) { category in
-          Button {
-            store.toggleDeliveryCategory(category.id)
-          } label: {
-            HStack {
-              Text(store.localizedCategoryName(category))
-              Spacer()
-              Image(systemName: store.deliveryCategoryIds.contains(category.id) ? "checkmark.circle.fill" : "circle")
+
+      if !useAllCategories {
+        Divider()
+        LazyVGrid(columns: columns, spacing: 8) {
+          ForEach(store.allCategories) { category in
+            Button {
+              if selection.contains(category.id) {
+                selection.remove(category.id)
+              } else {
+                selection.insert(category.id)
+              }
+            } label: {
+              HStack {
+                Text(store.localizedCategoryName(category))
+                  .lineLimit(2)
+                Spacer()
+                Image(systemName: selection.contains(category.id) ? "checkmark.circle.fill" : "circle")
+              }
+              .font(.subheadline.weight(.medium))
+              .padding(12)
+              .frame(minHeight: 48)
+              .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 14))
+              .foregroundStyle(selection.contains(category.id) ? Premium.gold : Premium.ink)
             }
-            .font(.subheadline.weight(.medium))
-            .padding(12)
-            .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 14))
-            .foregroundStyle(store.deliveryCategoryIds.contains(category.id) ? Premium.gold : Premium.ink)
+            .accessibilityValue(
+              store.t(selection.contains(category.id) ? "selected" : "notSelected")
+            )
+            .accessibilityAddTraits(selection.contains(category.id) ? .isSelected : [])
           }
-          .accessibilityValue(
-            store.t(store.deliveryCategoryIds.contains(category.id) ? "selected" : "notSelected")
-          )
-          .accessibilityAddTraits(
-            store.deliveryCategoryIds.contains(category.id) ? .isSelected : []
-          )
+        }
+        if selection.isEmpty {
+          Text(store.t("chooseOneCategory"))
+            .font(.footnote)
+            .foregroundStyle(.red)
         }
       }
     }
-    .padding(16)
-    .background(.white.opacity(0.42), in: RoundedRectangle(cornerRadius: 22))
+    .padding(18)
+    .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 22))
+    .opacity(enabled ? 1 : 0.58)
+    .disabled(!enabled)
   }
 }
 
@@ -994,42 +1522,13 @@ struct NotificationPreview: View {
             .lineLimit(2)
         }
         Spacer()
-        Text(store.t("now"))
+        Text(store.reminderDate.formatted(date: .omitted, time: .shortened))
           .font(.caption)
           .foregroundStyle(.secondary)
       }
       .padding(14)
       .background(.white.opacity(0.86), in: RoundedRectangle(cornerRadius: 18))
     }
-  }
-}
-
-struct FeatureStrip: View {
-  @EnvironmentObject private var store: AppStore
-
-  var body: some View {
-    HStack(spacing: 0) {
-      feature("quote.opening", store.t("featureQuotes"))
-      Divider().padding(.vertical, 8)
-      feature("square.and.arrow.up", store.t("featureShare"))
-      Divider().padding(.vertical, 8)
-      feature("bell", store.t("featureDaily"))
-    }
-    .padding(12)
-    .background(.white.opacity(0.45), in: RoundedRectangle(cornerRadius: 18))
-  }
-
-  private func feature(_ icon: String, _ text: String) -> some View {
-    VStack(spacing: 8) {
-      Image(systemName: icon)
-        .foregroundStyle(Premium.gold)
-        .accessibilityHidden(true)
-      Text(text)
-        .font(.caption)
-        .multilineTextAlignment(.center)
-        .foregroundStyle(Premium.ink)
-    }
-    .frame(maxWidth: .infinity)
   }
 }
 
@@ -1196,7 +1695,6 @@ enum Strings {
     "categories": "Categorias",
     "favorites": "Favoritos",
     "premiumConcept": "Silencio premium",
-    "chooseCategories": "Elegir tipos de tarjetas",
     "categoriesSubtitle": "Selecciona cuidadosamente lo que quieres recibir.",
     "favoritesSubtitle": "Tu coleccion personal de inspiracion.",
     "emptyFavorites": "Guarda frases para verlas aqui.",
@@ -1220,9 +1718,6 @@ enum Strings {
     "saved": "Guardada",
     "save": "Guardar",
     "share": "Compartir",
-    "featureQuotes": "Frases que inspiran",
-    "featureShare": "Comparte lo que te mueve",
-    "featureDaily": "Inspiracion diaria",
     "notificationTitle": "Tu inspiracion de hoy",
     "fallbackQuote": "Hoy empieza con una frase sencilla y un paso posible.",
     "notificationsOff": "Notificaciones desactivadas.",
@@ -1238,48 +1733,69 @@ enum Strings {
     "categories": "Categories",
     "favorites": "Favorites",
     "premiumConcept": "A quiet moment",
-    "chooseCategories": "Explore categories",
-    "categoriesSubtitle": "Choose what you want to read.",
+    "categoriesSubtitle": "Browse quotes by category.",
     "favoritesSubtitle": "The words you want to keep.",
     "emptyFavorites": "Save quotes to see them here.",
     "all": "All",
     "manualCards": "Personal",
     "settings": "Settings",
     "closeSettings": "Close settings",
+    "welcomeToWarmWords": "WELCOME TO",
+    "onboardingTitle": "When should your quote arrive?",
+    "onboardingBody": "Choose a time and the days you’d like a reminder.",
+    "everyDayRecommended": "Every day is recommended",
+    "setReminder": "Set reminder",
+    "notNow": "Not now",
+    "reminder": "Reminder",
+    "reminders": "Reminders",
+    "receiveChosenDays": "Receive a quote on the days you choose.",
     "dailyNotification": "Daily notification",
     "receiveDaily": "Receive one inspiring quote each day.",
     "hour": "Time",
     "language": "Language",
     "saveReminder": "Save reminder",
     "testNotification": "Test notification",
-    "notificationPreview": "Notification preview",
+    "notificationPreview": "Preview",
     "now": "now",
-    "deliveryTypes": "Reminder categories",
+    "deliveryTypes": "Quote categories",
     "deliveryHelp": "Leave all unselected to receive quotes from every category.",
+    "allCategories": "All categories",
+    "allCategoriesRecommended": "All categories is recommended.",
+    "chooseOneCategory": "Choose at least one category.",
     "newManualCard": "New personal quote",
+    "personalCategoryDescription": "A category for your personal quotes.",
     "category": "Category",
+    "createNewCategory": "Create a new category…",
+    "categoryName": "Category name",
+    "categoryNameExample": "e.g. Morning focus",
+    "categoryNameHelp": "Up to 24 characters.",
+    "categoryNameInvalid": "Choose a different category name.",
     "addCard": "Add quote",
     "cardText": "Quote text",
+    "quoteTooLong": "Keep your quote to 240 characters.",
+    "close": "Close",
     "delete": "Delete",
     "deleteCardTitle": "Delete this quote?",
     "deleteCardMessage": "This removes the quote and its saved status from this device.",
+    "deleteLastQuoteMessage": "This also removes its personal category because it is the last quote in it.",
     "cancel": "Cancel",
     "selected": "Selected",
     "notSelected": "Not selected",
     "saved": "Saved",
     "save": "Save",
     "share": "Share",
-    "featureQuotes": "Thoughtful quotes",
-    "featureShare": "Easy to share",
-    "featureDaily": "One each day",
     "notificationTitle": "Your daily quote",
     "fallbackQuote": "Today begins with one simple phrase and one possible step.",
-    "notificationsOff": "Notifications disabled.",
+    "notificationsOff": "Reminders turned off.",
     "testSent": "Test notification sent.",
     "testFailed": "Could not send the test.",
     "reminderSaved": "Reminder saved.",
     "reminderFailed": "Could not save the reminder.",
-    "permissionDenied": "Notification permission denied."
+    "permissionDenied": "Notification access is off.",
+    "notificationsAreOffTitle": "Notifications are off",
+    "notificationsAreOffBody": "You can enable them later in Settings.",
+    "continue": "Continue",
+    "openIOSSettings": "Open iOS Settings"
   ]
 }
 

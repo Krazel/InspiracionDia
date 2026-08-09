@@ -83,6 +83,62 @@ final class AppLogicTests: XCTestCase {
     XCTAssertEqual(localCalendar.timeZone.secondsFromGMT(for: first), -7 * 60 * 60)
   }
 
+  func testReminderPlannerUsesOnlySelectedWeekdays() throws {
+    let now = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 1, day: 1, hour: 12)))
+    let mondayAndWednesday: Set<ReminderWeekday> = [.monday, .wednesday]
+    let dates = ReminderDatePlanner.dates(
+      count: 60,
+      minutes: 7 * 60 + 30,
+      after: now,
+      weekdays: mondayAndWednesday,
+      calendar: calendar
+    )
+    XCTAssertEqual(dates.count, 60)
+    XCTAssertEqual(Set(dates).count, 60)
+    XCTAssertTrue(dates.allSatisfy {
+      guard let weekday = ReminderWeekday(calendarWeekday: calendar.component(.weekday, from: $0)) else {
+        return false
+      }
+      return mondayAndWednesday.contains(weekday)
+    })
+  }
+
+  func testReminderPlannerRejectsEmptyWeekdaySelection() {
+    XCTAssertTrue(
+      ReminderDatePlanner.dates(
+        count: 60,
+        minutes: ReminderTimeCodec.defaultMinutes,
+        after: Date(),
+        weekdays: [],
+        calendar: calendar
+      ).isEmpty
+    )
+  }
+
+  func testReminderPlannerProducesSixtyMondays() throws {
+    let now = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 1, day: 1, hour: 12)))
+    let dates = ReminderDatePlanner.dates(
+      count: 60,
+      minutes: ReminderTimeCodec.defaultMinutes,
+      after: now,
+      weekdays: [.monday],
+      calendar: calendar
+    )
+    XCTAssertEqual(dates.count, 60)
+    XCTAssertTrue(dates.allSatisfy { calendar.component(.weekday, from: $0) == 2 })
+    let first = try XCTUnwrap(dates.first)
+    let last = try XCTUnwrap(dates.last)
+    XCTAssertGreaterThan(last.timeIntervalSince(first), 400 * 86_400)
+  }
+
+  func testReminderWeekdaysNormalizeToEveryDay() {
+    XCTAssertEqual(ReminderWeekdays.normalized([]), ReminderWeekdays.all)
+    XCTAssertEqual(ReminderWeekdays.normalized([0, 1, 8]), [.monday])
+    XCTAssertEqual(ReminderWeekdays.persisted([.sunday, .monday]), [1, 7])
+    XCTAssertEqual(ReminderWeekday(calendarWeekday: 1), .sunday)
+    XCTAssertEqual(ReminderWeekday(calendarWeekday: 2), .monday)
+  }
+
   func testCustomQuoteValidation() {
     let categories: Set<String> = ["animo"]
     XCTAssertEqual(
@@ -91,5 +147,28 @@ final class AppLogicTests: XCTestCase {
     )
     XCTAssertNil(CustomQuoteValidator.normalizedText(" \n", category: "animo", validCategoryIds: categories))
     XCTAssertNil(CustomQuoteValidator.normalizedText("Keep going.", category: "missing", validCategoryIds: categories))
+    XCTAssertNil(
+      CustomQuoteValidator.normalizedText(
+        String(repeating: "a", count: CustomQuoteValidator.maximumLength + 1),
+        category: "animo",
+        validCategoryIds: categories
+      )
+    )
+  }
+
+  func testCustomCategoryValidation() {
+    XCTAssertEqual(
+      CustomCategoryValidator.normalizedName("  Morning   focus  ", existingNames: ["Calm"]),
+      "Morning focus"
+    )
+    XCTAssertNil(CustomCategoryValidator.normalizedName(" ", existingNames: []))
+    XCTAssertNil(CustomCategoryValidator.normalizedName("calm", existingNames: ["Calm"]))
+    XCTAssertNil(CustomCategoryValidator.normalizedName("CAFÉ", existingNames: ["Cafe"]))
+    XCTAssertNil(
+      CustomCategoryValidator.normalizedName(
+        String(repeating: "a", count: CustomCategoryValidator.maximumLength + 1),
+        existingNames: []
+      )
+    )
   }
 }
