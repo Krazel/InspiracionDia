@@ -115,6 +115,13 @@ Resuelve la antigua PEND-013:
 - XcodeGen usa el catálogo `AppIcon`; CI y los validadores locales comprueban el asset y su empaquetado.
 - A v2, B y el borrador A se conservan únicamente como historial visual.
 
+### DEC-017 — IPA unsigned autorizada para Sideloadly
+
+- El propietario autorizó expresamente commit, push y compilación el 2026-08-09 para obtener una IPA instalable mediante Sideloadly.
+- Se usó la rama aislada `agent/warm-words-ios-ipa`; `main` no se modificó.
+- GitHub Actions run `31329591743` compiló y probó el commit de app `1c62729`; el artifact se descargó como `dist/Warm-Words-Sideloadly.ipa`.
+- Esta autorización no incluye GitHub Release, TestFlight, App Store, App Review ni publicación.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Derechos de contenido y assets
@@ -133,6 +140,6 @@ Faltan categoría primaria, precio, territorios, edad, copyright y fecha objetiv
 
 Faltan confirmar membresía, disponibilidad/registro de `com.dmkr.inspiraciondia`, team, certificados y acceso a App Store Connect.
 
-### PEND-014 — QA Apple y autorización de distribución
+### PEND-014 — QA Apple y autorización de distribución oficial
 
-Faltan build/test en macOS, archive firmado, Validate App, QA en iPhone, capturas y ficha inglesa. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.
+El build/test unsigned en macOS ya pasó. Faltan archive firmado, Validate App, QA físico en iPhone, capturas y ficha inglesa. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.

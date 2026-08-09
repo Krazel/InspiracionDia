@@ -1,14 +1,14 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-09**
-Estado: **cierre técnico local iOS 1.0 estáticamente consistente; aún no es candidato distribuible**
+Estado: **IPA unsigned iOS 1.0 compilada y verificada para instalación con Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama `main` sobre la base auditada `c8fac196d53c889b2125e0760ced49fd26c9666e`.
-- Todo el trabajo de cierre permanece local, sin commit, push, release ni publicación.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `1c62729` sobre la base `c8fac196d53c889b2125e0760ced49fd26c9666e`.
+- El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
@@ -42,9 +42,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - `git diff --check` no detecta errores y `git diff --name-only -- android` queda vacío.
 - La regeneración de ambos catálogos es byte a byte reproducible.
 
-No puede demostrarse en Windows que Swift compile con Xcode, que XcodeGen incluya todos los recursos, ni que UI, VoiceOver, notificaciones, compartir o persistencia funcionen en un iPhone. Una segunda inspección estática no encontró otro error de compilación definitivo después de corregir `SWIFT_VERSION`, pero el workflow actualizado tampoco se ha ejecutado porque no se hizo push.
+## Compilación macOS aprobada
 
-## Primer bloqueo material
+- GitHub Actions run `31329591743`, job `93285576827`, completó correctamente en macOS el 2026-08-09.
+- Pasaron Xcode/SDK 26+, XcodeGen, validadores de contenido/cierre, XCTest en iPhone Simulator, build Release unsigned, empaquetado y upload del artifact.
+- IPA descargada: `dist/Warm-Words-Sideloadly.ipa`, 5,950,648 bytes, SHA-256 `A7E77DA23CE498C505627DCBF17CAD45F0131EB4B2131347D3F7576FA3067872`.
+- Inspección local del archivo confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 9, `AppIcon`, catálogo inglés y privacy manifest.
+- La IPA está unsigned a propósito: Sideloadly debe firmarla al instalarla. La prueba física en iPhone sigue pendiente.
+
+## Primer bloqueo material de App Store
 
 El nombre público **Warm Words** y el AppIcon **C — Protected thought** ya están cerrados localmente. La primera puerta material restante es confirmar por escrito la autoría/licencia y el permiso comercial de las 180 frases inglesas y españolas y de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
 
@@ -53,7 +59,7 @@ El nombre público **Warm Words** y el AppIcon **C — Protected thought** ya es
 1. Confirmar derechos comerciales de frases y fondos.
 2. Proporcionar Support URL y Privacy Policy URL públicas.
 3. Confirmar Apple Developer/App Store Connect, team, bundle ID y firma.
-4. Ejecutar CI/macOS, archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas y ficha inglesa.
+4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas y ficha inglesa.
 5. Revisar el candidato con el propietario. TestFlight, App Store y App Review siguen necesitando autorización expresa en ese momento.
 
 ## Limitación aceptada del MVP local
