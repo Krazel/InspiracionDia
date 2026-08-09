@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-09**
-Estado: **IPA unsigned iOS 1.0 build 10 compilada y verificada para instalación con Sideloadly**
+Estado: **IPA unsigned iOS 1.0 build 11 compilada y verificada para instalación con Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `eb30074`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `6dca776`.
 - El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -50,22 +50,23 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Inspección local del archivo confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 9, `AppIcon`, catálogo inglés y privacy manifest.
 - La IPA está unsigned a propósito: Sideloadly debe firmarla al instalarla. La prueba física en iPhone sigue pendiente.
 
-## Cambio 1.1 cerrado en build 10
+## Cambio 1.1 cerrado en build 11
 
-- La IPA actual corresponde al commit `eb30074` e incluye este cambio.
+- La IPA actual corresponde al commit `6dca776` e incluye este cambio.
 - Today ya no contiene la franja “Thoughtful quotes / Easy to share / One each day” ni “Explore categories”.
 - El motor añade días ISO estables, próximas 60 ocurrencias filtradas, clean-install onboarding versionado, siete días por defecto, guardado atómico y migración de instalaciones anteriores sin pedir permiso al iniciar.
 - El modelo permite crear una categoría personal con su primera frase, persistirla y retirarla al borrar su última frase. El ShareLink existente ya comparte frases personales como texto.
 - Las cuatro propuestas de `docs/design/reminder-v2/` fueron aprobadas e implementadas: Today compacto, onboarding, Settings y nueva categoría inline.
 - El formulario personal es desplazable, limita cada frase a 240 caracteres y avisa si borrar la última frase elimina también su categoría. Denegar el permiso de notificaciones muestra feedback inmediato.
+- La tarjeta Today ya no hereda la proporción vertical del fondo: el contenido fija 330 pt en texto normal y la imagen se recorta como fondo, por lo que la portada compacta cabe sin el alargamiento observado en build 10.
 - Validadores Windows, checks de contenido, Swift/XCTest y build Release pasan.
 
 ## Compilación macOS actual
 
-- GitHub Actions run `31332232856`, job `93292207354`, completó correctamente en macOS el 2026-08-09.
+- GitHub Actions run `31333402280`, job `93295110537`, completó correctamente en macOS el 2026-08-09.
 - Pasaron Xcode/SDK 26+, XcodeGen, validadores, XCTest, build Release unsigned, empaquetado y upload del artifact.
-- IPA verificada: `dist/Warm-Words-Sideloadly-build-10.ipa`, 6,025,533 bytes, SHA-256 `E1048A8114FCBCED4A259FCD6ABD6F2E821F1C111073D17313295C5A5BCFB11D`.
-- Inspección interna confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 10, `AppIcon`, catálogo inglés, assets compilados y privacy manifest.
+- IPA verificada: `dist/Warm-Words-Sideloadly-build-11.ipa`, 6,024,614 bytes, SHA-256 `0087D21A6CC48ECF46ACF196E704AF28BC7BD7AC0A371C52002343BA30AF206A`.
+- Inspección interna confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 11, `AppIcon`, catálogo inglés, assets compilados y privacy manifest.
 
 ## Primer bloqueo material de App Store
 
