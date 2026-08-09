@@ -1,4 +1,4 @@
-name: Build unsigned iOS IPA
+name: Build and test unsigned iOS IPA
 
 on:
   push:
@@ -7,12 +7,12 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   build:
     if: github.actor == github.repository_owner
-    runs-on: macos-latest
+    runs-on: macos-26
     env:
       APP_VERSION: "1.0"
 
@@ -20,15 +20,46 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify Xcode and iOS SDK
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          SDK_VERSION="$(xcrun --sdk iphoneos --show-sdk-version)"
+          SDK_MAJOR="${SDK_VERSION%%.*}"
+          if [ "${SDK_MAJOR}" -lt 26 ]; then
+            echo "iOS SDK 26 or later is required; found ${SDK_VERSION}"
+            exit 1
+          fi
+
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Generate content resource
-        run: node scripts/export-ios-content.mjs
+      - name: Validate and generate content resources
+        run: |
+          node scripts/check-quotes.mjs
+          node scripts/export-ios-content.mjs
+          node scripts/export-ios-content-en.mjs
+          node scripts/check-ios-closeout.mjs
 
       - name: Generate native Xcode project
         working-directory: native-ios
         run: xcodegen generate
+
+      - name: Run iOS unit tests
+        run: |
+          set -euo pipefail
+          SIMULATOR_ID="$(xcrun simctl list devices available --json | python3 -c 'import json, sys; data = json.load(sys.stdin); print(next(device["udid"] for runtime, devices in data["devices"].items() if "iOS" in runtime for device in devices if device["isAvailable"] and device["name"].startswith("iPhone")))')"
+          if [ -z "${SIMULATOR_ID}" ]; then
+            echo "No available iOS simulator found"
+            exit 1
+          fi
+          xcodebuild \
+            -project native-ios/InspiracionDia.xcodeproj \
+            -scheme InspiracionDia \
+            -destination "platform=iOS Simulator,id=${SIMULATOR_ID}" \
+            -derivedDataPath build/tests \
+            CODE_SIGNING_ALLOWED=NO \
+            test
 
       - name: Build unsigned iOS app
         run: |
@@ -54,14 +85,29 @@ jobs:
             echo "No .app found"
             exit 1
           fi
-          if [ ! -f "$APP_PATH/content.json" ]; then
-            echo "content.json was not bundled"
+          DISPLAY_NAME="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleDisplayName' "$APP_PATH/Info.plist")"
+          BUNDLE_NAME="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleName' "$APP_PATH/Info.plist")"
+          if [ "$DISPLAY_NAME" != "Warm Words" ] || [ "$BUNDLE_NAME" != "Warm Words" ]; then
+            echo "Unexpected public app name: display=$DISPLAY_NAME bundle=$BUNDLE_NAME"
+            exit 1
+          fi
+          ICON_NAME="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconName' "$APP_PATH/Info.plist")"
+          if [ "$ICON_NAME" != "AppIcon" ]; then
+            echo "Unexpected primary AppIcon name: $ICON_NAME"
+            exit 1
+          fi
+          if [ ! -f "$APP_PATH/Assets.car" ]; then
+            echo "Compiled asset catalog Assets.car was not bundled"
             find "$APP_PATH" -maxdepth 2 -type f | sort
             exit 1
           fi
-          if [ ! -f "$APP_PATH/premium-mountains.png" ]; then
-            cp native-ios/Resources/premium-*.png "$APP_PATH/"
-          fi
+          for RESOURCE in content.json content-en.json PrivacyInfo.xcprivacy; do
+            if [ ! -f "$APP_PATH/$RESOURCE" ]; then
+              echo "$RESOURCE was not bundled"
+              find "$APP_PATH" -maxdepth 2 -type f | sort
+              exit 1
+            fi
+          done
           if [ ! -f "$APP_PATH/premium-mountains.png" ] || [ ! -f "$APP_PATH/premium-stones.png" ]; then
             echo "Premium image resources were not bundled"
             find "$APP_PATH" -maxdepth 2 -type f | sort
@@ -80,21 +126,3 @@ jobs:
           name: InspiracionDia-unsigned-ipa
           path: InspiracionDia-unsigned.ipa
           retention-days: 3
-
-      - name: Publish latest IPA release
-        if: github.ref == 'refs/heads/main'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          VERSIONED_IPA="InspiracionDia-iPhone-v${APP_VERSION}-build-${GITHUB_RUN_NUMBER}.ipa"
-          cp InspiracionDia-unsigned.ipa "${VERSIONED_IPA}"
-          cp InspiracionDia-unsigned.ipa InspiracionDia-iPhone-latest.ipa
-          if gh release view latest-ipa >/dev/null 2>&1; then
-            gh release upload latest-ipa InspiracionDia-iPhone-latest.ipa "${VERSIONED_IPA}" --clobber
-          else
-            gh release create latest-ipa InspiracionDia-iPhone-latest.ipa "${VERSIONED_IPA}" \
-              --title "Latest unsigned iOS IPA" \
-              --notes "Latest unsigned IPA built from ${GITHUB_SHA}." \
-              --latest
-          fi

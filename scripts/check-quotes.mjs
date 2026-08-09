@@ -3,19 +3,29 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const QUOTES = readExportedArray(path.join(root, "data", "quotes.js"), "QUOTES");
+const spanishQuotes = readExportedArray(path.join(root, "data", "quotes.js"), "QUOTES");
+const englishQuotes = readExportedArray(path.join(root, "data", "quotes-en.js"), "QUOTES_EN");
 const CATEGORIES = readExportedArray(path.join(root, "data", "categories.js"), "CATEGORIES");
 
-const ids = new Set();
 const categoryIds = new Set(CATEGORIES.map((category) => category.id));
 const errors = [];
 
-for (const quote of QUOTES) {
-  if (ids.has(quote.id)) errors.push(`ID duplicado: ${quote.id}`);
-  ids.add(quote.id);
-  if (!categoryIds.has(quote.category)) errors.push(`Categoria desconocida en ${quote.id}: ${quote.category}`);
-  if (quote.text.length < 32) errors.push(`Frase demasiado corta en ${quote.id}`);
-  if (quote.text.length > 138) errors.push(`Frase demasiado larga en ${quote.id}: ${quote.text.length}`);
+validateQuotes("Spanish", spanishQuotes);
+validateQuotes("English", englishQuotes);
+
+const spanishById = new Map(spanishQuotes.map((quote) => [quote.id, quote]));
+const englishById = new Map(englishQuotes.map((quote) => [quote.id, quote]));
+
+for (const [id, spanishQuote] of spanishById) {
+  const englishQuote = englishById.get(id);
+  if (!englishQuote) errors.push(`Missing English quote: ${id}`);
+  if (englishQuote && englishQuote.category !== spanishQuote.category) {
+    errors.push(`Category mismatch for ${id}: ${spanishQuote.category} / ${englishQuote.category}`);
+  }
+}
+
+for (const id of englishById.keys()) {
+  if (!spanishById.has(id)) errors.push(`English quote has no Spanish source: ${id}`);
 }
 
 if (errors.length > 0) {
@@ -23,7 +33,21 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log(`${QUOTES.length} frases revisadas en ${categoryIds.size - 1} categorias reales.`);
+console.log(`${spanishQuotes.length} Spanish quotes and ${englishQuotes.length} English quotes checked across ${categoryIds.size - 1} categories.`);
+
+function validateQuotes(label, quotes) {
+  const ids = new Set();
+  const texts = new Set();
+  for (const quote of quotes) {
+    if (ids.has(quote.id)) errors.push(`${label} duplicate ID: ${quote.id}`);
+    if (texts.has(quote.text)) errors.push(`${label} duplicate text: ${quote.id}`);
+    ids.add(quote.id);
+    texts.add(quote.text);
+    if (!categoryIds.has(quote.category)) errors.push(`${label} unknown category in ${quote.id}: ${quote.category}`);
+    if (quote.text.length < 32) errors.push(`${label} quote too short: ${quote.id}`);
+    if (quote.text.length > 138) errors.push(`${label} quote too long: ${quote.id} (${quote.text.length})`);
+  }
+}
 
 function readExportedArray(filePath, name) {
   const source = fs.readFileSync(filePath, "utf8");

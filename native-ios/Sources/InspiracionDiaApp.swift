@@ -1,6 +1,24 @@
+import Foundation
 import SwiftUI
 import UIKit
 import UserNotifications
+
+final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
+  func application(
+    _ application: UIApplication,
+    didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
+  ) -> Bool {
+    UNUserNotificationCenter.current().delegate = self
+    return true
+  }
+
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    willPresent notification: UNNotification
+  ) async -> UNNotificationPresentationOptions {
+    [.banner, .sound]
+  }
+}
 
 struct Category: Codable, Identifiable, Hashable {
   let id: String
@@ -21,18 +39,26 @@ struct ContentBundle: Codable {
   let quotes: [Quote]
 }
 
+enum AppBrand {
+  static let name = "Warm Words"
+}
+
 @main
+@MainActor
 struct InspiracionDiaApp: App {
   @StateObject private var store = AppStore()
+  @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
 
   var body: some Scene {
     WindowGroup {
       RootView()
         .environmentObject(store)
+        .environment(\.locale, Locale(identifier: "en_US"))
     }
   }
 }
 
+@MainActor
 final class AppStore: ObservableObject {
   @Published var content = ContentBundle(categories: [], quotes: [])
   @Published var selectedCategory = "all"
@@ -40,35 +66,47 @@ final class AppStore: ObservableObject {
   @Published var customQuotes: [Quote] = []
   @Published var deliveryCategoryIds: Set<String> = []
   @Published var reminderEnabled = false
-  @Published var reminderTime = "07:30"
-  @Published var language = "es"
+  @Published private(set) var reminderMinutes = ReminderTimeCodec.defaultMinutes
   @Published var notificationStatus = ""
+  @Published private(set) var currentDate = Date()
 
   private let favoritesKey = "favoriteIds"
   private let selectedCategoryKey = "selectedCategory"
   private let customQuotesKey = "customQuotes"
   private let deliveryCategoriesKey = "deliveryCategoryIds"
   private let reminderEnabledKey = "reminderEnabled"
-  private let reminderTimeKey = "reminderTime"
-  private let languageKey = "language"
-  private let notificationId = "daily-inspiration"
+  private let reminderMinutesKey = "reminderMinutes"
+  private let legacyReminderTimeKey = "reminderTime"
+  private let legacyNotificationId = "daily-inspiration"
+  private let notificationIdPrefix = "daily-inspiration-"
+  private let scheduledReminderCount = 60
+  private var reminderSchedulingTask: Task<Void, Never>?
 
   init() {
     loadContent()
     loadSettings()
+    refreshReminderIfEnabled()
   }
 
   var allQuotes: [Quote] {
     content.quotes + customQuotes
   }
 
+  var reminderDate: Date {
+    ReminderTimeCodec.date(for: reminderMinutes)
+  }
+
   var todayQuote: Quote {
-    let candidates = quotesForDelivery()
-    guard !candidates.isEmpty else {
-      return Quote(id: "empty", category: "animo", text: t("fallbackQuote"))
-    }
-    let day = Calendar.current.ordinality(of: .day, in: .year, for: Date()) ?? 1
-    return candidates[day % candidates.count]
+    quote(for: currentDate, candidates: allQuotes)
+  }
+
+  var reminderPreviewQuote: Quote {
+    let previewDate = ReminderDatePlanner.dates(
+      count: 1,
+      minutes: reminderMinutes,
+      after: currentDate
+    ).first ?? currentDate
+    return quote(for: previewDate, candidates: quotesForDelivery())
   }
 
   var visibleQuotes: [Quote] {
@@ -84,20 +122,31 @@ final class AppStore: ObservableObject {
     return allQuotes.filter { $0.category == selectedCategory }
   }
 
+  private func quote(for date: Date, candidates: [Quote]) -> Quote {
+    guard !candidates.isEmpty else {
+      return Quote(id: "empty", category: "animo", text: t("fallbackQuote"))
+    }
+    let index = DailyQuoteSelector.index(for: date, count: candidates.count) ?? 0
+    return candidates[index]
+  }
+
   func t(_ key: String) -> String {
-    Strings.value(key, language: language)
+    Strings.value(key, language: "en")
   }
 
   func category(for id: String) -> Category {
     content.categories.first(where: { $0.id == id }) ??
-      Category(id: "animo", name: "Animo", color: "#A67C2D", softColor: "#F7F1E8", description: "Para levantar el paso.")
+      Category(
+        id: "animo",
+        name: "Motivation",
+        color: "#7A5A24",
+        softColor: "#F7F1E8",
+        description: "To help you take the next step."
+      )
   }
 
   func localizedCategoryName(_ category: Category) -> String {
-    if language == "en" {
-      return Strings.categoryNamesEN[category.id] ?? category.name
-    }
-    return category.name
+    Strings.categoryNamesEN[category.id] ?? category.name
   }
 
   func toggleFavorite(_ quote: Quote) {
@@ -106,7 +155,7 @@ final class AppStore: ObservableObject {
     } else {
       favoriteIds.insert(quote.id)
     }
-    UserDefaults.standard.set(Array(favoriteIds), forKey: favoritesKey)
+    persistFavorites()
   }
 
   func selectCategory(_ id: String) {
@@ -115,102 +164,232 @@ final class AppStore: ObservableObject {
   }
 
   func toggleDeliveryCategory(_ id: String) {
+    guard content.categories.contains(where: { $0.id == id }) else { return }
     if deliveryCategoryIds.contains(id) {
       deliveryCategoryIds.remove(id)
     } else {
       deliveryCategoryIds.insert(id)
     }
     UserDefaults.standard.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
-    if reminderEnabled {
-      scheduleReminder()
+    refreshReminderIfEnabled()
+  }
+
+  @discardableResult
+  func addCustomQuote(text: String, category: String) -> Bool {
+    let validCategoryIds = Set(content.categories.map(\.id))
+    guard let normalizedText = CustomQuoteValidator.normalizedText(
+      text,
+      category: category,
+      validCategoryIds: validCategoryIds
+    ) else {
+      return false
     }
-  }
 
-  func addCustomQuote(text: String, category: String) {
-    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !trimmed.isEmpty else { return }
-    let quote = Quote(id: "custom-\(UUID().uuidString)", category: category, text: trimmed)
+    let quote = Quote(id: "custom-\(UUID().uuidString)", category: category, text: normalizedText)
     customQuotes.insert(quote, at: 0)
-    selectedCategory = "custom"
+    selectCategory("custom")
     persistCustomQuotes()
+    refreshReminderIfEnabled()
+    return true
   }
 
-  func setLanguage(_ value: String) {
-    language = value
-    UserDefaults.standard.set(value, forKey: languageKey)
+  func isCustomQuote(_ quote: Quote) -> Bool {
+    quote.id.hasPrefix("custom-")
+  }
+
+  func deleteCustomQuote(_ quote: Quote) {
+    guard isCustomQuote(quote) else { return }
+    customQuotes.removeAll { $0.id == quote.id }
+    favoriteIds.remove(quote.id)
+    persistCustomQuotes()
+    persistFavorites()
+    refreshReminderIfEnabled()
   }
 
   func setReminder(enabled: Bool) {
     reminderEnabled = enabled
     UserDefaults.standard.set(enabled, forKey: reminderEnabledKey)
     if enabled {
-      scheduleReminder()
+      scheduleReminderRequestingPermission()
     } else {
-      UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationId])
+      removeOwnedPendingReminders()
       notificationStatus = t("notificationsOff")
     }
   }
 
-  func setReminderTime(_ value: String) {
-    reminderTime = normalizedTime(value)
-    UserDefaults.standard.set(reminderTime, forKey: reminderTimeKey)
-    if reminderEnabled {
-      scheduleReminder()
+  func setReminderTime(_ date: Date) {
+    reminderMinutes = ReminderTimeCodec.minutes(from: date)
+    UserDefaults.standard.set(reminderMinutes, forKey: reminderMinutesKey)
+    refreshReminderIfEnabled()
+  }
+
+  func refreshReminderIfEnabled() {
+    guard reminderEnabled else { return }
+    replaceReminderSchedulingTask {
+      let settings = await UNUserNotificationCenter.current().notificationSettings()
+      guard !Task.isCancelled else { return }
+      switch settings.authorizationStatus {
+      case .authorized, .provisional, .ephemeral:
+        await self.scheduleAuthorizedReminders()
+      case .denied:
+        self.reminderEnabled = false
+        UserDefaults.standard.set(false, forKey: self.reminderEnabledKey)
+        self.notificationStatus = self.t("permissionDenied")
+      case .notDetermined:
+        break
+      @unknown default:
+        break
+      }
     }
+  }
+
+  func refreshCurrentDate() {
+    currentDate = Date()
   }
 
   func sendTestNotification() {
-    requestNotificationPermission { granted in
-      guard granted else { return }
+    Task {
+      guard await requestNotificationPermission() else { return }
       let notification = UNMutableNotificationContent()
-      notification.title = self.t("notificationTitle")
-      notification.body = self.todayQuote.text
+      notification.title = t("notificationTitle")
+      notification.body = todayQuote.text
       notification.sound = .default
       let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
-      let request = UNNotificationRequest(identifier: "test-inspiration-\(UUID().uuidString)", content: notification, trigger: trigger)
-      UNUserNotificationCenter.current().add(request) { error in
-        DispatchQueue.main.async {
-          self.notificationStatus = error == nil ? self.t("testSent") : self.t("testFailed")
-        }
+      let request = UNNotificationRequest(
+        identifier: "test-inspiration-\(UUID().uuidString)",
+        content: notification,
+        trigger: trigger
+      )
+      do {
+        try await UNUserNotificationCenter.current().add(request)
+        notificationStatus = t("testSent")
+      } catch {
+        notificationStatus = t("testFailed")
       }
     }
   }
 
-  private func scheduleReminder() {
-    requestNotificationPermission { granted in
-      guard granted else { return }
+  private func scheduleReminderRequestingPermission() {
+    replaceReminderSchedulingTask {
+      guard await self.requestNotificationPermission(), !Task.isCancelled else { return }
+      await self.scheduleAuthorizedReminders()
+    }
+  }
 
-      let parts = self.normalizedTime(self.reminderTime).split(separator: ":").compactMap { Int($0) }
-      var date = DateComponents()
-      date.hour = parts.first ?? 7
-      date.minute = parts.dropFirst().first ?? 30
+  private func scheduleAuthorizedReminders() async {
+    let requests = makeReminderRequests()
+    guard !requests.isEmpty else {
+      notificationStatus = t("reminderFailed")
+      return
+    }
 
+    let center = UNUserNotificationCenter.current()
+    let desiredIdentifiers = Set(requests.map(\.identifier))
+    let legacyNotificationId = self.legacyNotificationId
+    let notificationIdPrefix = self.notificationIdPrefix
+
+    let pending = await center.pendingNotificationRequests()
+    guard !Task.isCancelled else { return }
+    let staleIdentifiers = pending
+      .map(\.identifier)
+      .filter {
+        ($0 == legacyNotificationId || $0.hasPrefix(notificationIdPrefix)) &&
+          !desiredIdentifiers.contains($0)
+      }
+    center.removePendingNotificationRequests(withIdentifiers: staleIdentifiers)
+
+    var failed = false
+    for request in requests {
+      guard !Task.isCancelled else { return }
+      do {
+        try await center.add(request)
+      } catch {
+        failed = true
+      }
+    }
+    guard !Task.isCancelled else { return }
+    notificationStatus = failed ? t("reminderFailed") : t("reminderSaved")
+  }
+
+  private func makeReminderRequests(now: Date = Date()) -> [UNNotificationRequest] {
+    let calendar = Calendar.autoupdatingCurrent
+    let deliveryQuotes = quotesForDelivery()
+    return ReminderDatePlanner.dates(
+      count: scheduledReminderCount,
+      minutes: reminderMinutes,
+      after: now,
+      calendar: calendar
+    ).map { deliveryDate in
       let notification = UNMutableNotificationContent()
-      notification.title = self.t("notificationTitle")
-      notification.body = self.todayQuote.text
+      notification.title = t("notificationTitle")
+      notification.body = quote(for: deliveryDate, candidates: deliveryQuotes).text
       notification.sound = .default
 
-      let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: true)
-      let request = UNNotificationRequest(identifier: self.notificationId, content: notification, trigger: trigger)
-      UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [self.notificationId])
-      UNUserNotificationCenter.current().add(request) { error in
-        DispatchQueue.main.async {
-          self.notificationStatus = error == nil ? self.t("reminderSaved") : self.t("reminderFailed")
-        }
-      }
+      let date = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: deliveryDate)
+      let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
+      return UNNotificationRequest(
+        identifier: reminderIdentifier(for: deliveryDate, calendar: calendar),
+        content: notification,
+        trigger: trigger
+      )
+    }
+  }
+  private func reminderIdentifier(for date: Date, calendar: Calendar) -> String {
+    let parts = calendar.dateComponents([.year, .month, .day], from: date)
+    let datePart = String(
+      format: "%04d-%02d-%02d",
+      parts.year ?? 0,
+      parts.month ?? 0,
+      parts.day ?? 0
+    )
+    return notificationIdPrefix + datePart
+  }
+
+  private func removeOwnedPendingReminders() {
+    replaceReminderSchedulingTask {
+      await self.removeOwnedPendingRemindersNow()
     }
   }
 
-  private func requestNotificationPermission(_ completion: @escaping (Bool) -> Void) {
-    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
-      DispatchQueue.main.async {
-        if !granted {
-          self.reminderEnabled = false
-          UserDefaults.standard.set(false, forKey: self.reminderEnabledKey)
-          self.notificationStatus = self.t("permissionDenied")
-        }
-        completion(granted)
+  private func removeOwnedPendingRemindersNow() async {
+    let center = UNUserNotificationCenter.current()
+    let legacyNotificationId = self.legacyNotificationId
+    let notificationIdPrefix = self.notificationIdPrefix
+    let pending = await center.pendingNotificationRequests()
+    let identifiers = pending
+      .map(\.identifier)
+      .filter { $0 == legacyNotificationId || $0.hasPrefix(notificationIdPrefix) }
+    center.removePendingNotificationRequests(withIdentifiers: identifiers)
+  }
+
+  private func replaceReminderSchedulingTask(
+    with operation: @escaping @MainActor () async -> Void
+  ) {
+    let previousTask = reminderSchedulingTask
+    previousTask?.cancel()
+    reminderSchedulingTask = Task {
+      _ = await previousTask?.result
+      guard !Task.isCancelled else { return }
+      await operation()
+    }
+  }
+
+  private func requestNotificationPermission() async -> Bool {
+    do {
+      let granted = try await UNUserNotificationCenter.current().requestAuthorization(
+        options: [.alert, .sound]
+      )
+      if !granted {
+        reminderEnabled = false
+        UserDefaults.standard.set(false, forKey: reminderEnabledKey)
+        notificationStatus = t("permissionDenied")
       }
+      return granted
+    } catch {
+      reminderEnabled = false
+      UserDefaults.standard.set(false, forKey: reminderEnabledKey)
+      notificationStatus = t("permissionDenied")
+      return false
     }
   }
 
@@ -218,7 +397,12 @@ final class AppStore: ObservableObject {
     if deliveryCategoryIds.isEmpty {
       return allQuotes
     }
-    return allQuotes.filter { deliveryCategoryIds.contains($0.category) }
+    let filtered = allQuotes.filter { deliveryCategoryIds.contains($0.category) }
+    return filtered.isEmpty ? allQuotes : filtered
+  }
+
+  private func persistFavorites() {
+    UserDefaults.standard.set(Array(favoriteIds), forKey: favoritesKey)
   }
 
   private func persistCustomQuotes() {
@@ -229,7 +413,7 @@ final class AppStore: ObservableObject {
 
   private func loadContent() {
     guard
-      let url = Bundle.main.url(forResource: "content", withExtension: "json"),
+      let url = Bundle.main.url(forResource: "content-en", withExtension: "json"),
       let data = try? Data(contentsOf: url),
       let decoded = try? JSONDecoder().decode(ContentBundle.self, from: data)
     else {
@@ -240,28 +424,48 @@ final class AppStore: ObservableObject {
   }
 
   private func loadSettings() {
-    selectedCategory = UserDefaults.standard.string(forKey: selectedCategoryKey) ?? "all"
-    favoriteIds = Set(UserDefaults.standard.stringArray(forKey: favoritesKey) ?? [])
-    deliveryCategoryIds = Set(UserDefaults.standard.stringArray(forKey: deliveryCategoriesKey) ?? [])
-    reminderEnabled = UserDefaults.standard.bool(forKey: reminderEnabledKey)
-    reminderTime = UserDefaults.standard.string(forKey: reminderTimeKey) ?? "07:30"
-    language = UserDefaults.standard.string(forKey: languageKey) ?? "es"
-    if let data = UserDefaults.standard.data(forKey: customQuotesKey),
-       let decoded = try? JSONDecoder().decode([Quote].self, from: data) {
-      customQuotes = decoded
-    }
-  }
+    let defaults = UserDefaults.standard
+    let validCategoryIds = Set(content.categories.map(\.id))
 
-  private func normalizedTime(_ value: String) -> String {
-    let parts = value.split(separator: ":").compactMap { Int($0) }
-    let hour = min(23, max(0, parts.first ?? 7))
-    let minute = min(59, max(0, parts.dropFirst().first ?? 30))
-    return String(format: "%02d:%02d", hour, minute)
+    let storedDelivery = Set(defaults.stringArray(forKey: deliveryCategoriesKey) ?? [])
+    deliveryCategoryIds = storedDelivery.intersection(validCategoryIds)
+    defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
+
+    reminderEnabled = defaults.bool(forKey: reminderEnabledKey)
+    if defaults.object(forKey: reminderMinutesKey) != nil {
+      reminderMinutes = ReminderTimeCodec.normalizedMinutes(defaults.integer(forKey: reminderMinutesKey))
+    } else {
+      reminderMinutes = ReminderTimeCodec.migrate(
+        legacyValue: defaults.string(forKey: legacyReminderTimeKey)
+      )
+      defaults.set(reminderMinutes, forKey: reminderMinutesKey)
+    }
+
+    if let data = defaults.data(forKey: customQuotesKey),
+       let decoded = try? JSONDecoder().decode([Quote].self, from: data) {
+      var seenIds = Set<String>()
+      customQuotes = decoded.filter { quote in
+        quote.id.hasPrefix("custom-") &&
+          !quote.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+          validCategoryIds.contains(quote.category) &&
+          seenIds.insert(quote.id).inserted
+      }
+      persistCustomQuotes()
+    }
+
+    let allowedSelections = validCategoryIds.union(["all", "favorites", "custom"])
+    let storedSelection = defaults.string(forKey: selectedCategoryKey) ?? "all"
+    selectedCategory = allowedSelections.contains(storedSelection) ? storedSelection : "all"
+    defaults.set(selectedCategory, forKey: selectedCategoryKey)
+
+    let validQuoteIds = Set(allQuotes.map(\.id))
+    favoriteIds = Set(defaults.stringArray(forKey: favoritesKey) ?? []).intersection(validQuoteIds)
+    persistFavorites()
   }
 }
-
 struct RootView: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.scenePhase) private var scenePhase
   @State private var tab = 0
   @State private var showingSettings = false
 
@@ -284,6 +488,16 @@ struct RootView: View {
       SettingsView()
         .environmentObject(store)
     }
+    .onChange(of: scenePhase) { phase in
+      if phase == .active {
+        store.refreshCurrentDate()
+        store.refreshReminderIfEnabled()
+      }
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
+      store.refreshCurrentDate()
+      store.refreshReminderIfEnabled()
+    }
   }
 }
 
@@ -298,7 +512,7 @@ struct TodayView: View {
         VStack(spacing: 22) {
           HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 5) {
-              Text("Inspiracion Dia")
+              Text(AppBrand.name)
                 .font(Premium.titleFont)
                 .foregroundStyle(Premium.ink)
               Text(store.t("premiumConcept").uppercased())
@@ -316,9 +530,10 @@ struct TodayView: View {
                 .frame(width: 46, height: 46)
                 .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
             }
+            .accessibilityLabel(store.t("settings"))
           }
 
-          Text(Date.now.formatted(.dateTime.weekday(.wide).day().month(.wide)))
+          Text(Date.now.formatted(AppFormatters.day))
             .font(.system(size: 15))
             .foregroundStyle(Premium.gold)
 
@@ -333,13 +548,20 @@ struct TodayView: View {
                 .frame(width: 58, height: 58)
             }
             .buttonStyle(CircleGoldButtonStyle())
+            .accessibilityLabel(
+              store.favoriteIds.contains(store.todayQuote.id) ? store.t("saved") : store.t("save")
+            )
+            .accessibilityAddTraits(
+              store.favoriteIds.contains(store.todayQuote.id) ? .isSelected : []
+            )
 
-            ShareLink(item: "\(store.todayQuote.text)\n\nInspiracion Dia") {
+            ShareLink(item: "\(store.todayQuote.text)\n\n\(AppBrand.name)") {
               Image(systemName: "square.and.arrow.up")
                 .font(.title3)
                 .frame(width: 58, height: 58)
             }
             .buttonStyle(CircleGoldButtonStyle())
+            .accessibilityLabel(store.t("share"))
           }
 
           FeatureStrip()
@@ -362,15 +584,25 @@ struct TodayView: View {
 
 struct CategoriesView: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   @State private var showingAddCard = false
 
-  private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
+  private var columns: [GridItem] {
+    Array(
+      repeating: GridItem(.flexible(), spacing: 12),
+      count: dynamicTypeSize.isAccessibilitySize ? 1 : 3
+    )
+  }
 
   var body: some View {
     NavigationStack {
       ScrollView {
         VStack(spacing: 20) {
-          Header(title: store.t("categories"), subtitle: store.t("categoriesSubtitle")) {
+          Header(
+            title: store.t("categories"),
+            subtitle: store.t("categoriesSubtitle"),
+            actionLabel: store.t("newManualCard")
+          ) {
             showingAddCard = true
           }
 
@@ -435,7 +667,7 @@ struct FavoritesView: View {
 struct SettingsView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dismiss) private var dismiss
-  @State private var draftTime = "07:30"
+  @State private var draftTime = Date()
 
   var body: some View {
     NavigationStack {
@@ -449,12 +681,15 @@ struct SettingsView: View {
                 .labelStyle(.titleAndIcon)
             }
             .foregroundStyle(Premium.gold)
+            .frame(minHeight: 44)
+            .accessibilityLabel(store.t("closeSettings"))
             Spacer()
           }
 
           Text(store.t("dailyNotification"))
             .font(Premium.sectionFont)
             .foregroundStyle(Premium.ink)
+            .accessibilityAddTraits(.isHeader)
 
           Toggle(store.t("receiveDaily"), isOn: Binding(
             get: { store.reminderEnabled },
@@ -465,28 +700,22 @@ struct SettingsView: View {
 
           VStack(alignment: .leading, spacing: 12) {
             Text(store.t("hour"))
-              .font(.system(size: 14, weight: .medium))
-            TextField("07:30", text: $draftTime)
-              .keyboardType(.numbersAndPunctuation)
-              .font(.system(size: 34, weight: .medium, design: .serif))
-              .multilineTextAlignment(.center)
-              .padding()
-              .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
-              .onSubmit { store.setReminderTime(draftTime) }
+              .font(.headline)
+            DatePicker(
+              store.t("hour"),
+              selection: $draftTime,
+              displayedComponents: .hourAndMinute
+            )
+            .labelsHidden()
+            .datePickerStyle(.wheel)
+            .padding()
+            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+            .accessibilityLabel(store.t("hour"))
           }
           .padding(18)
           .background(.white.opacity(0.48), in: RoundedRectangle(cornerRadius: 24))
 
           DeliveryCategoryPicker()
-
-          Picker(store.t("language"), selection: Binding(
-            get: { store.language },
-            set: { store.setLanguage($0) }
-          )) {
-            Text("Espanol").tag("es")
-            Text("English").tag("en")
-          }
-          .pickerStyle(.segmented)
 
           Button(store.t("saveReminder")) {
             store.setReminderTime(draftTime)
@@ -511,28 +740,34 @@ struct SettingsView: View {
         .padding(.bottom, 36)
       }
       .background(SettingsBackground())
-      .onAppear { draftTime = store.reminderTime }
+      .onAppear { draftTime = store.reminderDate }
     }
   }
 }
-
 struct AddCardView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dismiss) private var dismiss
   @State private var text = ""
   @State private var category = "animo"
 
+  private var canAdd: Bool {
+    !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+      store.content.categories.contains(where: { $0.id == category })
+  }
+
   var body: some View {
     NavigationStack {
       VStack(alignment: .leading, spacing: 18) {
         Text(store.t("newManualCard"))
           .font(Premium.sectionFont)
+          .accessibilityAddTraits(.isHeader)
 
         TextEditor(text: $text)
           .font(Premium.bodyFont)
           .frame(minHeight: 160)
           .padding(12)
           .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 18))
+          .accessibilityLabel(store.t("cardText"))
 
         Picker(store.t("category"), selection: $category) {
           ForEach(store.content.categories) { item in
@@ -541,10 +776,12 @@ struct AddCardView: View {
         }
 
         Button(store.t("addCard")) {
-          store.addCustomQuote(text: text, category: category)
-          dismiss()
+          if store.addCustomQuote(text: text, category: category) {
+            dismiss()
+          }
         }
         .buttonStyle(PrimaryGoldButtonStyle())
+        .disabled(!canAdd)
 
         Spacer()
       }
@@ -553,7 +790,6 @@ struct AddCardView: View {
     }
   }
 }
-
 struct QuoteHero: View {
   @EnvironmentObject private var store: AppStore
   let quote: Quote
@@ -563,6 +799,7 @@ struct QuoteHero: View {
     ZStack(alignment: .bottom) {
       BundledImage(name: "premium-mountains", fallback: PremiumBackground())
         .frame(maxWidth: .infinity, minHeight: 430)
+        .accessibilityHidden(true)
         .clipped()
         .overlay(
           LinearGradient(
@@ -577,11 +814,10 @@ struct QuoteHero: View {
           .font(.system(size: 48, weight: .semibold, design: .serif))
           .foregroundStyle(Premium.gold)
         Text(quote.text)
-          .font(.system(size: 30, weight: .regular, design: .serif))
+          .font(.system(.title, design: .serif, weight: .regular))
           .multilineTextAlignment(.center)
           .lineSpacing(5)
           .foregroundStyle(Premium.ink)
-          .minimumScaleFactor(0.78)
         Divider()
           .frame(width: 46)
           .overlay(Premium.gold)
@@ -605,6 +841,7 @@ struct QuoteHero: View {
 
 struct QuoteCard: View {
   @EnvironmentObject private var store: AppStore
+  @State private var showingDeleteConfirmation = false
   let quote: Quote
 
   var body: some View {
@@ -618,12 +855,21 @@ struct QuoteCard: View {
         .font(Premium.bodyFont)
         .foregroundStyle(Premium.ink)
         .lineSpacing(3)
-      HStack {
+      HStack(spacing: 18) {
         Button(store.favoriteIds.contains(quote.id) ? store.t("saved") : store.t("save")) {
           store.toggleFavorite(quote)
         }
-        ShareLink(item: "\(quote.text)\n\nInspiracion Dia") {
+        .frame(minHeight: 44)
+        ShareLink(item: "\(quote.text)\n\n\(AppBrand.name)") {
           Text(store.t("share"))
+        }
+        .frame(minHeight: 44)
+        if store.isCustomQuote(quote) {
+          Spacer()
+          Button(store.t("delete"), role: .destructive) {
+            showingDeleteConfirmation = true
+          }
+          .frame(minHeight: 44)
         }
       }
       .font(.subheadline.weight(.semibold))
@@ -632,9 +878,20 @@ struct QuoteCard: View {
     .padding(18)
     .background(Color(hex: category.softColor).opacity(0.72), in: RoundedRectangle(cornerRadius: 20))
     .overlay(RoundedRectangle(cornerRadius: 20).stroke(.white.opacity(0.75), lineWidth: 1))
+    .confirmationDialog(
+      store.t("deleteCardTitle"),
+      isPresented: $showingDeleteConfirmation,
+      titleVisibility: .visible
+    ) {
+      Button(store.t("delete"), role: .destructive) {
+        store.deleteCustomQuote(quote)
+      }
+      Button(store.t("cancel"), role: .cancel) {}
+    } message: {
+      Text(store.t("deleteCardMessage"))
+    }
   }
 }
-
 struct CategoryTile: View {
   @EnvironmentObject private var store: AppStore
   let id: String
@@ -653,22 +910,32 @@ struct CategoryTile: View {
         Image(systemName: icon)
           .font(.system(size: 26, weight: .light))
           .foregroundStyle(Premium.gold)
+          .accessibilityHidden(true)
         Text(title)
           .font(.system(size: 14, weight: .regular, design: .serif))
           .foregroundStyle(Premium.ink)
-          .lineLimit(1)
-          .minimumScaleFactor(0.75)
+          .lineLimit(2)
+          .minimumScaleFactor(0.9)
       }
       .frame(maxWidth: .infinity, minHeight: 108)
       .background(.white.opacity(selected ? 0.92 : 0.62), in: RoundedRectangle(cornerRadius: 12))
       .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? Premium.gold : .white.opacity(0.7), lineWidth: selected ? 1.2 : 1))
       .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 8)
     }
+    .accessibilityValue(store.t(selected ? "selected" : "notSelected"))
+    .accessibilityAddTraits(selected ? .isSelected : [])
   }
 }
 
 struct DeliveryCategoryPicker: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+  private var columns: [GridItem] {
+    dynamicTypeSize.isAccessibilitySize
+      ? [GridItem(.flexible())]
+      : [GridItem(.flexible()), GridItem(.flexible())]
+  }
 
   var body: some View {
     VStack(alignment: .leading, spacing: 12) {
@@ -677,7 +944,7 @@ struct DeliveryCategoryPicker: View {
       Text(store.t("deliveryHelp"))
         .font(.footnote)
         .foregroundStyle(.secondary)
-      LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+      LazyVGrid(columns: columns, spacing: 8) {
         ForEach(store.content.categories) { category in
           Button {
             store.toggleDeliveryCategory(category.id)
@@ -692,6 +959,12 @@ struct DeliveryCategoryPicker: View {
             .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 14))
             .foregroundStyle(store.deliveryCategoryIds.contains(category.id) ? Premium.gold : Premium.ink)
           }
+          .accessibilityValue(
+            store.t(store.deliveryCategoryIds.contains(category.id) ? "selected" : "notSelected")
+          )
+          .accessibilityAddTraits(
+            store.deliveryCategoryIds.contains(category.id) ? .isSelected : []
+          )
         }
       }
     }
@@ -713,9 +986,9 @@ struct NotificationPreview: View {
           .frame(width: 46, height: 46)
           .overlay(Image(systemName: "sun.max").foregroundStyle(Premium.gold))
         VStack(alignment: .leading, spacing: 4) {
-          Text("Inspiracion Dia")
+          Text(AppBrand.name)
             .font(.headline)
-          Text(store.todayQuote.text)
+          Text(store.reminderPreviewQuote.text)
             .font(.caption)
             .foregroundStyle(.secondary)
             .lineLimit(2)
@@ -750,6 +1023,7 @@ struct FeatureStrip: View {
     VStack(spacing: 8) {
       Image(systemName: icon)
         .foregroundStyle(Premium.gold)
+        .accessibilityHidden(true)
       Text(text)
         .font(.caption)
         .multilineTextAlignment(.center)
@@ -762,6 +1036,7 @@ struct FeatureStrip: View {
 struct Header: View {
   let title: String
   let subtitle: String
+  var actionLabel: String? = nil
   var action: (() -> Void)? = nil
 
   var body: some View {
@@ -770,6 +1045,7 @@ struct Header: View {
         Text(title)
           .font(Premium.titleFont)
           .foregroundStyle(Premium.ink)
+          .accessibilityAddTraits(.isHeader)
         Text(subtitle)
           .font(.system(size: 15))
           .foregroundStyle(.secondary)
@@ -783,6 +1059,7 @@ struct Header: View {
             .frame(width: 46, height: 46)
             .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
         }
+        .accessibilityLabel(actionLabel ?? title)
       }
     }
   }
@@ -808,6 +1085,7 @@ struct SettingsBackground: View {
         .clipped()
         .opacity(0.62)
         .ignoresSafeArea(edges: .bottom)
+        .accessibilityHidden(true)
     }
   }
 }
@@ -875,11 +1153,19 @@ struct GoldOutlineButtonStyle: ButtonStyle {
 }
 
 enum Premium {
-  static let gold = Color(hex: "#A67C2D")
+  static let gold = Color(hex: "#7A5A24")
   static let ink = Color(hex: "#191611")
-  static let titleFont = Font.system(size: 34, weight: .regular, design: .serif)
-  static let sectionFont = Font.system(size: 25, weight: .regular, design: .serif)
-  static let bodyFont = Font.system(size: 17, weight: .regular, design: .serif)
+  static let titleFont = Font.system(.largeTitle, design: .serif, weight: .regular)
+  static let sectionFont = Font.system(.title2, design: .serif, weight: .regular)
+  static let bodyFont = Font.system(.body, design: .serif, weight: .regular)
+}
+
+enum AppFormatters {
+  static let day = Date.FormatStyle()
+    .weekday(.wide)
+    .day()
+    .month(.wide)
+    .locale(Locale(identifier: "en_US"))
 }
 
 enum Strings {
@@ -917,6 +1203,7 @@ enum Strings {
     "all": "Todas",
     "manualCards": "Manuales",
     "settings": "Ajustes",
+    "closeSettings": "Cerrar ajustes",
     "dailyNotification": "Notificacion diaria",
     "receiveDaily": "Recibe tu dosis diaria de inspiracion con una notificacion.",
     "hour": "Hora",
@@ -950,34 +1237,42 @@ enum Strings {
     "today": "Today",
     "categories": "Categories",
     "favorites": "Favorites",
-    "premiumConcept": "Premium silence",
-    "chooseCategories": "Choose card types",
-    "categoriesSubtitle": "Select carefully what you want to receive.",
-    "favoritesSubtitle": "Your personal inspiration collection.",
+    "premiumConcept": "A quiet moment",
+    "chooseCategories": "Explore categories",
+    "categoriesSubtitle": "Choose what you want to read.",
+    "favoritesSubtitle": "The words you want to keep.",
     "emptyFavorites": "Save quotes to see them here.",
     "all": "All",
-    "manualCards": "Manual",
+    "manualCards": "Personal",
     "settings": "Settings",
+    "closeSettings": "Close settings",
     "dailyNotification": "Daily notification",
-    "receiveDaily": "Receive your daily dose of inspiration with one notification.",
+    "receiveDaily": "Receive one inspiring quote each day.",
     "hour": "Time",
     "language": "Language",
     "saveReminder": "Save reminder",
     "testNotification": "Test notification",
     "notificationPreview": "Notification preview",
     "now": "now",
-    "deliveryTypes": "Card types",
-    "deliveryHelp": "If none are selected, every category can arrive.",
-    "newManualCard": "New manual card",
+    "deliveryTypes": "Reminder categories",
+    "deliveryHelp": "Leave all unselected to receive quotes from every category.",
+    "newManualCard": "New personal quote",
     "category": "Category",
-    "addCard": "Add card",
+    "addCard": "Add quote",
+    "cardText": "Quote text",
+    "delete": "Delete",
+    "deleteCardTitle": "Delete this quote?",
+    "deleteCardMessage": "This removes the quote and its saved status from this device.",
+    "cancel": "Cancel",
+    "selected": "Selected",
+    "notSelected": "Not selected",
     "saved": "Saved",
     "save": "Save",
     "share": "Share",
-    "featureQuotes": "Selected inspiration",
-    "featureShare": "Share what moves you",
-    "featureDaily": "Daily inspiration",
-    "notificationTitle": "Your inspiration today",
+    "featureQuotes": "Thoughtful quotes",
+    "featureShare": "Easy to share",
+    "featureDaily": "One each day",
+    "notificationTitle": "Your daily quote",
     "fallbackQuote": "Today begins with one simple phrase and one possible step.",
     "notificationsOff": "Notifications disabled.",
     "testSent": "Test notification sent.",

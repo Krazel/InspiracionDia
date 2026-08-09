@@ -1,0 +1,990 @@
+{
+  "categories": [
+    {
+      "id": "animo",
+      "name": "Motivation",
+      "color": "#F08A24",
+      "softColor": "#FFF0D9",
+      "description": "To help you take the next step."
+    },
+    {
+      "id": "foco",
+      "name": "Focus",
+      "color": "#3A7BD5",
+      "softColor": "#E4F0FF",
+      "description": "To return to what matters."
+    },
+    {
+      "id": "calma",
+      "name": "Calm",
+      "color": "#4FAF7A",
+      "softColor": "#E5F6EC",
+      "description": "To quiet the noise within."
+    },
+    {
+      "id": "disciplina",
+      "name": "Discipline",
+      "color": "#2F4858",
+      "softColor": "#E4ECEF",
+      "description": "To act without waiting for motivation."
+    },
+    {
+      "id": "autoestima",
+      "name": "Self-worth",
+      "color": "#C85C8E",
+      "softColor": "#FBE5F0",
+      "description": "To treat yourself with greater care."
+    },
+    {
+      "id": "gratitud",
+      "name": "Gratitude",
+      "color": "#A47D22",
+      "softColor": "#F8EFCF",
+      "description": "To notice what already supports you."
+    },
+    {
+      "id": "valentia",
+      "name": "Courage",
+      "color": "#D94C45",
+      "softColor": "#FFE3E1",
+      "description": "To move through fear."
+    },
+    {
+      "id": "habitos",
+      "name": "Habits",
+      "color": "#5D8C3B",
+      "softColor": "#E7F3DD",
+      "description": "To repeat what helps you thrive."
+    },
+    {
+      "id": "creatividad",
+      "name": "Creativity",
+      "color": "#7B61FF",
+      "softColor": "#EAE5FF",
+      "description": "To see from a different angle."
+    },
+    {
+      "id": "resiliencia",
+      "name": "Resilience",
+      "color": "#117A8B",
+      "softColor": "#DDF4F7",
+      "description": "To rebuild with dignity."
+    },
+    {
+      "id": "relaciones",
+      "name": "Relationships",
+      "color": "#C0643B",
+      "softColor": "#FBE7DD",
+      "description": "To care for meaningful bonds."
+    },
+    {
+      "id": "energia",
+      "name": "Energy",
+      "color": "#008E8E",
+      "softColor": "#DDF5F5",
+      "description": "To keep moving without burning out."
+    }
+  ],
+  "quotes": [
+    {
+      "id": "animo-001",
+      "category": "animo",
+      "text": "You do not need to solve your whole life today; you need one step that stays true to you."
+    },
+    {
+      "id": "animo-002",
+      "category": "animo",
+      "text": "The most reliable motivation appears after you begin, not before."
+    },
+    {
+      "id": "animo-003",
+      "category": "animo",
+      "text": "Even when you move slowly, you are still on the side of those who refuse to give up."
+    },
+    {
+      "id": "animo-004",
+      "category": "animo",
+      "text": "Use the energy you have; consistency has room for imperfect days too."
+    },
+    {
+      "id": "animo-005",
+      "category": "animo",
+      "text": "Today can be small and still matter greatly."
+    },
+    {
+      "id": "animo-006",
+      "category": "animo",
+      "text": "Do not wait to feel invincible before moving; move to remind yourself that you can."
+    },
+    {
+      "id": "animo-007",
+      "category": "animo",
+      "text": "Your next attempt does not have to carry the weight of every attempt before it."
+    },
+    {
+      "id": "animo-008",
+      "category": "animo",
+      "text": "One honest action beats a brilliant promise that never begins."
+    },
+    {
+      "id": "animo-009",
+      "category": "animo",
+      "text": "If you doubt yourself today, do something clear enough to make doubt step aside."
+    },
+    {
+      "id": "animo-010",
+      "category": "animo",
+      "text": "Encouragement does not always shout; sometimes it simply whispers that you should keep going."
+    },
+    {
+      "id": "animo-011",
+      "category": "animo",
+      "text": "Some days do not ask for greatness; they ask for presence."
+    },
+    {
+      "id": "animo-012",
+      "category": "animo",
+      "text": "Never underestimate the power of beginning again with less drama and more truth."
+    },
+    {
+      "id": "animo-013",
+      "category": "animo",
+      "text": "You do not have to prove everything today; just do not abandon yourself."
+    },
+    {
+      "id": "animo-014",
+      "category": "animo",
+      "text": "Hard things feel lighter when you break them down into one manageable action."
+    },
+    {
+      "id": "animo-015",
+      "category": "animo",
+      "text": "Your progress deserves respect even when nobody is watching."
+    },
+    {
+      "id": "foco-001",
+      "category": "foco",
+      "text": "The day changes when you decide what no longer deserves your attention."
+    },
+    {
+      "id": "foco-002",
+      "category": "foco",
+      "text": "One clear priority is worth more than a huge anxiety-driven list."
+    },
+    {
+      "id": "foco-003",
+      "category": "foco",
+      "text": "Return to what matters before the urgent steals your morning."
+    },
+    {
+      "id": "foco-004",
+      "category": "foco",
+      "text": "If everything seems important, you have not chosen yet."
+    },
+    {
+      "id": "foco-005",
+      "category": "foco",
+      "text": "Finishing one small thing can create more order than opening ten new fronts."
+    },
+    {
+      "id": "foco-006",
+      "category": "foco",
+      "text": "Your attention is an investment; place it where you want something to grow."
+    },
+    {
+      "id": "foco-007",
+      "category": "foco",
+      "text": "Fewer open tabs, less mental noise, and more meaningful progress."
+    },
+    {
+      "id": "foco-008",
+      "category": "foco",
+      "text": "You do not need more hours; you need fewer leaks in your attention."
+    },
+    {
+      "id": "foco-009",
+      "category": "foco",
+      "text": "First do what restores direction, not what merely creates movement."
+    },
+    {
+      "id": "foco-010",
+      "category": "foco",
+      "text": "Focus is not tension; it is staying faithful to one thing for a while."
+    },
+    {
+      "id": "foco-011",
+      "category": "foco",
+      "text": "Whenever you say yes to everything, your goal hears a no."
+    },
+    {
+      "id": "foco-012",
+      "category": "foco",
+      "text": "Give your day clear boundaries: one task, one time block, one decision."
+    },
+    {
+      "id": "foco-013",
+      "category": "foco",
+      "text": "Do not confuse being available with moving forward."
+    },
+    {
+      "id": "foco-014",
+      "category": "foco",
+      "text": "Clarity usually arrives after removing, not after adding."
+    },
+    {
+      "id": "foco-015",
+      "category": "foco",
+      "text": "What matters rarely competes with noise; it waits for you to choose it."
+    },
+    {
+      "id": "calma-001",
+      "category": "calma",
+      "text": "Breathe before answering; sometimes peace fits inside three seconds."
+    },
+    {
+      "id": "calma-002",
+      "category": "calma",
+      "text": "Not everything you feel requires an immediate reaction."
+    },
+    {
+      "id": "calma-003",
+      "category": "calma",
+      "text": "Turn down the volume of the day until you can hear yourself again."
+    },
+    {
+      "id": "calma-004",
+      "category": "calma",
+      "text": "You can move slowly without wasting your time."
+    },
+    {
+      "id": "calma-005",
+      "category": "calma",
+      "text": "Your body is not an obstacle; it is where your life happens."
+    },
+    {
+      "id": "calma-006",
+      "category": "calma",
+      "text": "For a moment, release what you cannot fix from where you are now."
+    },
+    {
+      "id": "calma-007",
+      "category": "calma",
+      "text": "A brief pause can protect you from a decision made while tired."
+    },
+    {
+      "id": "calma-008",
+      "category": "calma",
+      "text": "Calm does not always arrive on its own; sometimes you must make room for it."
+    },
+    {
+      "id": "calma-009",
+      "category": "calma",
+      "text": "You do not need to win the argument with your mind; you can let it pass."
+    },
+    {
+      "id": "calma-010",
+      "category": "calma",
+      "text": "Today you can choose gentleness without giving up firmness."
+    },
+    {
+      "id": "calma-011",
+      "category": "calma",
+      "text": "Heavy things are easier to face when you sit, breathe, and take your time."
+    },
+    {
+      "id": "calma-012",
+      "category": "calma",
+      "text": "Do not confuse silence with emptiness; sometimes silence is repair."
+    },
+    {
+      "id": "calma-013",
+      "category": "calma",
+      "text": "If everything feels too much, begin by returning to your breath."
+    },
+    {
+      "id": "calma-014",
+      "category": "calma",
+      "text": "Serenity does not deny the problem; it keeps the problem from ruling you."
+    },
+    {
+      "id": "calma-015",
+      "category": "calma",
+      "text": "Give yourself permission not to accelerate when your life needs care."
+    },
+    {
+      "id": "disciplina-001",
+      "category": "disciplina",
+      "text": "Discipline means listening to your future when your present starts negotiating."
+    },
+    {
+      "id": "disciplina-002",
+      "category": "disciplina",
+      "text": "You do not need constant motivation; you need an agreement with yourself."
+    },
+    {
+      "id": "disciplina-003",
+      "category": "disciplina",
+      "text": "Make it small, but do it today; that is how you train self-trust."
+    },
+    {
+      "id": "disciplina-004",
+      "category": "disciplina",
+      "text": "A promise kept quietly changes more than one announced loudly."
+    },
+    {
+      "id": "disciplina-005",
+      "category": "disciplina",
+      "text": "Repeating the right thing on ordinary days builds extraordinary results."
+    },
+    {
+      "id": "disciplina-006",
+      "category": "disciplina",
+      "text": "When you wait for the perfect moment, you hand control to the excuse."
+    },
+    {
+      "id": "disciplina-007",
+      "category": "disciplina",
+      "text": "Discipline does not imprison you; it frees you from always starting over."
+    },
+    {
+      "id": "disciplina-008",
+      "category": "disciplina",
+      "text": "One small commitment kept is worth more than one enormous plan abandoned."
+    },
+    {
+      "id": "disciplina-009",
+      "category": "disciplina",
+      "text": "Today, do not negotiate with the part of you that always postpones."
+    },
+    {
+      "id": "disciplina-010",
+      "category": "disciplina",
+      "text": "Consistency is a quiet form of self-respect."
+    },
+    {
+      "id": "disciplina-011",
+      "category": "disciplina",
+      "text": "Keep the basic promise even when nobody can applaud it."
+    },
+    {
+      "id": "disciplina-012",
+      "category": "disciplina",
+      "text": "Identity is written through repetition, not intention."
+    },
+    {
+      "id": "disciplina-013",
+      "category": "disciplina",
+      "text": "First do what you promised; then decide whether you still want to complain."
+    },
+    {
+      "id": "disciplina-014",
+      "category": "disciplina",
+      "text": "Do not chase daily intensity; build a foundation that does not break."
+    },
+    {
+      "id": "disciplina-015",
+      "category": "disciplina",
+      "text": "Every day you follow through leaves less room for doubt."
+    },
+    {
+      "id": "autoestima-001",
+      "category": "autoestima",
+      "text": "Speak to yourself as if you must live with yourself forever, because you do."
+    },
+    {
+      "id": "autoestima-002",
+      "category": "autoestima",
+      "text": "Your worth does not rise or fall with the latest opinion."
+    },
+    {
+      "id": "autoestima-003",
+      "category": "autoestima",
+      "text": "You are not an unfinished project; you are a person still growing."
+    },
+    {
+      "id": "autoestima-004",
+      "category": "autoestima",
+      "text": "Treating yourself harshly will not help you improve faster; it will only wear you down."
+    },
+    {
+      "id": "autoestima-005",
+      "category": "autoestima",
+      "text": "You can acknowledge what is missing without denying everything you already are."
+    },
+    {
+      "id": "autoestima-006",
+      "category": "autoestima",
+      "text": "You do not need to become someone else to deserve care."
+    },
+    {
+      "id": "autoestima-007",
+      "category": "autoestima",
+      "text": "Comparison reduces a whole life to a snapshot from someone else's life."
+    },
+    {
+      "id": "autoestima-008",
+      "category": "autoestima",
+      "text": "Your rest does not need to be justified by total exhaustion."
+    },
+    {
+      "id": "autoestima-009",
+      "category": "autoestima",
+      "text": "Not every mistake deserves punishment; some only ask to be learned from."
+    },
+    {
+      "id": "autoestima-010",
+      "category": "autoestima",
+      "text": "Stay loyal to yourself even when you feel disappointed in who you are."
+    },
+    {
+      "id": "autoestima-011",
+      "category": "autoestima",
+      "text": "Do not abandon yourself to fit into a place that does not care for you."
+    },
+    {
+      "id": "autoestima-012",
+      "category": "autoestima",
+      "text": "You deserve a life in which your voice matters too."
+    },
+    {
+      "id": "autoestima-013",
+      "category": "autoestima",
+      "text": "Your sensitivity is not excessive; it is information worthy of respect."
+    },
+    {
+      "id": "autoestima-014",
+      "category": "autoestima",
+      "text": "Stop demanding perfection before allowing yourself affection."
+    },
+    {
+      "id": "autoestima-015",
+      "category": "autoestima",
+      "text": "You are more than your productivity, even on your best days."
+    },
+    {
+      "id": "gratitud-001",
+      "category": "gratitud",
+      "text": "Gratitude does not deny what is hard; it remembers that not everything is lost."
+    },
+    {
+      "id": "gratitud-002",
+      "category": "gratitud",
+      "text": "Some days are saved by taking the time to notice one good thing."
+    },
+    {
+      "id": "gratitud-003",
+      "category": "gratitud",
+      "text": "Ordinary things deserve ceremony too: water, light, shelter, someone who answers."
+    },
+    {
+      "id": "gratitud-004",
+      "category": "gratitud",
+      "text": "Gratitude helps you see what is already enough."
+    },
+    {
+      "id": "gratitud-005",
+      "category": "gratitud",
+      "text": "Notice what already supports you before chasing what is missing."
+    },
+    {
+      "id": "gratitud-006",
+      "category": "gratitud",
+      "text": "Not every gift arrives wrapped; some arrive as calm."
+    },
+    {
+      "id": "gratitud-007",
+      "category": "gratitud",
+      "text": "Sometimes abundance begins when you stop looking only at what you lack."
+    },
+    {
+      "id": "gratitud-008",
+      "category": "gratitud",
+      "text": "Today, be grateful for something you once requested in silence."
+    },
+    {
+      "id": "gratitud-009",
+      "category": "gratitud",
+      "text": "Life does not need to be perfect to contain precious parts."
+    },
+    {
+      "id": "gratitud-010",
+      "category": "gratitud",
+      "text": "When you appreciate small things, you train a less hungry way of seeing."
+    },
+    {
+      "id": "gratitud-011",
+      "category": "gratitud",
+      "text": "There is stability in simple things you almost never celebrate."
+    },
+    {
+      "id": "gratitud-012",
+      "category": "gratitud",
+      "text": "Gratitude also means pausing long enough to receive."
+    },
+    {
+      "id": "gratitud-013",
+      "category": "gratitud",
+      "text": "Do not wait for a great achievement to notice the beauty of the path."
+    },
+    {
+      "id": "gratitud-014",
+      "category": "gratitud",
+      "text": "What feels ordinary today may once have been a dream."
+    },
+    {
+      "id": "gratitud-015",
+      "category": "gratitud",
+      "text": "Gratitude does not change every fact, but it changes your perspective on them."
+    },
+    {
+      "id": "valentia-001",
+      "category": "valentia",
+      "text": "Courage is not the absence of trembling; it is moving without giving fear the wheel."
+    },
+    {
+      "id": "valentia-002",
+      "category": "valentia",
+      "text": "Make the call, send the message, open the door; fear shrinks through action."
+    },
+    {
+      "id": "valentia-003",
+      "category": "valentia",
+      "text": "You do not need absolute certainty to make an honest decision."
+    },
+    {
+      "id": "valentia-004",
+      "category": "valentia",
+      "text": "What you avoid also takes up space; face it directly."
+    },
+    {
+      "id": "valentia-005",
+      "category": "valentia",
+      "text": "Dare to disappoint the expectations that were dimming your light."
+    },
+    {
+      "id": "valentia-006",
+      "category": "valentia",
+      "text": "A version of you is waiting for you to stop asking permission."
+    },
+    {
+      "id": "valentia-007",
+      "category": "valentia",
+      "text": "Fear speaks loudly when you are close to something important."
+    },
+    {
+      "id": "valentia-008",
+      "category": "valentia",
+      "text": "Do not confuse caution with hiding forever."
+    },
+    {
+      "id": "valentia-009",
+      "category": "valentia",
+      "text": "Life opens when you do one thing that once felt like too much."
+    },
+    {
+      "id": "valentia-010",
+      "category": "valentia",
+      "text": "Your voice can tremble and still tell the truth."
+    },
+    {
+      "id": "valentia-011",
+      "category": "valentia",
+      "text": "Choosing yourself can be frightening too; do it anyway."
+    },
+    {
+      "id": "valentia-012",
+      "category": "valentia",
+      "text": "Sometimes growth means no longer negotiating with what makes you smaller."
+    },
+    {
+      "id": "valentia-013",
+      "category": "valentia",
+      "text": "Not every risk is danger; some risks are doors."
+    },
+    {
+      "id": "valentia-014",
+      "category": "valentia",
+      "text": "Do it before your mind turns it into a mountain."
+    },
+    {
+      "id": "valentia-015",
+      "category": "valentia",
+      "text": "Courage begins when you choose not to live only to avoid discomfort."
+    },
+    {
+      "id": "habitos-001",
+      "category": "habitos",
+      "text": "A good habit does not need to impress; it needs to be repeated."
+    },
+    {
+      "id": "habitos-002",
+      "category": "habitos",
+      "text": "Make it so easy that failing takes more effort than following through."
+    },
+    {
+      "id": "habitos-003",
+      "category": "habitos",
+      "text": "The right routine protects your goals from changes in your mood."
+    },
+    {
+      "id": "habitos-004",
+      "category": "habitos",
+      "text": "Do not build from guilt; build from a gentler kind of order."
+    },
+    {
+      "id": "habitos-005",
+      "category": "habitos",
+      "text": "A habit begins when you stop deciding about it every day."
+    },
+    {
+      "id": "habitos-006",
+      "category": "habitos",
+      "text": "One small repetition can begin a new identity."
+    },
+    {
+      "id": "habitos-007",
+      "category": "habitos",
+      "text": "What you prepare at night takes care of you in the morning."
+    },
+    {
+      "id": "habitos-008",
+      "category": "habitos",
+      "text": "Do not break the chain by demanding that every link be perfect."
+    },
+    {
+      "id": "habitos-009",
+      "category": "habitos",
+      "text": "Returning to a habit after missing it is part of the habit too."
+    },
+    {
+      "id": "habitos-010",
+      "category": "habitos",
+      "text": "Life improves when good choices stop depending on impulse."
+    },
+    {
+      "id": "habitos-011",
+      "category": "habitos",
+      "text": "Begin with two minutes if it prevents another day of doing nothing."
+    },
+    {
+      "id": "habitos-012",
+      "category": "habitos",
+      "text": "Make what you want to repeat visible, and make what you want to stop doing difficult."
+    },
+    {
+      "id": "habitos-013",
+      "category": "habitos",
+      "text": "A simple system beats an intense promise."
+    },
+    {
+      "id": "habitos-014",
+      "category": "habitos",
+      "text": "You do not need to change your whole life; begin with the first action of the day."
+    },
+    {
+      "id": "habitos-015",
+      "category": "habitos",
+      "text": "Consistency works better when designed than when forced."
+    },
+    {
+      "id": "creatividad-001",
+      "category": "creatividad",
+      "text": "An idea does not always arrive shining; sometimes it arrives awkward and asks for care."
+    },
+    {
+      "id": "creatividad-002",
+      "category": "creatividad",
+      "text": "Create before judging; the editor can wait until something exists."
+    },
+    {
+      "id": "creatividad-003",
+      "category": "creatividad",
+      "text": "Inspiration favors those who keep the table ready."
+    },
+    {
+      "id": "creatividad-004",
+      "category": "creatividad",
+      "text": "Do not force originality; seek precise honesty instead."
+    },
+    {
+      "id": "creatividad-005",
+      "category": "creatividad",
+      "text": "A bad first version is a doorway, not a sentence."
+    },
+    {
+      "id": "creatividad-006",
+      "category": "creatividad",
+      "text": "Creativity needs play, but it also needs to finish something."
+    },
+    {
+      "id": "creatividad-007",
+      "category": "creatividad",
+      "text": "Look at the familiar from another angle and you already have material."
+    },
+    {
+      "id": "creatividad-008",
+      "category": "creatividad",
+      "text": "Not everything you make must please everyone to deserve to exist."
+    },
+    {
+      "id": "creatividad-009",
+      "category": "creatividad",
+      "text": "Creative clarity comes from working, not from waiting for a perfect sign."
+    },
+    {
+      "id": "creatividad-010",
+      "category": "creatividad",
+      "text": "Make a small version of the idea before fear talks you out of it."
+    },
+    {
+      "id": "creatividad-011",
+      "category": "creatividad",
+      "text": "Your voice becomes clearer by using it, not by comparing it to others."
+    },
+    {
+      "id": "creatividad-012",
+      "category": "creatividad",
+      "text": "Curiosity is discipline with a playful face."
+    },
+    {
+      "id": "creatividad-013",
+      "category": "creatividad",
+      "text": "Let something be simple if simplicity makes it true."
+    },
+    {
+      "id": "creatividad-014",
+      "category": "creatividad",
+      "text": "The blank page loses power when you add one imperfect sentence."
+    },
+    {
+      "id": "creatividad-015",
+      "category": "creatividad",
+      "text": "Creating also means trusting that you can improve what is barely beginning today."
+    },
+    {
+      "id": "resiliencia-001",
+      "category": "resiliencia",
+      "text": "Not everything that breaks you gets to decide how you rebuild."
+    },
+    {
+      "id": "resiliencia-002",
+      "category": "resiliencia",
+      "text": "Surviving a difficult day is also a form of progress."
+    },
+    {
+      "id": "resiliencia-003",
+      "category": "resiliencia",
+      "text": "Strength is not always visible; sometimes it is simply continuing to care for yourself."
+    },
+    {
+      "id": "resiliencia-004",
+      "category": "resiliencia",
+      "text": "You can be tired and still be healing."
+    },
+    {
+      "id": "resiliencia-005",
+      "category": "resiliencia",
+      "text": "What happened is part of your story; it does not have to become your boundary."
+    },
+    {
+      "id": "resiliencia-006",
+      "category": "resiliencia",
+      "text": "Recovery does not require returning unchanged; it may require returning truer to yourself."
+    },
+    {
+      "id": "resiliencia-007",
+      "category": "resiliencia",
+      "text": "One bad chapter does not cancel the entire book."
+    },
+    {
+      "id": "resiliencia-008",
+      "category": "resiliencia",
+      "text": "Hope is sometimes practical: eat, sleep, ask for help, try again tomorrow."
+    },
+    {
+      "id": "resiliencia-009",
+      "category": "resiliencia",
+      "text": "Do not minimize what you carried just because you learned to walk with it."
+    },
+    {
+      "id": "resiliencia-010",
+      "category": "resiliencia",
+      "text": "Each time you rise again, you negotiate less with defeat."
+    },
+    {
+      "id": "resiliencia-011",
+      "category": "resiliencia",
+      "text": "There is dignity in rebuilding yourself slowly too."
+    },
+    {
+      "id": "resiliencia-012",
+      "category": "resiliencia",
+      "text": "You do not have to turn pain into a lesson before allowing yourself to feel it."
+    },
+    {
+      "id": "resiliencia-013",
+      "category": "resiliencia",
+      "text": "Hardship did not make you less; it showed which parts need tenderness."
+    },
+    {
+      "id": "resiliencia-014",
+      "category": "resiliencia",
+      "text": "If all you can do today is hold yourself together, that still counts."
+    },
+    {
+      "id": "resiliencia-015",
+      "category": "resiliencia",
+      "text": "Trusting life again can begin with one small action."
+    },
+    {
+      "id": "relaciones-001",
+      "category": "relaciones",
+      "text": "Listening well is a quiet way of saying: you matter."
+    },
+    {
+      "id": "relaciones-002",
+      "category": "relaciones",
+      "text": "Do not confuse peace with always staying silent."
+    },
+    {
+      "id": "relaciones-003",
+      "category": "relaciones",
+      "text": "Healthy love does not ask you to disappear so someone else can feel comfortable."
+    },
+    {
+      "id": "relaciones-004",
+      "category": "relaciones",
+      "text": "One honest conversation in time can prevent a great deal of distance."
+    },
+    {
+      "id": "relaciones-005",
+      "category": "relaciones",
+      "text": "Someone who truly cares for you does not need you to become smaller."
+    },
+    {
+      "id": "relaciones-006",
+      "category": "relaciones",
+      "text": "Setting boundaries does not close the heart; it gives the heart doors."
+    },
+    {
+      "id": "relaciones-007",
+      "category": "relaciones",
+      "text": "Not every relationship deserves the same access to your energy."
+    },
+    {
+      "id": "relaciones-008",
+      "category": "relaciones",
+      "text": "Appreciate the people who make it easy to be yourself."
+    },
+    {
+      "id": "relaciones-009",
+      "category": "relaciones",
+      "text": "Closeness grows through small acts repeated over time, not through isolated grand gestures."
+    },
+    {
+      "id": "relaciones-010",
+      "category": "relaciones",
+      "text": "You can love someone and still need space."
+    },
+    {
+      "id": "relaciones-011",
+      "category": "relaciones",
+      "text": "Do not call something intensity when it is really a lack of calm."
+    },
+    {
+      "id": "relaciones-012",
+      "category": "relaciones",
+      "text": "Trust grows where words and actions align."
+    },
+    {
+      "id": "relaciones-013",
+      "category": "relaciones",
+      "text": "Care for your relationships, but do not use your peace as currency."
+    },
+    {
+      "id": "relaciones-014",
+      "category": "relaciones",
+      "text": "Some people feel like home; remember to open the door for them too."
+    },
+    {
+      "id": "relaciones-015",
+      "category": "relaciones",
+      "text": "A real apology does not try to win; it tries to repair."
+    },
+    {
+      "id": "energia-001",
+      "category": "energia",
+      "text": "Do not plan your day as though your energy were infinite."
+    },
+    {
+      "id": "energia-002",
+      "category": "energia",
+      "text": "Protect your energy before it is gone."
+    },
+    {
+      "id": "energia-003",
+      "category": "energia",
+      "text": "First do what requires your best, not what can survive on your leftovers."
+    },
+    {
+      "id": "energia-004",
+      "category": "energia",
+      "text": "Resting in time is also a productive decision."
+    },
+    {
+      "id": "energia-005",
+      "category": "energia",
+      "text": "If everything irritates you, perhaps you need a pause rather than an answer."
+    },
+    {
+      "id": "energia-006",
+      "category": "energia",
+      "text": "Your body speaks more quietly before it forces you to listen."
+    },
+    {
+      "id": "energia-007",
+      "category": "energia",
+      "text": "Do not fill every gap; open space works in your favor too."
+    },
+    {
+      "id": "energia-008",
+      "category": "energia",
+      "text": "Mornings are better when they do not begin with the whole world coming through a screen."
+    },
+    {
+      "id": "energia-009",
+      "category": "energia",
+      "text": "Protect the first hour; it often sets the tone for many more."
+    },
+    {
+      "id": "energia-010",
+      "category": "energia",
+      "text": "Less excess, more rhythm: that is how you sustain what truly matters."
+    },
+    {
+      "id": "energia-011",
+      "category": "energia",
+      "text": "Do not confuse being busy with being alive."
+    },
+    {
+      "id": "energia-012",
+      "category": "energia",
+      "text": "A glass of water, an open window, and five minutes can change how your whole day feels."
+    },
+    {
+      "id": "energia-013",
+      "category": "energia",
+      "text": "Your attention drops when your body has been asking for care for hours."
+    },
+    {
+      "id": "energia-014",
+      "category": "energia",
+      "text": "Choose one thing that restores your energy instead of another that only consumes it."
+    },
+    {
+      "id": "energia-015",
+      "category": "energia",
+      "text": "Ambition that never rests eventually begins to resemble punishment."
+    }
+  ]
+}
