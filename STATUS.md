@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-09**
-Estado: **IPA unsigned iOS 1.0 build 11 compilada y verificada para instalación con Sideloadly**
+Actualizado: **2026-08-10**
+Estado: **build 11 verificada; cambio bilingüe inglés/español implementado localmente y pendiente de compilación macOS**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit de app `6dca776`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`. La última IPA verificada corresponde a `6dca776`; el cambio bilingüe posterior aún no tiene IPA verificada.
 - El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -15,8 +15,8 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Cierre implementado localmente
 
-- Catálogo inglés completo de 180 frases y 12 categorías en `data/quotes-en.js` y `native-ios/Resources/content-en.json`, con los mismos IDs y orden que el legado español. `content.json` y sus fuentes españolas se conservan.
-- Producto público fijado en inglés: carga explícita del recurso inglés, locale inglés para la fecha y selector español retirado de la UI. Preferencias y tarjetas personales anteriores se conservan cuando son válidas.
+- Catálogos propios completos de 180 frases y 12 categorías en inglés y español, con los mismos IDs y orden. No contienen citas atribuidas ni dependen de una fuente externa.
+- El alcance solo inglés quedó sustituido por una app bilingüe: idioma inicial según el iPhone, selector persistente en Settings y cambio conjunto de interfaz, catálogo, categorías, fechas, días y próximas notificaciones. Favoritos y datos personales se conservan por ID y las frases creadas por el usuario no se traducen.
 - Frase diaria basada en días continuos, sin reinicio por año.
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
 - Hora configurada con `DatePicker`, migración estricta de la preferencia antigua y manejo de cambios DST mediante el calendario del sistema.
@@ -68,9 +68,19 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - IPA verificada: `dist/Warm-Words-Sideloadly-build-11.ipa`, 6,024,614 bytes, SHA-256 `0087D21A6CC48ECF46ACF196E704AF28BC7BD7AC0A371C52002343BA30AF206A`.
 - Inspección interna confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 11, `AppIcon`, catálogo inglés, assets compilados y privacy manifest.
 
+## Cambio bilingüe en curso
+
+- Decisión registrada en `DEC-022`: Warm Words 1.0 ofrece inglés y español; `DEC-002` queda histórica.
+- `AppLanguage` prioriza una elección guardada y, sin ella, usa español para variantes `es-*` del iPhone e inglés para el resto.
+- Settings incorpora un selector segmentado `English / Español` dentro de la pantalla existente, sin nueva navegación ni rediseño.
+- Ambos recursos se cargan con fallback seguro; los 180 pares mantienen favoritos, selección, entrega y frase diaria. Las categorías personales históricas no se eliminan por colisionar con una traducción.
+- Fechas, hora de vista previa, días cortos/completos, VoiceOver y todo el copy 1.1 tienen paridad inglés/español. Cambiar el idioma vuelve a generar la cola local autorizada sin pedir permiso otra vez.
+- `CFBundleLocalizations` declara `en` y `es`; tests, validadores, workflow y checklist QA cubren ambos idiomas.
+- Validación Windows actual: exportaciones reproducibles, 180+180 frases, paridad de IDs/categorías y claves UI, plist/configuración, `git diff --check` y ausencia de diff Android. Falta ejecutar XCTest/build en macOS y generar la IPA siguiente.
+
 ## Primer bloqueo material de App Store
 
-El nombre público **Warm Words** y el AppIcon **C — Protected thought** ya están cerrados localmente. La primera puerta material restante es confirmar por escrito la autoría/licencia y el permiso comercial de las 180 frases inglesas y españolas y de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
+El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la decisión de usar un catálogo editorial propio ya están cerrados localmente. La primera puerta material restante es conservar la trazabilidad editorial del catálogo y confirmar por escrito la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
 
 ## Puertas restantes
 

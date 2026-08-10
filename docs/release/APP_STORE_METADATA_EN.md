@@ -24,6 +24,8 @@ Make room for one thoughtful line each day, save the words that stay with you, a
 
 Start the day with a thoughtful quote chosen from a calm, focused collection.
 
+Use Warm Words in English or Spanish and switch languages at any time in Settings.
+
 Explore 180 lines across motivation, focus, calm, discipline, self-worth, gratitude, courage, habits, creativity, resilience, relationships, and energy.
 
 Use the app to:
@@ -36,6 +38,7 @@ Use the app to:
 - Create personal categories for your own quotes.
 - Set a gentle local reminder for the time and weekdays you choose.
 - Choose which categories can appear in reminders.
+- Switch between the complete English and Spanish catalogs without losing favorites or preferences.
 
 No account is required. The app works without a service connection, and its preferences and personal quotes remain on the device.
 
@@ -45,7 +48,7 @@ No account is required. The app works without a service connection, and its pref
 
 ### App Review notes
 
-The app requires no account and contains no purchases. All catalog content is bundled with the app. Favorites, reminder preferences, selected weekdays, personal-category names, and user-created quotes are stored locally. Notifications are scheduled locally and permission is requested only after the user confirms a reminder or sends a test notification. The share button opens the standard iOS share sheet, including for personal quotes.
+The app requires no account and contains no purchases. Complete English and Spanish catalogs are bundled with the app, and the user can switch language in Settings. Favorites, language choice, reminder preferences, selected weekdays, personal-category names, and user-created quotes are stored locally. Notifications are scheduled locally and permission is requested only after the user confirms a reminder or sends a test notification. The share button opens the standard iOS share sheet, including for personal quotes.
 
 ## Privacy answers — provisional until archive inspection
 
@@ -65,7 +68,7 @@ Capture the existing English UI only after the signed build with `Warm Words` an
 4. Personal quote — one valid English user-created quote in the Personal category.
 5. Reminder settings — time picker and selected delivery categories.
 
-Do not add marketing frames, new visual layouts, or Spanish screenshots for 1.0.
+Do not add marketing frames or new visual layouts. Spanish screenshots require a separate, fully verified Spanish App Store localization; they are not part of this English metadata draft.
 
 ## Owner/App Store Connect fields still required
 

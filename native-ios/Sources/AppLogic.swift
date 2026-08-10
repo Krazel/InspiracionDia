@@ -1,5 +1,24 @@
 import Foundation
 
+enum AppLanguage: String, CaseIterable, Hashable {
+  case en
+  case es
+
+  var localeIdentifier: String {
+    switch self {
+    case .en: return "en_US"
+    case .es: return "es_ES"
+    }
+  }
+
+  static func resolved(savedValue: String?, preferredLanguages: [String]) -> AppLanguage {
+    if let savedValue, let saved = AppLanguage(rawValue: savedValue) {
+      return saved
+    }
+    return preferredLanguages.first?.lowercased().hasPrefix("es") == true ? .es : .en
+  }
+}
+
 enum DailyQuoteSelector {
   private static let epochComponents = DateComponents(
     calendar: Calendar(identifier: .gregorian),
@@ -112,27 +131,41 @@ enum ReminderWeekday: Int, Codable, CaseIterable, Hashable {
     self.init(rawValue: calendarWeekday == 1 ? 7 : calendarWeekday - 1)
   }
 
-  var shortLabel: String {
-    switch self {
-    case .monday: return "M"
-    case .tuesday: return "T"
-    case .wednesday: return "W"
-    case .thursday: return "T"
-    case .friday: return "F"
-    case .saturday: return "S"
-    case .sunday: return "S"
+  func shortLabel(language: AppLanguage) -> String {
+    switch (language, self) {
+    case (.en, .monday): return "M"
+    case (.en, .tuesday): return "T"
+    case (.en, .wednesday): return "W"
+    case (.en, .thursday): return "T"
+    case (.en, .friday): return "F"
+    case (.en, .saturday): return "S"
+    case (.en, .sunday): return "S"
+    case (.es, .monday): return "L"
+    case (.es, .tuesday): return "M"
+    case (.es, .wednesday): return "X"
+    case (.es, .thursday): return "J"
+    case (.es, .friday): return "V"
+    case (.es, .saturday): return "S"
+    case (.es, .sunday): return "D"
     }
   }
 
-  var fullLabel: String {
-    switch self {
-    case .monday: return "Monday"
-    case .tuesday: return "Tuesday"
-    case .wednesday: return "Wednesday"
-    case .thursday: return "Thursday"
-    case .friday: return "Friday"
-    case .saturday: return "Saturday"
-    case .sunday: return "Sunday"
+  func fullLabel(language: AppLanguage) -> String {
+    switch (language, self) {
+    case (.en, .monday): return "Monday"
+    case (.en, .tuesday): return "Tuesday"
+    case (.en, .wednesday): return "Wednesday"
+    case (.en, .thursday): return "Thursday"
+    case (.en, .friday): return "Friday"
+    case (.en, .saturday): return "Saturday"
+    case (.en, .sunday): return "Sunday"
+    case (.es, .monday): return "Lunes"
+    case (.es, .tuesday): return "Martes"
+    case (.es, .wednesday): return "Miércoles"
+    case (.es, .thursday): return "Jueves"
+    case (.es, .friday): return "Viernes"
+    case (.es, .saturday): return "Sábado"
+    case (.es, .sunday): return "Domingo"
     }
   }
 }

@@ -91,6 +91,12 @@ jobs:
             echo "Unexpected public app name: display=$DISPLAY_NAME bundle=$BUNDLE_NAME"
             exit 1
           fi
+          LOCALIZATION_EN="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleLocalizations:0' "$APP_PATH/Info.plist")"
+          LOCALIZATION_ES="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleLocalizations:1' "$APP_PATH/Info.plist")"
+          if [ "$LOCALIZATION_EN" != "en" ] || [ "$LOCALIZATION_ES" != "es" ]; then
+            echo "Expected English and Spanish bundle localizations"
+            exit 1
+          fi
           ICON_NAME="$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIcons:CFBundlePrimaryIcon:CFBundleIconName' "$APP_PATH/Info.plist")"
           if [ "$ICON_NAME" != "AppIcon" ]; then
             echo "Unexpected primary AppIcon name: $ICON_NAME"

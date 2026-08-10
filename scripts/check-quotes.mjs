@@ -9,6 +9,27 @@ const CATEGORIES = readExportedArray(path.join(root, "data", "categories.js"), "
 
 const categoryIds = new Set(CATEGORIES.map((category) => category.id));
 const errors = [];
+const expectedSpanishCategoryNames = new Map([
+  ["animo", "Ánimo"],
+  ["foco", "Foco"],
+  ["calma", "Calma"],
+  ["disciplina", "Disciplina"],
+  ["autoestima", "Autoestima"],
+  ["gratitud", "Gratitud"],
+  ["valentia", "Valentía"],
+  ["habitos", "Hábitos"],
+  ["creatividad", "Creatividad"],
+  ["resiliencia", "Resiliencia"],
+  ["relaciones", "Relaciones"],
+  ["energia", "Energía"],
+]);
+
+for (const [id, expectedName] of expectedSpanishCategoryNames) {
+  const category = CATEGORIES.find((item) => item.id === id);
+  if (category?.name !== expectedName) {
+    errors.push(`Spanish category name mismatch for ${id}: ${category?.name ?? "missing"}`);
+  }
+}
 
 validateQuotes("Spanish", spanishQuotes);
 validateQuotes("English", englishQuotes);

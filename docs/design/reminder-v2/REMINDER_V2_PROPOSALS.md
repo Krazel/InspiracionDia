@@ -3,7 +3,7 @@
 Date: 2026-08-09
 Status: **complete set approved for implementation**
 
-These complete-screen proposals were generated with the built-in image-generation tool. They define one coherent direction using the existing ivory, cream, antique-gold and ink visual language. They are references only and are not runtime assets.
+These complete-screen proposals were generated with the built-in image-generation tool. They define one coherent direction using the existing ivory, cream, antique-gold and ink visual language. They are references only and are not runtime assets. Their English copy is historical; the approved runtime now applies the same layout in English and Spanish.
 
 ## Recommended set
 

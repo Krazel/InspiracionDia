@@ -27,6 +27,10 @@ Check notification permission in iOS Settings and open the app again so it can r
 
 They remain locally on the device. The app does not use an account or cloud synchronization.
 
+### How do I change the language?
+
+Open Settings and choose English or Español. The interface, built-in quote catalog, dates, weekdays, and future reminders change together. Favorites and personal quotes remain unchanged.
+
 ### Can I create my own category?
 
 Yes. Open New personal quote, choose Create a new category, enter a name, and add the first quote. The category remains on this device and is removed automatically if its last quote is deleted.

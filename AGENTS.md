@@ -51,9 +51,10 @@ El repositorio real prevalece sobre una fotografía documental antigua. Si cambi
 
 - Trabajar **únicamente en iOS** hasta nueva decisión expresa del propietario.
 - No desarrollar, mantener, corregir, compilar ni buscar paridad con Android. La carpeta `android/` y la documentación antigua de paridad se conservan sin convertirlas en alcance activo.
-- El lanzamiento 1.0 es provisionalmente **solo en inglés**: producto, interfaz pública, contenido, capturas y ficha de App Store.
-- Conservar el español ya existente sin borrarlo ni dedicar trabajo a mantenerlo. No exponerlo como alcance público de 1.0 salvo excepción explícita registrada en `DECISIONS.md`.
-- No añadir funciones, idiomas, dependencias de producción ni plataformas mientras queden bloqueos de cierre 1.0.
+- El lanzamiento 1.0 de la app es **bilingüe en inglés y español** por decisión expresa del propietario: interfaz, catálogo incluido, fechas, días y notificaciones cambian juntos desde Settings.
+- En una instalación limpia se usa español si el idioma preferido del iPhone es español; en los demás casos se usa inglés. La elección manual se conserva. La marca visible sigue siendo **Warm Words** en ambos idiomas.
+- La ficha principal de App Store puede seguir en inglés hasta preparar una localización española completa; no declarar capturas o metadata españolas terminadas hasta verificarlas.
+- No añadir más idiomas, dependencias de producción ni plataformas mientras queden bloqueos de cierre 1.0.
 - Conservar la experiencia visual actual para el cierre. Ajustes de accesibilidad o cumplimiento pueden hacerse sin abrir un rediseño.
 
 ## Regla visual-first
@@ -92,7 +93,7 @@ El repositorio real prevalece sobre una fotografía documental antigua. Si cambi
 No declarar candidato 1.0 hasta que:
 
 - las decisiones críticas pendientes estén resueltas;
-- el clean install y todo el producto público estén cerrados en inglés;
+- el clean install, el cambio persistente y todo el producto público estén cerrados en inglés y español;
 - la notificación cumpla la promesa aprobada;
 - AppIcon y privacy manifest estén integrados;
 - accesibilidad y funciones principales estén probadas en dispositivo;

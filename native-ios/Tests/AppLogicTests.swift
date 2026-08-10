@@ -8,6 +8,32 @@ final class AppLogicTests: XCTestCase {
     return calendar
   }
 
+  func testLanguageUsesSavedChoiceBeforeDeviceLanguage() {
+    XCTAssertEqual(
+      AppLanguage.resolved(savedValue: "es", preferredLanguages: ["en-US"]),
+      .es
+    )
+    XCTAssertEqual(
+      AppLanguage.resolved(savedValue: "en", preferredLanguages: ["es-ES"]),
+      .en
+    )
+  }
+
+  func testLanguageDefaultsToSpanishForSpanishDeviceVariants() {
+    XCTAssertEqual(AppLanguage.resolved(savedValue: nil, preferredLanguages: ["es-ES"]), .es)
+    XCTAssertEqual(AppLanguage.resolved(savedValue: nil, preferredLanguages: ["es-MX"]), .es)
+    XCTAssertEqual(AppLanguage.resolved(savedValue: nil, preferredLanguages: ["en-US"]), .en)
+    XCTAssertEqual(AppLanguage.resolved(savedValue: nil, preferredLanguages: []), .en)
+  }
+
+  func testWeekdayLabelsAreLocalizedWithoutChangingScheduleValues() {
+    XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .en), "M")
+    XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .es), "L")
+    XCTAssertEqual(ReminderWeekday.wednesday.shortLabel(language: .es), "X")
+    XCTAssertEqual(ReminderWeekday.saturday.fullLabel(language: .es), "Sábado")
+    XCTAssertEqual(ReminderWeekday.saturday.rawValue, 6)
+  }
+
   func testDailyQuoteAdvancesAcrossYearBoundary() throws {
     let first = try XCTUnwrap(calendar.date(from: DateComponents(year: 2025, month: 12, day: 31)))
     let second = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 1, day: 1)))

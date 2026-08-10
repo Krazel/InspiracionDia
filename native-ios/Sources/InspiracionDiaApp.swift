@@ -53,13 +53,14 @@ struct InspiracionDiaApp: App {
     WindowGroup {
       RootView()
         .environmentObject(store)
-        .environment(\.locale, Locale(identifier: "en_US"))
+        .environment(\.locale, Locale(identifier: store.language.localeIdentifier))
     }
   }
 }
 
 @MainActor
 final class AppStore: ObservableObject {
+  @Published private(set) var language: AppLanguage
   @Published var content = ContentBundle(categories: [], quotes: [])
   @Published var selectedCategory = "all"
   @Published var favoriteIds: Set<String> = []
@@ -75,6 +76,7 @@ final class AppStore: ObservableObject {
   @Published var notificationPermissionAlertPending = false
   @Published private(set) var currentDate = Date()
 
+  private static let languageKey = "language"
   private let favoritesKey = "favoriteIds"
   private let selectedCategoryKey = "selectedCategory"
   private let customQuotesKey = "customQuotes"
@@ -93,6 +95,10 @@ final class AppStore: ObservableObject {
   private var reminderSchedulingTask: Task<Void, Never>?
 
   init() {
+    language = AppLanguage.resolved(
+      savedValue: UserDefaults.standard.string(forKey: Self.languageKey),
+      preferredLanguages: Locale.preferredLanguages
+    )
     loadContent()
     loadSettings()
     refreshReminderIfEnabled()
@@ -150,22 +156,41 @@ final class AppStore: ObservableObject {
   }
 
   func t(_ key: String) -> String {
-    Strings.value(key, language: "en")
+    Strings.value(key, language: language)
   }
 
   func category(for id: String) -> Category {
     allCategories.first(where: { $0.id == id }) ??
       Category(
         id: "animo",
-        name: "Motivation",
+        name: Strings.categoryName(for: "animo", language: language) ?? t("motivation"),
         color: "#7A5A24",
         softColor: "#F7F1E8",
-        description: "To help you take the next step."
+        description: t("fallbackCategoryDescription")
       )
   }
 
   func localizedCategoryName(_ category: Category) -> String {
-    Strings.categoryNamesEN[category.id] ?? category.name
+    category.name
+  }
+
+  func setLanguage(_ newLanguage: AppLanguage) {
+    guard language != newLanguage else { return }
+    language = newLanguage
+    UserDefaults.standard.set(newLanguage.rawValue, forKey: Self.languageKey)
+    notificationStatus = ""
+    loadContent()
+    customCategories = customCategories.map { category in
+      Category(
+        id: category.id,
+        name: category.name,
+        color: category.color,
+        softColor: category.softColor,
+        description: t("personalCategoryDescription")
+      )
+    }
+    persistCustomCategories()
+    refreshReminderIfEnabled()
   }
 
   func toggleFavorite(_ quote: Quote) {
@@ -229,9 +254,7 @@ final class AppStore: ObservableObject {
 
   private func makeCustomCategory(name: String) -> Category? {
     guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return nil }
-    let reservedNames = allCategories.map { localizedCategoryName($0) } + [
-      t("all"), t("favorites"), t("manualCards")
-    ]
+    let reservedNames = customCategories.map(\.name) + Strings.reservedCategoryNames
     guard let normalizedName = CustomCategoryValidator.normalizedName(
       name,
       existingNames: reservedNames
@@ -250,9 +273,7 @@ final class AppStore: ObservableObject {
 
   func canCreateCustomCategory(named name: String) -> Bool {
     guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return false }
-    let reservedNames = allCategories.map { localizedCategoryName($0) } + [
-      t("all"), t("favorites"), t("manualCards")
-    ]
+    let reservedNames = customCategories.map(\.name) + Strings.reservedCategoryNames
     return CustomCategoryValidator.normalizedName(name, existingNames: reservedNames) != nil
   }
 
@@ -556,20 +577,25 @@ final class AppStore: ObservableObject {
   }
 
   private func loadContent() {
-    guard
-      let url = Bundle.main.url(forResource: "content-en", withExtension: "json"),
-      let data = try? Data(contentsOf: url),
-      let decoded = try? JSONDecoder().decode(ContentBundle.self, from: data)
-    else {
-      content = ContentBundle(categories: [], quotes: [])
+    let preferredResource = language == .es ? "content" : "content-en"
+    let fallbackResource = language == .es ? "content-en" : "content"
+    for resourceName in [preferredResource, fallbackResource] {
+      guard
+        let url = Bundle.main.url(forResource: resourceName, withExtension: "json"),
+        let data = try? Data(contentsOf: url),
+        let decoded = try? JSONDecoder().decode(ContentBundle.self, from: data)
+      else {
+        continue
+      }
+      content = decoded
       return
     }
-    content = decoded
   }
 
   private func loadSettings() {
     let defaults = UserDefaults.standard
     let legacyKeys = [
+      Self.languageKey,
       favoritesKey,
       selectedCategoryKey,
       customQuotesKey,
@@ -580,7 +606,7 @@ final class AppStore: ObservableObject {
       legacyReminderTimeKey
     ]
     let wasExistingInstallation = legacyKeys.contains { defaults.object(forKey: $0) != nil }
-    var existingCategoryNames = content.categories.map { localizedCategoryName($0) }
+    var existingCategoryNames: [String] = []
     if let data = defaults.data(forKey: customCategoriesKey),
        let decoded = try? JSONDecoder().decode([Category].self, from: data) {
       var seenIds = Set<String>()
@@ -846,7 +872,7 @@ struct TodayView: View {
             .accessibilityLabel(store.t("settings"))
           }
 
-          Text(store.currentDate.formatted(AppFormatters.day))
+          Text(store.currentDate.formatted(AppFormatters.day(language: store.language)))
             .font(.system(size: 15))
             .foregroundStyle(Premium.gold)
 
@@ -1010,6 +1036,25 @@ struct SettingsView: View {
             Spacer()
             Color.clear.frame(width: 44, height: 44)
           }
+
+          VStack(alignment: .leading, spacing: 12) {
+            Text(store.t("language"))
+              .font(Premium.sectionFont)
+              .foregroundStyle(Premium.ink)
+            Picker(
+              store.t("language"),
+              selection: Binding(
+                get: { store.language },
+                set: { store.setLanguage($0) }
+              )
+            ) {
+              Text(store.t("english")).tag(AppLanguage.en)
+              Text(store.t("spanish")).tag(AppLanguage.es)
+            }
+            .pickerStyle(.segmented)
+          }
+          .padding(18)
+          .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 24))
 
           VStack(alignment: .leading, spacing: 14) {
             HStack {
@@ -1366,12 +1411,13 @@ struct CategoryTile: View {
 }
 
 struct WeekdayPicker: View {
+  @EnvironmentObject private var store: AppStore
   @Binding var selection: Set<ReminderWeekday>
   let helper: String
 
   var body: some View {
     VStack(alignment: .leading, spacing: 10) {
-      Text("Days")
+      Text(store.t("days"))
         .font(.headline)
       Text(helper)
         .font(.footnote)
@@ -1400,15 +1446,15 @@ struct WeekdayPicker: View {
         selection.insert(day)
       }
     } label: {
-      Text(day.shortLabel)
+      Text(day.shortLabel(language: store.language))
         .font(.subheadline.weight(.semibold))
         .frame(width: 44, height: 44)
         .background(selected ? Premium.gold : .white.opacity(0.72), in: Circle())
         .foregroundStyle(selected ? .white : Premium.ink)
         .overlay(Circle().stroke(Premium.gold.opacity(0.55), lineWidth: 1))
     }
-    .accessibilityLabel(day.fullLabel)
-    .accessibilityValue(selected ? "Selected" : "Not selected")
+    .accessibilityLabel(day.fullLabel(language: store.language))
+    .accessibilityValue(store.t(selected ? "selected" : "notSelected"))
     .accessibilityAddTraits(selected ? .isSelected : [])
   }
 }
@@ -1521,7 +1567,7 @@ struct NotificationPreview: View {
             .lineLimit(2)
         }
         Spacer()
-        Text(store.reminderDate.formatted(date: .omitted, time: .shortened))
+        Text(store.reminderDate.formatted(AppFormatters.time(language: store.language)))
           .font(.caption)
           .foregroundStyle(.secondary)
       }
@@ -1659,19 +1705,30 @@ enum Premium {
 }
 
 enum AppFormatters {
-  static let day = Date.FormatStyle()
-    .weekday(.wide)
-    .day()
-    .month(.wide)
-    .locale(Locale(identifier: "en_US"))
+  static func day(language: AppLanguage) -> Date.FormatStyle {
+    Date.FormatStyle()
+      .weekday(.wide)
+      .day()
+      .month(.wide)
+      .locale(Locale(identifier: language.localeIdentifier))
+  }
+
+  static func time(language: AppLanguage) -> Date.FormatStyle {
+    Date.FormatStyle()
+      .hour()
+      .minute()
+      .locale(Locale(identifier: language.localeIdentifier))
+  }
 }
 
 enum Strings {
-  static func value(_ key: String, language: String) -> String {
-    if language == "en" {
+  static func value(_ key: String, language: AppLanguage) -> String {
+    switch language {
+    case .en:
       return en[key] ?? es[key] ?? key
+    case .es:
+      return es[key] ?? en[key] ?? key
     }
-    return es[key] ?? key
   }
 
   static let categoryNamesEN = [
@@ -1689,42 +1746,107 @@ enum Strings {
     "energia": "Energy"
   ]
 
+  static let categoryNamesES = [
+    "animo": "Ánimo",
+    "foco": "Enfoque",
+    "calma": "Calma",
+    "disciplina": "Disciplina",
+    "autoestima": "Autoestima",
+    "gratitud": "Gratitud",
+    "valentia": "Valentía",
+    "habitos": "Hábitos",
+    "creatividad": "Creatividad",
+    "resiliencia": "Resiliencia",
+    "relaciones": "Relaciones",
+    "energia": "Energía"
+  ]
+
+  static func categoryName(for id: String, language: AppLanguage) -> String? {
+    switch language {
+    case .en: return categoryNamesEN[id]
+    case .es: return categoryNamesES[id]
+    }
+  }
+
+  static var reservedCategoryNames: [String] {
+    Array(categoryNamesEN.values) + Array(categoryNamesES.values) + [
+      "All", "Todas", "Favorites", "Favoritos", "Personal", "Personales"
+    ]
+  }
+
   private static let es = [
     "today": "Hoy",
-    "categories": "Categorias",
+    "categories": "Categorías",
     "favorites": "Favoritos",
-    "premiumConcept": "Silencio premium",
-    "categoriesSubtitle": "Selecciona cuidadosamente lo que quieres recibir.",
-    "favoritesSubtitle": "Tu coleccion personal de inspiracion.",
-    "emptyFavorites": "Guarda frases para verlas aqui.",
+    "premiumConcept": "Un momento de calma",
+    "categoriesSubtitle": "Explora frases por categoría.",
+    "favoritesSubtitle": "Las palabras que quieres conservar.",
+    "emptyFavorites": "Guarda frases para verlas aquí.",
     "all": "Todas",
-    "manualCards": "Manuales",
+    "manualCards": "Personales",
     "settings": "Ajustes",
     "closeSettings": "Cerrar ajustes",
-    "dailyNotification": "Notificacion diaria",
-    "receiveDaily": "Recibe tu dosis diaria de inspiracion con una notificacion.",
+    "welcomeToWarmWords": "BIENVENIDO A",
+    "onboardingTitle": "¿Cuándo quieres recibir tu frase?",
+    "onboardingBody": "Elige una hora y los días en los que quieres recibir un recordatorio.",
+    "everyDayRecommended": "Recomendamos todos los días",
+    "setReminder": "Activar recordatorio",
+    "notNow": "Ahora no",
+    "reminder": "Recordatorio",
+    "reminders": "Recordatorios",
+    "receiveChosenDays": "Recibe una frase los días que elijas.",
+    "dailyNotification": "Notificación diaria",
+    "receiveDaily": "Recibe una frase inspiradora cada día.",
     "hour": "Hora",
+    "days": "Días",
     "language": "Idioma",
+    "english": "Inglés",
+    "spanish": "Español",
     "saveReminder": "Guardar recordatorio",
-    "testNotification": "Probar notificacion",
-    "notificationPreview": "Vista previa de la notificacion",
+    "testNotification": "Probar notificación",
+    "notificationPreview": "Vista previa",
     "now": "ahora",
-    "deliveryTypes": "Tipos de tarjetas",
-    "deliveryHelp": "Si no eliges ninguna, pueden llegar todas las categorias.",
-    "newManualCard": "Nueva tarjeta manual",
-    "category": "Categoria",
-    "addCard": "Anadir tarjeta",
+    "deliveryTypes": "Categorías de frases",
+    "deliveryHelp": "Si no eliges ninguna, recibirás frases de todas las categorías.",
+    "allCategories": "Todas las categorías",
+    "allCategoriesRecommended": "Recomendamos todas las categorías.",
+    "chooseOneCategory": "Elige al menos una categoría.",
+    "newManualCard": "Nueva frase personal",
+    "personalCategoryDescription": "Una categoría para tus frases personales.",
+    "category": "Categoría",
+    "createNewCategory": "Crear una categoría…",
+    "categoryName": "Nombre de la categoría",
+    "categoryNameExample": "p. ej. Enfoque matinal",
+    "categoryNameHelp": "Hasta 24 caracteres.",
+    "categoryNameInvalid": "Elige otro nombre para la categoría.",
+    "addCard": "Añadir frase",
+    "cardText": "Texto de la frase",
+    "quoteTooLong": "Limita tu frase a 240 caracteres.",
+    "close": "Cerrar",
+    "delete": "Eliminar",
+    "deleteCardTitle": "¿Eliminar esta frase?",
+    "deleteCardMessage": "Esto elimina la frase y su estado de guardada de este dispositivo.",
+    "deleteLastQuoteMessage": "También elimina su categoría personal porque es la última frase que contiene.",
+    "cancel": "Cancelar",
+    "selected": "Seleccionado",
+    "notSelected": "No seleccionado",
     "saved": "Guardada",
     "save": "Guardar",
     "share": "Compartir",
-    "notificationTitle": "Tu inspiracion de hoy",
+    "motivation": "Ánimo",
+    "fallbackCategoryDescription": "Para ayudarte a dar el siguiente paso.",
+    "notificationTitle": "Tu frase del día",
     "fallbackQuote": "Hoy empieza con una frase sencilla y un paso posible.",
-    "notificationsOff": "Notificaciones desactivadas.",
-    "testSent": "Notificacion de prueba enviada.",
+    "notificationsOff": "Recordatorios desactivados.",
+    "testSent": "Notificación de prueba enviada.",
     "testFailed": "No se pudo enviar la prueba.",
     "reminderSaved": "Recordatorio guardado.",
     "reminderFailed": "No se pudo guardar el recordatorio.",
-    "permissionDenied": "Permiso de notificaciones denegado."
+    "permissionDenied": "El acceso a notificaciones está desactivado.",
+    "notificationsAreOffTitle": "Las notificaciones están desactivadas",
+    "notificationsAreOffBody": "Puedes activarlas más tarde en Ajustes.",
+    "continue": "Continuar",
+    "openIOSSettings": "Abrir Ajustes de iOS"
   ]
 
   private static let en = [
@@ -1751,7 +1873,10 @@ enum Strings {
     "dailyNotification": "Daily notification",
     "receiveDaily": "Receive one inspiring quote each day.",
     "hour": "Time",
+    "days": "Days",
     "language": "Language",
+    "english": "English",
+    "spanish": "Spanish",
     "saveReminder": "Save reminder",
     "testNotification": "Test notification",
     "notificationPreview": "Preview",
@@ -1759,7 +1884,7 @@ enum Strings {
     "deliveryTypes": "Quote categories",
     "deliveryHelp": "Leave all unselected to receive quotes from every category.",
     "allCategories": "All categories",
-    "allCategoriesRecommended": "All categories is recommended.",
+    "allCategoriesRecommended": "All categories are recommended.",
     "chooseOneCategory": "Choose at least one category.",
     "newManualCard": "New personal quote",
     "personalCategoryDescription": "A category for your personal quotes.",
@@ -1783,6 +1908,8 @@ enum Strings {
     "saved": "Saved",
     "save": "Save",
     "share": "Share",
+    "motivation": "Motivation",
+    "fallbackCategoryDescription": "To help you take the next step.",
     "notificationTitle": "Your daily quote",
     "fallbackQuote": "Today begins with one simple phrase and one possible step.",
     "notificationsOff": "Reminders turned off.",

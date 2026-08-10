@@ -1,6 +1,6 @@
 # Decisiones de Inspiración Día
 
-Actualizado: **2026-08-09**
+Actualizado: **2026-08-10**
 
 Este archivo separa decisiones aprobadas de decisiones materiales todavía pendientes. Las elecciones reversibles y técnicas corresponden al cerebro de producto; solo una decisión material se eleva cada vez, con una recomendación única.
 
@@ -12,10 +12,11 @@ Este archivo separa decisiones aprobadas de decisiones materiales todavía pendi
 - Android no se desarrolla, mantiene, corrige, compila ni sincroniza hasta petición expresa futura.
 - La carpeta Android se preserva como legado.
 
-### DEC-002 — Lanzamiento 1.0 provisionalmente solo en inglés
+### DEC-002 — Lanzamiento 1.0 provisionalmente solo en inglés (sustituida)
 
 - Interfaz pública, contenido, capturas y ficha de App Store deben estar en inglés.
 - El español existente se conserva sin mantenimiento y no se expone en 1.0.
+- Esta decisión histórica queda sustituida por `DEC-022` tras la petición expresa de una app bilingüe.
 
 ### DEC-003 — Cierre sin rediseño
 
@@ -63,7 +64,7 @@ Este archivo separa decisiones aprobadas de decisiones materiales todavía pendi
 Resuelve las antiguas PEND-002 a PEND-007:
 
 - Catálogo inglés completo de 180 frases, con IDs idénticos al español preservado.
-- Inglés fijo y selector español oculto; no se abre una excepción bilingüe.
+- El antiguo cierre en inglés fijo queda sustituido por el alcance bilingüe de `DEC-022`.
 - Notificación local con una frase distinta por fecha y cola conservadora de 60 días.
 - Compartir texto plano; no tarjeta-imagen.
 - Tarjetas propias con crear, validar y borrar; edición pospuesta.
@@ -152,11 +153,25 @@ Resuelve la antigua PEND-013:
 - Para Warm Words, las rutas públicas recomendadas son `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` dentro del sitio GitHub Pages compartido; siguen pendientes hasta que existan y se verifiquen.
 - La skill estandariza preparación y verificación, pero no autoriza acciones rojas. Crear productos, usar secretos, aceptar contratos, subir builds, enviar IAP/App Review o publicar requiere autorización expresa del propietario en ese momento.
 
+### DEC-022 — Warm Words 1.0 es bilingüe en inglés y español
+
+- El propietario pidió expresamente el 2026-08-10 conservar las frases propias y permitir cambiar el idioma desde Settings; esta decisión sustituye el alcance solo inglés de `DEC-002` y la parte correspondiente de `DEC-010`.
+- Una instalación limpia usa español cuando el idioma preferido del iPhone es español y usa inglés en los demás casos. La elección manual `English / Español` se aplica al instante y persiste.
+- El cambio de idioma afecta interfaz, catálogo incluido, categorías, fechas, días, accesibilidad y las próximas notificaciones. Los 180 pares conservan IDs y orden, por lo que favoritos, selección y frase diaria sobreviven al cambio.
+- Las frases y categorías creadas por el usuario se conservan literalmente; no se traducen ni se eliminan al cambiar de idioma.
+- **Warm Words** permanece como marca visible en ambos idiomas. La ficha principal de App Store puede seguir en inglés, pero el binario declara soporte para `en` y `es`; una localización española de tienda y sus capturas se prepara únicamente después del QA bilingüe.
+
+### DEC-023 — El catálogo usa frases propias, no citas externas
+
+- Tras revisar opciones de fuentes externas, el propietario decidió el 2026-08-10 usar frases propias de Warm Words.
+- Los 180 pares inglés/español actuales se tratan como catálogo editorial original del proyecto, sin autores famosos, atribuciones ni scraping de sitios de citas.
+- Las futuras correcciones o ampliaciones deben conservar ese criterio, revisión humana y paridad de IDs; no se incorporan citas existentes de terceros sin procedencia y licencia comprobables.
+
 ## Primera decisión pendiente del propietario
 
-### PEND-009 — Derechos de contenido y assets
+### PEND-009 — Trazabilidad editorial y derechos de assets
 
-El propietario debe confirmar autoría/licencia y permiso comercial de las 180 frases inglesas y españolas, `premium-mountains.png` y `premium-stones.png`.
+La dirección de producto de usar frases propias ya está aprobada. Antes de App Review debe conservarse una nota de procedencia editorial del catálogo y confirmarse la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`.
 
 ### PEND-010 — Privacidad y soporte públicos
 

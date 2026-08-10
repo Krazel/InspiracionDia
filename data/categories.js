@@ -8,7 +8,7 @@ export const CATEGORIES = [
   },
   {
     id: "animo",
-    name: "Animo",
+    name: "Ánimo",
     color: "#F08A24",
     softColor: "#FFF0D9",
     description: "Para levantar el paso."
@@ -50,14 +50,14 @@ export const CATEGORIES = [
   },
   {
     id: "valentia",
-    name: "Valentia",
+    name: "Valentía",
     color: "#D94C45",
     softColor: "#FFE3E1",
     description: "Para cruzar el miedo."
   },
   {
     id: "habitos",
-    name: "Habitos",
+    name: "Hábitos",
     color: "#5D8C3B",
     softColor: "#E7F3DD",
     description: "Para repetir lo que te hace bien."
@@ -81,11 +81,11 @@ export const CATEGORIES = [
     name: "Relaciones",
     color: "#C0643B",
     softColor: "#FBE7DD",
-    description: "Para cuidar los vinculos."
+    description: "Para cuidar los vínculos."
   },
   {
     id: "energia",
-    name: "Energia",
+    name: "Energía",
     color: "#008E8E",
     softColor: "#DDF5F5",
     description: "Para moverte sin quemarte."

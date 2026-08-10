@@ -47,12 +47,20 @@ assert.deepEqual(
   "English and Spanish category IDs must match in order",
 );
 
-assert.match(swift, /url\(forResource: "content-en", withExtension: "json"\)/);
+assert.match(swift, /let preferredResource = language == \.es \? "content" : "content-en"/);
+assert.match(swift, /let fallbackResource = language == \.es \? "content-en" : "content"/);
 assert.match(swift, /static let name = "Warm Words"/);
 assert.doesNotMatch(swift, /static let name = "Inspiracion Dia"/);
-assert.match(swift, /Strings\.value\(key, language: "en"\)/);
-assert.match(swift, /Locale\(identifier: "en_US"\)/);
-assert.doesNotMatch(swift, /store\.language|setLanguage\(|Picker\(store\.t\("language"\)/);
+assert.match(swift, /@Published private\(set\) var language: AppLanguage/);
+assert.match(swift, /AppLanguage\.resolved\(/);
+assert.match(swift, /Strings\.value\(key, language: language\)/);
+assert.match(swift, /\.environment\(\\\.locale, Locale\(identifier: store\.language\.localeIdentifier\)\)/);
+assert.match(swift, /func setLanguage\(_ newLanguage: AppLanguage\)/);
+assert.match(swift, /UserDefaults\.standard\.set\(newLanguage\.rawValue, forKey: Self\.languageKey\)/);
+assert.match(swift, /Picker\([\s\S]{0,180}store\.t\("language"\)/);
+assert.match(swift, /Text\(store\.t\("english"\)\)\.tag\(AppLanguage\.en\)/);
+assert.match(swift, /Text\(store\.t\("spanish"\)\)\.tag\(AppLanguage\.es\)/);
+assert.match(swift, /refreshReminderIfEnabled\(\)/);
 assert.match(swift, /scheduledReminderCount = 60/);
 assert.match(swift, /UNCalendarNotificationTrigger\(dateMatching: date, repeats: false\)/);
 assert.doesNotMatch(swift, /UNCalendarNotificationTrigger\([^\n]*repeats: true/);
@@ -86,6 +94,10 @@ assert.doesNotMatch(swift, /TextField\("07:30"/);
 assert.match(logic, /enum DailyQuoteSelector/);
 assert.match(logic, /enum ReminderTimeCodec/);
 assert.match(logic, /enum ReminderWeekday/);
+assert.match(logic, /enum AppLanguage: String, CaseIterable, Hashable/);
+assert.match(logic, /preferredLanguages\.first\?\.lowercased\(\)\.hasPrefix\("es"\)/);
+assert.match(logic, /func shortLabel\(language: AppLanguage\)/);
+assert.match(logic, /func fullLabel\(language: AppLanguage\)/);
 assert.match(logic, /weekdays: Set<ReminderWeekday>/);
 assert.match(logic, /enum CustomCategoryValidator/);
 assert.match(logic, /enum CustomQuoteValidator[\s\S]*maximumLength = 240/);
@@ -94,6 +106,7 @@ assert.match(privacy, /NSPrivacyAccessedAPICategoryUserDefaults/);
 assert.match(privacy, /CA92\.1/);
 assert.match(privacy, /<key>NSPrivacyTracking<\/key>\s*<false\s*\/>/);
 assert.match(info, /<key>CFBundleDevelopmentRegion<\/key>\s*<string>en<\/string>/);
+assert.match(info, /<key>CFBundleLocalizations<\/key>\s*<array>\s*<string>en<\/string>\s*<string>es<\/string>\s*<\/array>/);
 assert.match(info, /<key>CFBundleDisplayName<\/key>\s*<string>Warm Words<\/string>/);
 assert.match(info, /<key>CFBundleName<\/key>\s*<string>Warm Words<\/string>/);
 assert.match(info, /<key>ITSAppUsesNonExemptEncryption<\/key>\s*<false\s*\/>/);
@@ -112,8 +125,16 @@ assert.match(workflow, /runs-on: macos-26/);
 assert.match(workflow, /xcodebuild[\s\S]*test/);
 assert.match(workflow, /content-en\.json PrivacyInfo\.xcprivacy/);
 assert.match(workflow, /DISPLAY_NAME[\s\S]*Warm Words/);
+assert.match(workflow, /CFBundleLocalizations:0[\s\S]*CFBundleLocalizations:1/);
 assert.match(workflow, /CFBundleIconName[\s\S]*AppIcon/);
 assert.match(workflow, /Assets\.car/);
 assert.doesNotMatch(workflow, /contents: write|gh release|Publish latest IPA release/);
+
+const extractStringKeys = (name) => {
+  const block = swift.match(new RegExp(`private static let ${name} = \\[([\\s\\S]*?)\\n  \\]`));
+  assert.ok(block, `Missing ${name} string table`);
+  return [...block[1].matchAll(/^\s*"([^"]+)":/gm)].map((match) => match[1]).sort();
+};
+assert.deepEqual(extractStringKeys("es"), extractStringKeys("en"), "English and Spanish UI keys must match");
 
 console.log("iOS closeout checks passed (signing, Apple QA and store delivery remain external gates).")

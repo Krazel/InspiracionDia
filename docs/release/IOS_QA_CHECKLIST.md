@@ -1,6 +1,6 @@
 # iOS 1.0 candidate verification
 
-This checklist is for the first signed English iPhone build. It does not authorize an upload, TestFlight distribution, App Review submission, or release.
+This checklist is for the first signed bilingual English/Spanish iPhone build. It does not authorize an upload, TestFlight distribution, App Review submission, or release.
 
 ## Build gate — macOS with Xcode 26+
 
@@ -11,7 +11,8 @@ This checklist is for the first signed English iPhone build. It does not authori
 - [ ] Generate the project from `native-ios/project.yml` with XcodeGen.
 - [ ] Run the `InspiracionDia` unit-test scheme on an iPhone simulator.
 - [ ] Build Debug and Release with no warnings that indicate a runtime, concurrency, signing, asset, or privacy problem.
-- [ ] Confirm the built `.app` contains `content-en.json`, legacy `content.json`, `PrivacyInfo.xcprivacy`, both premium backgrounds, and an `Assets.car` compiled from the approved C — Protected thought AppIcon.
+- [ ] Confirm the built `.app` contains the active English `content-en.json` and Spanish `content.json` catalogs, `PrivacyInfo.xcprivacy`, both premium backgrounds, and an `Assets.car` compiled from the approved C — Protected thought AppIcon.
+- [ ] Confirm the built Info.plist declares both `en` and `es` in `CFBundleLocalizations`.
 - [ ] Confirm the built Info.plist has `Warm Words` as both display and bundle name, `AppIcon` as the primary icon name, version 1.0, the intended bundle ID, iPhone-only device family, and the expected encryption declaration.
 - [ ] Archive with automatic signing and the owner's selected team.
 - [ ] Run Analyze and Validate App; record every warning and resolution.
@@ -20,15 +21,20 @@ This checklist is for the first signed English iPhone build. It does not authori
 
 Use at least one device on the minimum supported iOS 16 release and one on the current iOS 26 release when those devices are available.
 
-- [ ] Clean install opens without a crash, blank state, or Spanish public copy.
+- [ ] Clean install on an iPhone whose preferred language is Spanish opens in Spanish; English and other preferred languages open in English.
+- [ ] Clean install in either language opens without a crash, blank state, raw localization key, or mixed-language built-in copy.
 - [ ] Clean install shows one-screen reminder setup with 07:30 and all seven days selected; no notification prompt appears before Set reminder.
 - [ ] Not now completes onboarding, leaves reminders off, and does not ask for permission.
 - [ ] `Warm Words` and the approved C — Protected thought icon are correct on the Home Screen, Spotlight/Search, notifications, share sheet, and system settings.
 - [ ] The icon remains clear at small sizes and in default, dark, tinted, and clear system presentations on iOS 16 and iOS 26 where each presentation is available.
-- [ ] Today shows a valid English date, quote, and category.
+- [ ] Today shows a valid date, quote, and category in the selected language.
 - [ ] Today shows the complete quote card, favorite/share actions, and tab bar without scrolling at the default text size on the smallest supported iPhone.
 - [ ] Tomorrow/date override selects the next deterministic quote and the sequence crosses year end without resetting.
-- [ ] All 12 categories open and together expose 180 unique English quotes.
+- [ ] All 12 categories open and together expose 180 unique quotes in English and 180 in Spanish.
+- [ ] Settings offers `English / Español`; changing it updates the current screen immediately and the choice survives relaunch.
+- [ ] Switching English → Spanish → English preserves the current category, bundled favorites, reminder preferences, personal categories, and personal quotes.
+- [ ] Personal quotes and category names remain exactly as written instead of being machine-translated.
+- [ ] Dates, day chips, VoiceOver weekday names, onboarding, Settings, Categories, Favorites, dialogs, and validation messages follow the selected language.
 - [ ] Save and unsave work from Today, Categories, and Favorites and survive relaunch.
 - [ ] Sharing from Today and a list opens the iOS share sheet with the correct quote and `Warm Words`.
 - [ ] A whitespace-only personal quote cannot be added.
@@ -47,7 +53,7 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Allow: 60 future local occurrences are created without errors and only on the selected weekdays.
 - [ ] Deny: the app stays usable, disables the setting, and shows clear feedback.
 - [ ] Test notification appears while the app is foregrounded and in the background.
-- [ ] Scheduled notification has an English title and the expected quote.
+- [ ] Scheduled and test notifications use the selected language and the matching bundled catalog; switching language replaces the owned pending schedule without a new permission prompt.
 - [ ] Changing time replaces the owned schedule without touching unrelated notifications.
 - [ ] Selecting only Monday creates 60 Monday occurrences; selecting several days never schedules an unselected day.
 - [ ] All seven days are the default and clearly recommended; an enabled reminder cannot be saved with zero days.
@@ -75,6 +81,7 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Required-reason API report contains only declared uses or is reconciled.
 - [ ] Updated age-rating questionnaire, category, copyright, territories, price, DSA status, and manual release mode are complete.
 - [ ] Five English portrait screenshots are captured from the verified signed build at an accepted 6.9-inch size.
+- [ ] If a Spanish App Store localization is enabled, its metadata and screenshots are prepared from the same verified bilingual build; they are not inferred from the English set.
 - [ ] Accessibility Nutrition Label answers reflect the completed device checks.
 - [ ] The owner reviews the final candidate.
 
