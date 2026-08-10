@@ -26,6 +26,14 @@ final class AppLogicTests: XCTestCase {
     XCTAssertEqual(AppLanguage.resolved(savedValue: nil, preferredLanguages: []), .en)
   }
 
+  func testShareLinkRoutingAcceptsOnlyWarmWordsDestinations() {
+    XCTAssertTrue(ShareLinkRoute.handles(ShareLinkRoute.landingPageURL))
+    XCTAssertTrue(ShareLinkRoute.handles(URL(string: "warmwords://open")!))
+    XCTAssertFalse(ShareLinkRoute.handles(URL(string: "https://example.com/warm-words/share/")!))
+    XCTAssertFalse(ShareLinkRoute.handles(URL(string: "https://krazel.github.io/another-app/")!))
+    XCTAssertFalse(ShareLinkRoute.handles(URL(string: "https://krazel.github.io/warm-words/share-elsewhere")!))
+  }
+
   func testWeekdayLabelsAreLocalizedWithoutChangingScheduleValues() {
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .en), "M")
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .es), "L")

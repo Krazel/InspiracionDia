@@ -712,6 +712,10 @@ struct RootView: View {
       store.refreshCurrentDate()
       store.refreshReminderIfEnabled()
     }
+    .onOpenURL { url in
+      guard ShareLinkRoute.handles(url) else { return }
+      tab = 0
+    }
     .alert(
       store.t("notificationsAreOffTitle"),
       isPresented: $store.notificationPermissionAlertPending
@@ -879,7 +883,7 @@ struct TodayView: View {
           store.favoriteIds.contains(store.todayQuote.id) ? .isSelected : []
         )
 
-        ShareLink(item: "\(store.todayQuote.text)\n\n\(AppBrand.name)") {
+        QuoteShareButton(quote: store.todayQuote) {
           Image(systemName: "square.and.arrow.up")
             .font(.title3)
             .frame(width: 54, height: 54)
@@ -1269,7 +1273,7 @@ struct QuoteCard: View {
           store.toggleFavorite(quote)
         }
         .frame(minHeight: 44)
-        ShareLink(item: "\(quote.text)\n\n\(AppBrand.name)") {
+        QuoteShareButton(quote: quote) {
           Text(store.t("share"))
         }
         .frame(minHeight: 44)

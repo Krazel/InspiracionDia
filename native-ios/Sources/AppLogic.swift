@@ -19,6 +19,22 @@ enum AppLanguage: String, CaseIterable, Hashable {
   }
 }
 
+enum ShareLinkRoute {
+  static let landingPageURL = URL(string: "https://krazel.github.io/warm-words/share/")!
+  static let customScheme = "warmwords"
+  static let isPublicLinkEnabled = false
+
+  static func handles(_ url: URL) -> Bool {
+    if url.scheme?.lowercased() == customScheme {
+      return true
+    }
+    let isSharePath = url.path == "/warm-words/share" || url.path.hasPrefix("/warm-words/share/")
+    return url.scheme?.lowercased() == "https" &&
+      url.host?.lowercased() == landingPageURL.host &&
+      isSharePath
+  }
+}
+
 enum DailyQuoteSelector {
   private static let epochComponents = DateComponents(
     calendar: Calendar(identifier: .gregorian),
