@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout approved branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Require an approved source branch
         shell: bash
@@ -232,7 +232,7 @@ jobs:
           test -f "${RUNNER_TEMP}/WarmWords-export/InspiracionDia.ipa"
 
       - name: Store signed candidate artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: Warm-Words-TestFlight-v${{ env.APP_VERSION }}-build-${{ inputs.build_number }}
           path: ${{ runner.temp }}/WarmWords-export/InspiracionDia.ipa

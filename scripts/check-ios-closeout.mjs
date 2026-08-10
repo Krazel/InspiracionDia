@@ -156,6 +156,8 @@ assert.match(workflow, /DISPLAY_NAME[\s\S]*Warm Words/);
 assert.match(workflow, /CFBundleLocalizations:0[\s\S]*CFBundleLocalizations:1/);
 assert.match(workflow, /CFBundleIconName[\s\S]*AppIcon/);
 assert.match(workflow, /Assets\.car/);
+assert.match(workflow, /actions\/checkout@v5/);
+assert.match(workflow, /actions\/upload-artifact@v6/);
 assert.doesNotMatch(workflow, /contents: write|gh release|Publish latest IPA release/);
 assert.match(testFlightWorkflow, /on:\s*\n\s*workflow_dispatch:/);
 assert.doesNotMatch(testFlightWorkflow, /\n\s+push:/);
@@ -167,6 +169,8 @@ assert.match(testFlightWorkflow, /APP_STORE_CONNECT_API_KEY_BASE64/);
 assert.match(testFlightWorkflow, /xcodebuild[\s\S]*test[\s\S]*analyze[\s\S]*archive/);
 assert.match(testFlightWorkflow, /method string app-store-connect/);
 assert.match(testFlightWorkflow, /codesign --verify --deep --strict/);
+assert.match(testFlightWorkflow, /actions\/checkout@v5/);
+assert.match(testFlightWorkflow, /actions\/upload-artifact@v6/);
 assert.match(testFlightWorkflow, /if: inputs\.upload_to_testflight == 'true'[\s\S]*altool --validate-app[\s\S]*altool --upload-app/);
 assert.doesNotMatch(testFlightWorkflow, /contents: write|gh release|\brm -rf\b/);
 

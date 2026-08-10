@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Verify Xcode and iOS SDK
         run: |
@@ -127,7 +127,7 @@ jobs:
           ls -lh "${VERSIONED_IPA}" InspiracionDia-unsigned.ipa
 
       - name: Upload IPA artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: InspiracionDia-unsigned-ipa
           path: InspiracionDia-unsigned.ipa
