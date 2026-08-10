@@ -1274,6 +1274,7 @@ struct QuoteHero: View {
   var body: some View {
     let category = store.category(for: quote.category)
     let minimumHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 430 : 330
+    let cardWidth: CGFloat = dynamicTypeSize.isAccessibilitySize ? .infinity : 276
     VStack(spacing: 14) {
       Text("\"")
         .font(.system(size: 38, weight: .semibold, design: .serif))
@@ -1296,7 +1297,7 @@ struct QuoteHero: View {
     }
     .padding(.horizontal, 26)
     .padding(.vertical, 24)
-    .frame(maxWidth: .infinity, minHeight: minimumHeight)
+    .frame(maxWidth: cardWidth, minHeight: minimumHeight)
     .background {
       BundledImage(name: "premium-mountains", fallback: PremiumBackground())
         .frame(maxWidth: .infinity, maxHeight: .infinity)

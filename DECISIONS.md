@@ -174,6 +174,13 @@ Resuelve la antigua PEND-013:
 - Esta build gratuita incluye inglés y español, pero no muestra una suscripción ficticia. “Support the app” se implementará únicamente con productos, precios, restauración, términos y privacidad reales.
 - La autorización cubre commit, push y artifact unsigned local; no cubre TestFlight, App Store Connect, IAP, App Review ni publicación.
 
+### DEC-025 — Today usa una carta vertical estrecha
+
+- El propietario pidió el 2026-08-10 que la tarjeta principal deje de parecer cuadrada y tenga proporción de carta alargada.
+- Se conserva la altura compacta aprobada para no reintroducir desplazamiento: 276 pt de ancho máximo y 330 pt de alto mínimo con texto normal, centrada en Today.
+- En tamaños de accesibilidad puede ocupar el ancho disponible y crecer a partir de 430 pt; legibilidad y acceso al contenido prevalecen sobre la proporción decorativa.
+- Las tarjetas de listas conservan su formato legible de fila; convertir las 180 frases en una cuadrícula de cartas sería un rediseño distinto y empeoraría la exploración.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

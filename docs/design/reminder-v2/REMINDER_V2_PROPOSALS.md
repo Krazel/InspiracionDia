@@ -31,6 +31,7 @@ Personal quotes already use the normal iOS Share sheet as text followed by `Warm
 - Selected direction: **complete recommended set — Today compact, onboarding, Settings and inline new category**
 - Approval date: **2026-08-09**
 - Requested changes: **none**
+- Owner refinement, 2026-08-10: the Today quote surface must read as a narrow portrait card rather than a square. Runtime target: 276 pt maximum width × 330 pt minimum height at normal Dynamic Type, centered; accessibility sizes may use the available width and grow vertically.
 - Continuing authority: the owner explicitly authorized any additional image needed to finish this scope without another approval round.
 - Implementation rule: preserve the approved hierarchy, palette and compact behavior while adapting controls for accessibility and real SwiftUI constraints.
 
