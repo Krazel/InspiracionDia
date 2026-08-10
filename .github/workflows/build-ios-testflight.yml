@@ -222,6 +222,7 @@ jobs:
           /usr/libexec/PlistBuddy -c "Add :provisioningProfiles:${APP_BUNDLE_ID} string ${PROFILE_NAME}" "${RUNNER_TEMP}/ExportOptions.plist"
 
       - name: Export signed IPA
+        id: export
         shell: bash
         run: |
           set -euo pipefail
@@ -229,13 +230,15 @@ jobs:
             -archivePath "${RUNNER_TEMP}/WarmWords.xcarchive" \
             -exportOptionsPlist "${RUNNER_TEMP}/ExportOptions.plist" \
             -exportPath "${RUNNER_TEMP}/WarmWords-export"
-          test -f "${RUNNER_TEMP}/WarmWords-export/InspiracionDia.ipa"
+          IPA_PATH="$(find "${RUNNER_TEMP}/WarmWords-export" -maxdepth 1 -type f -name '*.ipa' -print -quit)"
+          test -n "${IPA_PATH}"
+          echo "ipa_path=${IPA_PATH}" >> "${GITHUB_OUTPUT}"
 
       - name: Store signed candidate artifact
         uses: actions/upload-artifact@v6
         with:
           name: Warm-Words-TestFlight-v${{ env.APP_VERSION }}-build-${{ inputs.build_number }}
-          path: ${{ runner.temp }}/WarmWords-export/InspiracionDia.ipa
+          path: ${{ steps.export.outputs.ipa_path }}
           retention-days: 3
 
       - name: Require upload credentials
@@ -261,6 +264,7 @@ jobs:
           APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
           APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
           APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          IPA_PATH: ${{ steps.export.outputs.ipa_path }}
         run: |
           set -euo pipefail
           PRIVATE_KEYS_DIR="${HOME}/.appstoreconnect/private_keys"
@@ -275,12 +279,12 @@ jobs:
           chmod 600 "${API_KEY_PATH}"
           xcrun altool --validate-app \
             --type ios \
-            --file "${RUNNER_TEMP}/WarmWords-export/InspiracionDia.ipa" \
+            --file "${IPA_PATH}" \
             --apiKey "${APP_STORE_CONNECT_API_KEY_ID}" \
             --apiIssuer "${APP_STORE_CONNECT_ISSUER_ID}"
           xcrun altool --upload-app \
             --type ios \
-            --file "${RUNNER_TEMP}/WarmWords-export/InspiracionDia.ipa" \
+            --file "${IPA_PATH}" \
             --apiKey "${APP_STORE_CONNECT_API_KEY_ID}" \
             --apiIssuer "${APP_STORE_CONNECT_ISSUER_ID}"
 
