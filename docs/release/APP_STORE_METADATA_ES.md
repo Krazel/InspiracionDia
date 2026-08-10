@@ -11,6 +11,10 @@ Estado: localización Española (España) guardada en la ficha privada de App St
 - **Localización:** Español (España)
 - **Categoría principal:** Estilo de vida
 - **Categoría secundaria:** Salud y forma física
+- **Precio:** Gratis
+- **Disponibilidad:** 175 países o regiones
+- **Clasificación por edades:** 9+ en 172 países o regiones; 12+ en Vietnam y Brasil; All en Corea del Sur
+- **Dispositivos:** iPhone; disponibilidad automática en Mac y Apple Vision Pro desactivada
 - **Versión:** 1.0
 - **Apple ID:** `6800058458`
 - **Bundle ID:** `com.dmkr.inspiraciondia`
@@ -52,5 +56,5 @@ No necesitas una cuenta. Warm Words funciona sin conectarse a ningún servicio. 
 - Capturas reales en español después del QA físico.
 - Sustituir las URL provisionales de GitHub por páginas públicas propias antes del lanzamiento si están disponibles.
 - Copyright y contacto de revisión.
-- Clasificación por edades, privacidad, precio y territorios.
+- Copyright, contacto de revisión y fecha final de lanzamiento.
 - Archive firmado y build validada.

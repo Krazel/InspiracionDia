@@ -14,7 +14,9 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
 - App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
 - Apple rechazó el nombre exacto `Warm Words` por estar ya usado. La marca visible del binario sigue siendo `Warm Words`; la ficha usa `Warm Words: Daily Quotes` en inglés y `Warm Words: Frases Diarias` en español.
-- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se cargó build ni se añadió a revisión.
+- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, políticas de privacidad inglesa/española, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se cargó build ni se añadió a revisión.
+- La clasificación por edades quedó configurada de forma conservadora: 9+ en 172 países, 12+ en Vietnam y Brasil, y `All` en Corea del Sur; se declaró que la app contiene temas generales de bienestar pero no información médica, contenido adulto, violencia, apuestas, UGC distribuido, chat, publicidad ni acceso web sin restricciones. También se declaró correctamente que no es un dispositivo médico regulado.
+- App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 
 ## Cierre implementado localmente
 
@@ -143,9 +145,9 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 ## Puertas restantes
 
 1. Confirmar derechos comerciales de frases y fondos.
-2. Sustituir las URL provisionales de privacidad/soporte alojadas en GitHub por páginas propias antes del lanzamiento si están disponibles.
+2. Inspeccionar el archive final y entonces publicar la declaración App Privacy; sustituir las URL provisionales de GitHub por páginas propias si están disponibles.
 3. Confirmar certificados y firma de distribución; la membresía, Team ID, bundle ID y ficha de App Store Connect ya están confirmados.
-4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas inglesas y españolas.
+4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas inglesas y españolas, copyright y contacto de revisión.
 5. Revisar el candidato con el propietario. TestFlight, App Store y App Review siguen necesitando autorización expresa en ese momento.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.

@@ -215,7 +215,9 @@ Resuelve la antigua PEND-013:
 
 - El propietario autorizó expresamente el 2026-08-10 crear la página de App Store y pidió inglés y castellano, con inglés como idioma principal.
 - Se creó la ficha iOS 1.0 con Apple ID `6800058458`, bundle ID `com.dmkr.inspiraciondia`, SKU `com.dmkr.inspiraciondia` e idioma principal Inglés (EE. UU.).
-- Se añadieron localizaciones Inglés (EE. UU.) y Español (España), categorías Lifestyle y Health & Fitness, precio gratuito, disponibilidad en 175 países, soporte provisional mediante GitHub, ausencia de login, distribución solo en iPhone y publicación manual.
+- Se añadieron localizaciones Inglés (EE. UU.) y Español (España), categorías Lifestyle y Health & Fitness, precio gratuito, disponibilidad en 175 países, soporte y privacidad provisionales mediante GitHub, ausencia de login, distribución solo en iPhone y publicación manual.
+- La clasificación calculada es 9+ en la mayoría de regiones porque se declara contenido general de bienestar; no se redujo artificialmente. La app no es un dispositivo médico regulado.
+- La respuesta App Privacy “no se recopilan datos” está guardada como borrador y no publicada hasta poder contrastarla con el archive firmado final.
 - La creación y edición de la ficha no autorizan cargar builds, TestFlight, añadir a revisión ni publicar. Esas acciones siguen requiriendo una autorización expresa en el momento correspondiente.
 
 ## Primera decisión pendiente del propietario
@@ -230,7 +232,7 @@ Las políticas bilingües y GitHub Issues sirven como URL públicas provisionale
 
 ### PEND-011 — Configuración comercial de App Store
 
-Categorías, precio gratuito, 175 países, distribución pública y publicación manual ya están configurados. Faltan clasificación por edades, copyright y fecha objetivo.
+Categorías, precio gratuito, 175 países, distribución pública, clasificación por edades y publicación manual ya están configurados. Faltan copyright y fecha objetivo.
 
 ### PEND-012 — Firma de distribución
 
@@ -238,4 +240,4 @@ Membresía, Team ID, registro de `com.dmkr.inspiraciondia` y acceso a App Store 
 
 ### PEND-014 — QA Apple y autorización de distribución oficial
 
-El build/test unsigned en macOS ya pasó y la ficha bilingüe existe. Faltan archive firmado, Validate App, QA físico en iPhone y capturas inglesas/españolas. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.
+El build/test unsigned en macOS ya pasó y la ficha bilingüe existe. Faltan archive firmado, Validate App, QA físico en iPhone, capturas inglesas/españolas y publicar la declaración de privacidad tras verificar el binario. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.

@@ -11,6 +11,9 @@ Status: English localization saved in the private App Store Connect record on 20
 - **Primary category:** Lifestyle
 - **Secondary category:** Health & Fitness
 - **Price:** Free
+- **Availability:** 175 countries or regions
+- **Age rating:** 9+ in 172 countries or regions; 12+ in Vietnam and Brazil; All in South Korea
+- **Device availability:** iPhone; automatic Mac and Apple Vision Pro availability disabled
 - **Version:** 1.0
 - **Apple ID:** `6800058458`
 - **Bundle ID:** `com.dmkr.inspiraciondia`
@@ -79,7 +82,7 @@ Do not add marketing frames or new visual layouts. Spanish screenshots belong to
 - Replace the provisional GitHub privacy/support URLs with dedicated public pages before launch if available.
 - Distribution certificates, provisioning profile and signed archive.
 - Content-rights confirmation for all quotes and bundled backgrounds.
-- Updated age-rating questionnaire, territories, DSA trader status, and release mode. Recommended release mode: manual.
+- Copyright, review contact, final release date and confirmation of DSA trader information.
 - Final Accessibility Nutrition Label answers after device testing.
 
 ## Apple references checked 2026-08-09
