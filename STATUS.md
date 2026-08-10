@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **build 14 verificada; corrección final de Today a pantalla completa en preparación para una nueva IPA**
+Estado: **IPA unsigned bilingüe iOS 1.0 build 15 con Today a pantalla completa, compilada y verificada para Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -108,7 +108,10 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - La referencia canónica vuelve a ser la imagen completa aprobada `docs/design/reminder-v2/warm-words-today-compact-proposal.png`; la interpretación estrecha de build 13/14 queda sustituida.
 - Con texto normal, Today pasa a ser una pantalla fija sin desplazamiento vertical: la carta usa todo el ancho útil y absorbe el espacio restante; Me gusta y Compartir quedan visibles sobre la barra de pestañas.
 - Los tamaños de texto de accesibilidad mantienen desplazamiento como excepción para no cortar contenido.
-- Pendiente en este punto: validadores, compilación macOS, empaquetado de la nueva IPA y verificación visual en iPhone.
+- GitHub Actions run `31400577560`, job `93494239595`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
+- IPA verificada: `dist/Warm-Words-Sideloadly-full-screen-card-build-15.ipa`, 6.044.016 bytes, SHA-256 `4FA8B53A323B89CFDBAF4DEA0B8A5DF27A271FCDBC45E1DC3699D17AC15BBAFB`.
+- La inspección interna confirma ZIP/CRC, versión 1.0 build 15, ambos idiomas con 180 frases, AppIcon, Assets.car y PrivacyInfo.
+- Falta únicamente la comprobación visual en iPhone de que la carta llena el espacio y Today no se desplaza con texto normal.
 
 ## Primer bloqueo material de App Store
 

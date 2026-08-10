@@ -191,6 +191,12 @@ Resuelve la antigua PEND-013:
 - Los tamaños de texto de accesibilidad conservan una excepción desplazable para no cortar texto ni acciones.
 - No se genera una imagen nueva porque la propuesta completa existente ya define exactamente esta composición y cuenta con aprobación del propietario.
 
+### DEC-027 — Push y compilación privada autorizados de forma permanente
+
+- El propietario autorizó expresamente el 2026-08-10 los `git push` necesarios de Inspiración Día y las compilaciones privadas de IPA mientras continúe el desarrollo del proyecto, hasta que revoque esta autorización.
+- Esta autorización permite actualizar la rama de trabajo y ejecutar/descargar artifacts privados de GitHub Actions para Sideloadly.
+- No autoriza crear o publicar GitHub Releases, subir a TestFlight/App Store, enviar a App Review, usar secretos o cuentas nuevas, aceptar contratos ni asumir costes.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
