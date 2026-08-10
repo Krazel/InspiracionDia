@@ -5,7 +5,7 @@ Aplicación nativa SwiftUI para iPhone. El nombre interno histórico del reposit
 ## Estado actual
 
 - iPhone: app SwiftUI nativa en `native-ios/`, con build IPA por GitHub Actions.
-- Bundle ID: `com.dmkr.inspiraciondia`.
+- Bundle ID: `com.dmkr.inspiraciondia.B2X6D3A9J9`.
 - Android está congelado y fuera del alcance de este proyecto.
 
 ## Incluye

@@ -1,25 +1,25 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **catálogo bilingüe ampliado y carril TestFlight preparado; pendiente de firma, QA físico y autorización de subida**
+Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; pendiente de QA físico y cierre de App Store**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit actual verificado `4ba5de9`.
-- El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight se compiló desde el commit verificado `423da40`.
+- El propietario autorizó expresamente la subida a TestFlight el 2026-08-10. No se creó release, no se envió a App Review y no se publicó en App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
-- App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
+- App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia.B2X6D3A9J9`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
 - Apple rechazó el nombre exacto `Warm Words` por estar ya usado. La marca visible del binario sigue siendo `Warm Words`; la ficha usa `Warm Words: Daily Quotes` en inglés y `Warm Words: Frases Diarias` en español.
-- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, políticas de privacidad inglesa/española, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se cargó build ni se añadió a revisión.
+- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, políticas de privacidad inglesa/española, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se añadió a App Review.
 - App Store Connect muestra actualmente una clasificación global 4+ con excepciones regionales; se declaró que la app contiene temas generales de bienestar pero no información médica, contenido adulto, violencia, apuestas, UGC distribuido, chat, publicidad ni acceso web sin restricciones. También se declaró correctamente que no es un dispositivo médico regulado.
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
-- El workflow manual `.github/workflows/build-ios-testflight.yml` ya define tests, firma Apple Distribution, archive, inspección y exportación. No se ha ejecutado: el environment protegido y los secretos de firma todavía no existen.
-- La subida está desactivada por defecto y sigue requiriendo autorización expresa en el momento de activarla.
-- TestFlight confirma que todavía no existe ninguna compilación. Las descripciones inglesa y española de App Store se actualizaron de 180 a 360 frases; no se creó grupo de testers ni se añadió información personal de contacto inventada.
+- El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
+- La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
+- TestFlight contiene Warm Words 1.0 build 20 en estado **En pruebas**, asignada al grupo interno `Warm Words Internal` con la cuenta propietaria como único tester. No se creó grupo externo ni se solicitó Beta App Review.
 
 ## Cierre implementado localmente
 
@@ -146,11 +146,21 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 - El catálogo de producción contiene ahora 360 frases propias en inglés y 360 en español, 30 por cada una de las 12 categorías. Se añadieron 180 pares bilingües y se reescribieron 12 pares débiles conservando sus IDs.
 - Los validadores exigen paridad exacta EN/ES, IDs ordenados, longitudes editoriales y ausencia de duplicados exactos, normalizados o casi idénticos.
-- El workflow manual de TestFlight quedó preparado con XCTest, Analyze, archive Apple Distribution, inspección, exportación App Store Connect y subida desactivada por defecto. No contiene certificados ni secretos y no se ha ejecutado ni subido ningún build firmado.
+- Antes de la autorización de TestFlight, el workflow manual ya estaba preparado con XCTest, Analyze, archive Apple Distribution, inspección, exportación App Store Connect y subida desactivada por defecto.
 - GitHub Actions run `31424514733` (número 19), job `93572928211`, commit `4ba5de9`, pasó Xcode/SDK 26+, validadores, XcodeGen, XCTest, build Release unsigned, empaquetado y artifact el 2026-08-10.
 - Los actions de checkout y artifact usan sus versiones Node 24 actuales. Solo queda un aviso no bloqueante de Homebrew sobre un tap ajeno preinstalado en el runner.
 - IPA descargada y verificada: `dist/Warm-Words-Sideloadly-360-quotes-build-19.ipa`, 6.071.590 bytes, SHA-256 `0AE98F3D420FD9B50D5A0F00D2E35B1293DD446943B1582B1CE2E25C964DB3B6`.
 - La inspección interna confirma ZIP válido, ambos catálogos con 360 frases y 12 categorías, AppIcon, `Assets.car` y `PrivacyInfo.xcprivacy`. Sigue siendo unsigned y no es una subida a TestFlight.
+
+## TestFlight interno activo — build 20
+
+- El propietario autorizó expresamente firma, secretos protegidos y subida el 2026-08-10.
+- Apple Developer emitió el certificado Apple Distribution y el perfil `Warm Words App Store 2026`, ambos válidos hasta el 2027-08-10. La clave de App Store Connect tiene rol Gestor de apps.
+- El environment `app-store-production` contiene siete secretos cifrados y está restringido a `agent/warm-words-ios-ipa`; no se guardó material sensible en el repositorio y las copias temporales locales fueron eliminadas.
+- GitHub Actions run `31429710903`, job `93589855913`, commit `423da40`, completó tests, Analyze, instalación de firma, archive, `codesign`, inspección de recursos/versión/bundle, exportación, validación y subida.
+- Artifact firmado efímero `Warm-Words-TestFlight-v1.0-build-20`: 6.220.816 bytes, SHA-256 `B789F43C3CD25E9024CE9DEEB45834FACCF99EC6B1D380F42D1EB6694EFE8976`, con caducidad de tres días.
+- Apple procesó Warm Words 1.0 build 20. El grupo interno `Warm Words Internal` contiene una build y la cuenta propietaria como único tester; el estado visible es **En pruebas** y caduca en 90 días.
+- “Qué se debe probar” está guardado en inglés. No hay testers externos, Beta App Review, App Review ni publicación.
 
 ## Primer bloqueo material de App Store
 
@@ -158,11 +168,11 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Confirmar derechos comerciales de frases y fondos.
-2. Inspeccionar el archive final y entonces publicar la declaración App Privacy; sustituir las URL provisionales de GitHub por páginas propias si están disponibles.
-3. Confirmar certificados y firma de distribución; la membresía, Team ID, bundle ID y ficha de App Store Connect ya están confirmados.
-4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas inglesas y españolas, copyright y contacto de revisión.
-5. Revisar el candidato con el propietario. TestFlight, App Store y App Review siguen necesitando autorización expresa en ese momento.
+1. Instalar build 20 desde TestFlight y completar QA real en iPhone/iOS 16 e iOS 26.
+2. Confirmar derechos comerciales de frases, fondos y AppIcon.
+3. Publicar páginas propias de privacidad/soporte y la declaración App Privacy después de contrastarla con la build probada.
+4. Preparar capturas inglesas y españolas, copyright y contacto de revisión.
+5. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 

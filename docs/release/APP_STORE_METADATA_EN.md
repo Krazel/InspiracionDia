@@ -16,7 +16,7 @@ Status: English localization saved in the private App Store Connect record on 20
 - **Device availability:** iPhone; automatic Mac and Apple Vision Pro availability disabled
 - **Version:** 1.0
 - **Apple ID:** `6800058458`
-- **Bundle ID:** `com.dmkr.inspiraciondia`
+- **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
 - **Copyright:** `2026 [LEGAL PERSON OR ENTITY]`
 - **Support URL:** `https://github.com/Krazel/InspiracionDia/issues` (provisional)

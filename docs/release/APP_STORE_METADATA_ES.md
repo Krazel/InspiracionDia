@@ -17,7 +17,7 @@ Estado: localización Española (España) guardada en la ficha privada de App St
 - **Dispositivos:** iPhone; disponibilidad automática en Mac y Apple Vision Pro desactivada
 - **Versión:** 1.0
 - **Apple ID:** `6800058458`
-- **Bundle ID:** `com.dmkr.inspiraciondia`
+- **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
 - **URL de soporte:** `https://github.com/Krazel/InspiracionDia/issues` (provisional)
 - **URL de privacidad:** `https://github.com/Krazel/InspiracionDia/blob/agent/warm-words-ios-ipa/docs/release/PRIVACY_POLICY_ES.md`

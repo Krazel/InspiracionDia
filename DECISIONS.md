@@ -214,7 +214,7 @@ Resuelve la antigua PEND-013:
 ### DEC-030 — Ficha privada bilingüe creada en App Store Connect
 
 - El propietario autorizó expresamente el 2026-08-10 crear la página de App Store y pidió inglés y castellano, con inglés como idioma principal.
-- Se creó la ficha iOS 1.0 con Apple ID `6800058458`, bundle ID `com.dmkr.inspiraciondia`, SKU `com.dmkr.inspiraciondia` e idioma principal Inglés (EE. UU.).
+- Se creó la ficha iOS 1.0 con Apple ID `6800058458`, bundle ID `com.dmkr.inspiraciondia.B2X6D3A9J9`, SKU `com.dmkr.inspiraciondia` e idioma principal Inglés (EE. UU.).
 - Se añadieron localizaciones Inglés (EE. UU.) y Español (España), categorías Lifestyle y Health & Fitness, precio gratuito, disponibilidad en 175 países, soporte y privacidad provisionales mediante GitHub, ausencia de login, distribución solo en iPhone y publicación manual.
 - App Store Connect muestra actualmente una clasificación global 4+ con excepciones regionales tras declarar de forma veraz el contenido general de bienestar. La app no es un dispositivo médico regulado.
 - La respuesta App Privacy “no se recopilan datos” está guardada como borrador y no publicada hasta poder contrastarla con el archive firmado final.
@@ -227,6 +227,15 @@ Resuelve la antigua PEND-013:
 - `scripts/check-quotes.mjs` exige ahora tamaño, orden, paridad, longitud y ausencia de duplicados exactos, normalizados o casi idénticos. La trazabilidad queda en `docs/content-review/`.
 - Se prepara un workflow TestFlight manual, separado del CI unsigned, protegido por environment y con upload desactivado por defecto. No se ejecuta hasta configurar firma y secretos con autorización expresa.
 - El primer archive usará build `18` o el siguiente número libre. Subirlo a TestFlight sigue siendo una acción separada que requiere autorización en ese momento.
+
+### DEC-032 — TestFlight interno autorizado y activo
+
+- El propietario autorizó expresamente el 2026-08-10 crear la firma necesaria, usar secretos protegidos y subir Warm Words a TestFlight.
+- Apple Developer emitió un certificado Apple Distribution y el perfil `Warm Words App Store 2026`, válidos hasta el 2027-08-10. App Store Connect creó una clave API con rol Gestor de apps.
+- El identificador efectivo de la ficha se verificó como `com.dmkr.inspiraciondia.B2X6D3A9J9`; proyecto, workflow, perfil y validadores quedaron alineados con ese valor. El SKU histórico permanece `com.dmkr.inspiraciondia`.
+- GitHub Actions run `31429710903`, job `93589855913`, commit `423da40`, produjo, validó y subió Warm Words 1.0 build 20. Apple la procesó correctamente.
+- El grupo interno `Warm Words Internal` contiene build 20 y a la cuenta propietaria como único tester. La distribución automática futura quedó desactivada.
+- Esta autorización no incluye testers externos, Beta App Review, App Review, selección del build para publicación ni lanzamiento en App Store.
 
 ## Primera decisión pendiente del propietario
 
@@ -242,10 +251,6 @@ Las políticas bilingües y GitHub Issues sirven como URL públicas provisionale
 
 Categorías, precio gratuito, 175 países, distribución pública, clasificación por edades y publicación manual ya están configurados. Faltan copyright y fecha objetivo.
 
-### PEND-012 — Firma de distribución
-
-Membresía, Team ID, registro de `com.dmkr.inspiraciondia` y acceso a App Store Connect están confirmados. Faltan certificados, perfiles y archive firmado de distribución.
-
 ### PEND-014 — QA Apple y autorización de distribución oficial
 
-El build/test unsigned en macOS ya pasó y la ficha bilingüe existe. Faltan archive firmado, Validate App, QA físico en iPhone, capturas inglesas/españolas y publicar la declaración de privacidad tras verificar el binario. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.
+El archive firmado, Validate App, upload y procesamiento TestFlight de build 20 ya pasaron. Faltan QA físico en iPhone, capturas inglesas/españolas y publicar la declaración de privacidad tras verificar el binario. Testers externos, App Review y publicación necesitan autorización expresa adicional en ese momento.

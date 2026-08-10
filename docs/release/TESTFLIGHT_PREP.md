@@ -1,11 +1,11 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: the repository is prepared to build a signed candidate, but no signed archive has been produced and nothing has been uploaded to TestFlight. Upload remains an explicitly authorized action at the moment it is run.
+Status: version 1.0 build 20 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-10. It is available to the account owner in TestFlight. App Review and public release remain separate unauthorized actions.
 
 ## Verified release identity
 
 - App Store Connect Apple ID: `6800058458`
-- Bundle ID: `com.dmkr.inspiraciondia`
+- Bundle ID: `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - Apple Team ID: `B2X6D3A9J9`
 - Version: `1.0`
 - Platform: iPhone only, portrait, iOS 16+
@@ -20,7 +20,7 @@ Status: the repository is prepared to build a signed candidate, but no signed ar
 `.github/workflows/build-ios-testflight.yml` is deliberately separate from normal unsigned CI. It:
 
 1. Runs only through `workflow_dispatch` and only for the repository owner.
-2. Accepts a positive, unique build number; use `18` or the next unused number in App Store Connect.
+2. Accepts a positive, unique build number; build `20` is the first uploaded TestFlight build.
 3. Runs content validation, XcodeGen, and XCTest before signing.
 4. Validates the distribution profile's Team ID and bundle ID.
 5. Archives and exports an `app-store-connect` IPA with Apple Distribution signing.
@@ -28,15 +28,15 @@ Status: the repository is prepared to build a signed candidate, but no signed ar
 7. Stores the signed IPA for three days.
 8. Uploads only when `upload_to_testflight` is explicitly set to `true` after authorization.
 
-The workflow has not been run because the protected environment and credentials are not configured yet.
+The protected environment and seven credentials are configured. Run `31429710903`, job `93589855913`, completed all tests, Analyze, signed archive inspection, export, validation, and upload from commit `423da40`.
 
 ## Protected GitHub environment
 
-Create an environment named `app-store-production`, restrict it to `main` and `agent/warm-words-ios-ipa`, and require approval before access. Store only these values there:
+The environment `app-store-production` exists and is restricted to `agent/warm-words-ios-ipa`. It stores only these values:
 
 - `BUILD_CERTIFICATE_BASE64`: Apple Distribution `.p12`, base64 encoded.
 - `P12_PASSWORD`: password for that `.p12`.
-- `BUILD_PROVISION_PROFILE_BASE64`: App Store distribution profile for `com.dmkr.inspiraciondia`, base64 encoded.
+- `BUILD_PROVISION_PROFILE_BASE64`: App Store distribution profile for `com.dmkr.inspiraciondia.B2X6D3A9J9`, base64 encoded.
 - `KEYCHAIN_PASSWORD`: random temporary CI keychain password.
 - `APP_STORE_CONNECT_API_KEY_ID`: required only for upload.
 - `APP_STORE_CONNECT_ISSUER_ID`: required only for upload.
@@ -44,16 +44,14 @@ Create an environment named `app-store-production`, restrict it to `main` and `a
 
 Do not put these values in repository secrets, source files, logs, artifacts, issue comments, or documentation. Creating credentials, adding secrets, or running the upload step requires explicit authorization at that moment.
 
-## Candidate sequence
+## Completed TestFlight sequence
 
-1. Finish the bilingual content and run all local validators.
-2. Complete a new unsigned macOS CI build and physical regression pass, especially Settings, Today, categories, reminders, language switching, favorites, Personal, and visual sharing.
-3. Confirm ownership or commercial license for `premium-mountains.png`, `premium-stones.png`, and the AppIcon; keep the editorial provenance note for all bundled quotes.
-4. Configure the protected signing environment.
-5. Run the manual workflow with upload set to `false`; inspect the archive/IPA and resolve every signing or export warning.
-6. Complete device QA using the signed candidate and record the result in `IOS_QA_CHECKLIST.md`.
-7. With a separate explicit authorization, run the same verified commit/build with upload set to `true`.
-8. Wait for Apple processing, answer export-compliance prompts consistently, and assign the build to internal testers first.
+1. The bilingual catalog and local validators passed.
+2. The unsigned macOS build, XCTest, and Release build passed.
+3. Apple Distribution signing, the App Store profile, and the protected GitHub environment were configured after explicit authorization.
+4. Build 20 passed XCTest, Analyze, archive inspection, `codesign`, App Store export, and Apple validation.
+5. Apple processed the upload and exposed build 20 for internal testing.
+6. `Warm Words Internal` was created with automatic future distribution disabled; build 20 and the account owner were added manually.
 
 ## Remaining release gates
 

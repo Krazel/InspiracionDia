@@ -77,7 +77,7 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Rights to every quote and bundled background are confirmed in writing by the owner.
 - [ ] Public privacy and support pages use the approved name and real contact information.
 - [ ] The public share landing opens the App Store URL `https://apps.apple.com/app/id6800058458` when the app is not installed.
-- [ ] The Universal Link opens Warm Words when installed; the AASA file declares `B2X6D3A9J9.com.dmkr.inspiraciondia` and the signed app contains `applinks:krazel.github.io`.
+- [ ] The Universal Link opens Warm Words when installed; the AASA file declares `B2X6D3A9J9.com.dmkr.inspiraciondia.B2X6D3A9J9` and the signed app contains `applinks:krazel.github.io`.
 - [ ] App Privacy answers match the final archive and third-party component scan.
 - [ ] Required-reason API report contains only declared uses or is reconciled.
 - [ ] Updated age-rating questionnaire, category, copyright, territories, price, DSA status, and manual release mode are complete.
