@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **build 17 de QA compila tarjetas compartibles; enlace inteligente pendiente de infraestructura pública**
+Estado: **ficha privada bilingüe creada en App Store Connect; build 17 de QA pendiente de cierre firmado**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -12,6 +12,9 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
+- App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
+- Apple rechazó el nombre exacto `Warm Words` por estar ya usado. La marca visible del binario sigue siendo `Warm Words`; la ficha usa `Warm Words: Daily Quotes` en inglés y `Warm Words: Frases Diarias` en español.
+- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se cargó build ni se añadió a revisión.
 
 ## Cierre implementado localmente
 
@@ -140,9 +143,9 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 ## Puertas restantes
 
 1. Confirmar derechos comerciales de frases y fondos.
-2. Proporcionar Support URL y Privacy Policy URL públicas.
-3. Confirmar Apple Developer/App Store Connect, team, bundle ID y firma.
-4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas y ficha inglesa.
+2. Sustituir las URL provisionales de privacidad/soporte alojadas en GitHub por páginas propias antes del lanzamiento si están disponibles.
+3. Confirmar certificados y firma de distribución; la membresía, Team ID, bundle ID y ficha de App Store Connect ya están confirmados.
+4. Ejecutar archive firmado, Analyze/Validate App y QA real en iPhone/iOS 16 e iOS 26; después preparar capturas inglesas y españolas.
 5. Revisar el candidato con el propietario. TestFlight, App Store y App Review siguen necesitando autorización expresa en ese momento.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.

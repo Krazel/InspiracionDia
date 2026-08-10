@@ -93,7 +93,7 @@ Resuelve la antigua PEND-013:
 - “Inspiración Día” se conserva únicamente como nombre interno histórico del proyecto y del repositorio.
 - `Versemorn` fue rechazado expresamente y `A Quiet Spark` quedó sustituido por la petición de algo más simple.
 - El propietario aprobó por contexto **Warm Words** como nombre público inglés el 2026-08-09; “War Wars” se interpreta como una errata salvo corrección posterior.
-- `Warm Words` es el nombre visible en la app, compartir, notificaciones y ficha de App Store.
+- `Warm Words` es el nombre visible en la app, compartir y notificaciones. Como Apple indicó que el nombre exacto ya estaba usado, la ficha inglesa utiliza `Warm Words: Daily Quotes` y la española `Warm Words: Frases Diarias`.
 - El nombre interno de target, módulo, esquema, bundle ID, repositorio y artefactos continúa como `InspiracionDia` para evitar riesgo técnico innecesario.
 
 ### DEC-014 — Base de compilación y concurrencia
@@ -211,6 +211,13 @@ Resuelve la antigua PEND-013:
 - WhatsApp y otras extensiones deciden cómo representan `[imagen, URL]`; iOS no puede garantizar que la imagen adjunta sea pulsable. La promesa verificable es compartir la imagen y el enlace, no controlar la composición de terceros.
 - La implementación del PNG puede avanzar localmente. Activar el enlace exige landing pública, App Store URL real, AASA, Team ID, Associated Domains y firma compatible; no se comparte una URL 404.
 
+### DEC-030 — Ficha privada bilingüe creada en App Store Connect
+
+- El propietario autorizó expresamente el 2026-08-10 crear la página de App Store y pidió inglés y castellano, con inglés como idioma principal.
+- Se creó la ficha iOS 1.0 con Apple ID `6800058458`, bundle ID `com.dmkr.inspiraciondia`, SKU `com.dmkr.inspiraciondia` e idioma principal Inglés (EE. UU.).
+- Se añadieron localizaciones Inglés (EE. UU.) y Español (España), categorías Lifestyle y Health & Fitness, precio gratuito, disponibilidad en 175 países, soporte provisional mediante GitHub, ausencia de login, distribución solo en iPhone y publicación manual.
+- La creación y edición de la ficha no autorizan cargar builds, TestFlight, añadir a revisión ni publicar. Esas acciones siguen requiriendo una autorización expresa en el momento correspondiente.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
@@ -219,16 +226,16 @@ La dirección de producto de usar frases propias ya está aprobada. Antes de App
 
 ### PEND-010 — Privacidad y soporte públicos
 
-Faltan Privacy Policy URL y Support URL reales. La etiqueta “no data collected” solo se cierra tras inspeccionar el binario final.
+Las políticas bilingües y GitHub Issues sirven como URL públicas provisionales. Deben sustituirse por páginas propias si están disponibles. La declaración “no data collected” está preparada pero no se publicará hasta inspeccionar el binario final.
 
 ### PEND-011 — Configuración comercial de App Store
 
-Faltan categoría primaria, precio, territorios, edad, copyright y fecha objetivo. Recomendación vigente: gratis mientras no exista monetización.
+Categorías, precio gratuito, 175 países, distribución pública y publicación manual ya están configurados. Faltan clasificación por edades, copyright y fecha objetivo.
 
-### PEND-012 — Cuenta Apple y firma
+### PEND-012 — Firma de distribución
 
-Faltan confirmar membresía, disponibilidad/registro de `com.dmkr.inspiraciondia`, team, certificados y acceso a App Store Connect.
+Membresía, Team ID, registro de `com.dmkr.inspiraciondia` y acceso a App Store Connect están confirmados. Faltan certificados, perfiles y archive firmado de distribución.
 
 ### PEND-014 — QA Apple y autorización de distribución oficial
 
-El build/test unsigned en macOS ya pasó. Faltan archive firmado, Validate App, QA físico en iPhone, capturas y ficha inglesa. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.
+El build/test unsigned en macOS ya pasó y la ficha bilingüe existe. Faltan archive firmado, Validate App, QA físico en iPhone y capturas inglesas/españolas. Cada upload, TestFlight o envío a App Review necesita autorización expresa en ese momento.

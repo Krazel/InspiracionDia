@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Effective date: `[DATE]`
+Effective date: August 10, 2026
 
 `Warm Words` is designed to work without an account or online service.
 
@@ -10,7 +10,7 @@ The developer does not collect, receive, sell, or use personal data from the app
 
 ## Data stored on the device
 
-Favorites, reminder settings, selected weekdays, category choices, personal-category names, and personal quotes are stored locally on the user's device. The developer cannot access this information. Removing the app may remove this local data according to normal iOS behavior.
+Favorites, reminder settings, selected weekdays, category choices, language preference, and personal quotes are stored locally on the user's device. The developer cannot access this information. Removing the app may remove this local data according to normal iOS behavior.
 
 ## Notifications
 
@@ -30,6 +30,6 @@ If the app's data practices change, this policy and the App Store privacy inform
 
 ## Contact
 
-Questions about this policy can be sent to `[OWNER SUPPORT EMAIL]`.
+Questions about this policy can be submitted through the [Warm Words support page](https://github.com/Krazel/InspiracionDia/issues). Do not include private or sensitive information in a public support request.
 
-This draft must be reviewed against the final signed archive and completed with the effective date and real contact information before it is hosted or used in App Store Connect.
+This policy must be reviewed against the final signed archive before App Review.
