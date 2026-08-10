@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **build 13 compilada, pero con presentación de Settings defectuosa en dispositivo; corrección local pendiente de build 14**
+Estado: **IPA unsigned bilingüe iOS 1.0 build 14 con Settings corregido, compilada y verificada para Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -97,7 +97,10 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El propietario comprobó en iPhone que tocar el engranaje no abría Settings.
 - El `Binding` y el área táctil eran correctos; el punto frágil era presentar `.sheet` desde el `TabView`, cuya jerarquía UIKit puede cambiar o competir con otras presentaciones.
 - La hoja se adjuntó al `Group` estable de `RootView`, manteniendo el mismo estado y contenido, y el botón recibió un identificador estable para QA.
-- Validadores Windows pasan; falta XCTest/build 14 y repetir la prueba física del engranaje.
+- GitHub Actions run `31348412162`, job `93334582497`, pasó validadores, XcodeGen, XCTest, Release, empaquetado y artifact.
+- IPA verificada: `dist/Warm-Words-Sideloadly-settings-fix-build-14.ipa`, 6.040.287 bytes, SHA-256 `0DB1513C9533E32A8E2AB652E53EEDAAAA98ED379B7513E23F689C7A0290E191`.
+- Inspección interna confirma ZIP/CRC, versión 1.0 build 14, ambos idiomas/catálogos, AppIcon, Assets.car y PrivacyInfo.
+- Falta repetir en iPhone el toque del engranaje y confirmar que la hoja abre, cambia de idioma y se cierra correctamente.
 
 ## Primer bloqueo material de App Store
 
