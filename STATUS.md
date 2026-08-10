@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **IPA unsigned bilingüe iOS 1.0 build 15 con Today a pantalla completa, compilada y verificada para Sideloadly**
+Estado: **IPA unsigned bilingüe iOS 1.0 build 16 con Settings y categorías corregidos, compilada y verificada para Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -112,6 +112,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - IPA verificada: `dist/Warm-Words-Sideloadly-full-screen-card-build-15.ipa`, 6.044.016 bytes, SHA-256 `4FA8B53A323B89CFDBAF4DEA0B8A5DF27A271FCDBC45E1DC3699D17AC15BBAFB`.
 - La inspección interna confirma ZIP/CRC, versión 1.0 build 15, ambos idiomas con 180 frases, AppIcon, Assets.car y PrivacyInfo.
 - Falta únicamente la comprobación visual en iPhone de que la carta llena el espacio y Today no se desplaza con texto normal.
+
+## Correcciones Settings y categorías en build 16
+
+- La prueba física confirmó que `Group` no era un host estable para presentar Settings. `RootView` usa ahora un `ZStack` real y conserva la hoja en ese nivel; el botón y su identificador de QA permanecen intactos.
+- Los mosaicos de categorías reservan la misma caja de icono y texto, el mismo ancho, altura normal de 112 pt y borde constante; con Dynamic Type de accesibilidad pueden crecer para no cortar contenido.
+- Hábitos usa `checkmark.circle`, disponible en el mínimo iOS 16, en lugar del símbolo que podía quedar vacío.
+- Se retiró la creación de categorías nuevas. Toda frase nueva se guarda directamente en Personal; los datos históricos se conservan y una selección antigua de categoría propia se migra visualmente a Personal.
+- GitHub Actions run `31415280600`, job `93542716643`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
+- IPA verificada: `dist/Warm-Words-Sideloadly-settings-categories-build-16.ipa`, 6.033.570 bytes, SHA-256 `6B5ABC789662582D4FDDAA737F23D0BC837D8EB924098EDE081A60CC1CFE4CA8`.
+- La inspección interna confirma ZIP/CRC, versión 1.0 build 16, ambos idiomas con 180 frases, AppIcon, Assets.car y PrivacyInfo. Falta comprobar en iPhone abrir/cerrar/reabrir Settings y la cuadrícula de categorías.
 
 ## Primer bloqueo material de App Store
 

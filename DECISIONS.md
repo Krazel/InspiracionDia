@@ -197,6 +197,13 @@ Resuelve la antigua PEND-013:
 - Esta autorización permite actualizar la rama de trabajo y ejecutar/descargar artifacts privados de GitHub Actions para Sideloadly.
 - No autoriza crear o publicar GitHub Releases, subir a TestFlight/App Store, enviar a App Review, usar secretos o cuentas nuevas, aceptar contratos ni asumir costes.
 
+### DEC-028 — Categorías propias retiradas y frases nuevas directas a Personal
+
+- El propietario decidió el 2026-08-10 retirar la creación de categorías propias por ahora.
+- El formulario de nueva frase solo solicita el texto y la guarda directamente en Personal; no muestra selector ni campos de categoría.
+- Las categorías y frases históricas se preservan para no perder datos. Sus frases siguen accesibles desde Personal, aunque ya no se muestran mosaicos separados de categorías propias.
+- El mismo cierre corrige el host de Settings, uniforma los mosaicos de categorías y sustituye el icono incompatible de Hábitos.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
