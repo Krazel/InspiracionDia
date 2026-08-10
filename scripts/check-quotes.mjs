@@ -8,6 +8,7 @@ const englishQuotes = readExportedArray(path.join(root, "data", "quotes-en.js"),
 const CATEGORIES = readExportedArray(path.join(root, "data", "categories.js"), "CATEGORIES");
 
 const categoryIds = new Set(CATEGORIES.map((category) => category.id));
+const quoteCategoryIds = CATEGORIES.map((category) => category.id).filter((id) => id !== "hoy");
 const errors = [];
 const expectedSpanishCategoryNames = new Map([
   ["animo", "Ánimo"],
@@ -33,6 +34,8 @@ for (const [id, expectedName] of expectedSpanishCategoryNames) {
 
 validateQuotes("Spanish", spanishQuotes);
 validateQuotes("English", englishQuotes);
+validateCatalogShape("Spanish", spanishQuotes);
+validateCatalogShape("English", englishQuotes);
 
 const spanishById = new Map(spanishQuotes.map((quote) => [quote.id, quote]));
 const englishById = new Map(englishQuotes.map((quote) => [quote.id, quote]));
@@ -59,15 +62,69 @@ console.log(`${spanishQuotes.length} Spanish quotes and ${englishQuotes.length} 
 function validateQuotes(label, quotes) {
   const ids = new Set();
   const texts = new Set();
+  const normalizedTexts = new Map();
   for (const quote of quotes) {
     if (ids.has(quote.id)) errors.push(`${label} duplicate ID: ${quote.id}`);
     if (texts.has(quote.text)) errors.push(`${label} duplicate text: ${quote.id}`);
     ids.add(quote.id);
     texts.add(quote.text);
+    const normalized = normalizeText(quote.text);
+    if (normalizedTexts.has(normalized)) {
+      errors.push(`${label} normalized duplicate text: ${normalizedTexts.get(normalized)} / ${quote.id}`);
+    }
+    normalizedTexts.set(normalized, quote.id);
     if (!categoryIds.has(quote.category)) errors.push(`${label} unknown category in ${quote.id}: ${quote.category}`);
     if (quote.text.length < 32) errors.push(`${label} quote too short: ${quote.id}`);
     if (quote.text.length > 138) errors.push(`${label} quote too long: ${quote.id} (${quote.text.length})`);
   }
+
+  for (let leftIndex = 0; leftIndex < quotes.length; leftIndex += 1) {
+    for (let rightIndex = leftIndex + 1; rightIndex < quotes.length; rightIndex += 1) {
+      const left = tokenSet(quotes[leftIndex].text);
+      const right = tokenSet(quotes[rightIndex].text);
+      if (Math.min(left.size, right.size) < 7) continue;
+      const overlap = [...left].filter((token) => right.has(token)).length;
+      const union = new Set([...left, ...right]).size;
+      if (overlap / union >= 0.86) {
+        errors.push(`${label} near-duplicate text: ${quotes[leftIndex].id} / ${quotes[rightIndex].id}`);
+      }
+    }
+  }
+}
+
+function validateCatalogShape(label, quotes) {
+  if (quotes.length !== quoteCategoryIds.length * 30) {
+    errors.push(`${label} catalog must contain exactly 360 quotes; found ${quotes.length}`);
+  }
+  for (const category of quoteCategoryIds) {
+    const categoryQuotes = quotes.filter((quote) => quote.category === category);
+    if (categoryQuotes.length !== 30) {
+      errors.push(`${label} category ${category} must contain 30 quotes; found ${categoryQuotes.length}`);
+      continue;
+    }
+    const expectedIds = Array.from(
+      { length: 30 },
+      (_, index) => `${category}-${String(index + 1).padStart(3, "0")}`,
+    );
+    const actualIds = categoryQuotes.map(({ id }) => id);
+    if (actualIds.some((id, index) => id !== expectedIds[index])) {
+      errors.push(`${label} category ${category} IDs must be ordered from 001 to 030`);
+    }
+  }
+}
+
+function normalizeText(text) {
+  return text
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim()
+    .replace(/\s+/g, " ");
+}
+
+function tokenSet(text) {
+  return new Set(normalizeText(text).split(" ").filter(Boolean));
 }
 
 function readExportedArray(filePath, name) {

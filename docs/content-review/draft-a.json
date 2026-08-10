@@ -1,0 +1,165 @@
+{
+  "status": "editorial-draft-only",
+  "scope": "Original bilingual quote pairs for review; not integrated into product data.",
+  "constraints": {
+    "pairsPerCategory": 15,
+    "idRange": "016-030",
+    "minimumCharactersPerLanguage": 32,
+    "maximumCharactersPerLanguage": 138,
+    "attributions": false
+  },
+  "categories": {
+    "animo": [
+      { "id": "animo-016", "en": "Start with one part of today that still believes another attempt is worth making.", "es": "Empieza por una parte de este día que aún crea que merece la pena intentarlo otra vez." },
+      { "id": "animo-017", "en": "A tired step can still carry you toward a life that feels more like your own.", "es": "Un paso cansado también puede acercarte a una vida que se parezca más a la tuya." },
+      { "id": "animo-018", "en": "You are allowed to rebuild momentum without pretending the difficult days never happened.", "es": "Puedes recuperar el impulso sin fingir que los días difíciles nunca ocurrieron." },
+      { "id": "animo-019", "en": "Give this morning one honest chance before deciding what the whole day will become.", "es": "Dale a esta mañana una oportunidad sincera antes de decidir cómo será el día entero." },
+      { "id": "animo-020", "en": "The part of you that kept going quietly deserves a say in what happens next.", "es": "La parte de ti que siguió adelante en silencio merece opinar sobre lo que viene ahora." },
+      { "id": "animo-021", "en": "Do one thing today that your discouraged self will be relieved to find completed.", "es": "Haz hoy algo que alivie a esa parte desanimada de ti cuando lo encuentre terminado." },
+      { "id": "animo-022", "en": "A difficult season can change your pace without taking away your direction.", "es": "Una etapa difícil puede cambiar tu ritmo sin quitarte la dirección." },
+      { "id": "animo-023", "en": "Showing up before confidence arrives is a quiet kind of courage.", "es": "Presentarte antes de que llegue la confianza también es una forma serena de valentía." },
+      { "id": "animo-024", "en": "Let the next ten minutes be kinder and more deliberate than the ten before them.", "es": "Haz que los próximos diez minutos sean más amables y conscientes que los anteriores." },
+      { "id": "animo-025", "en": "You do not need a dramatic comeback; a quiet return to yourself is enough for today.", "es": "No necesitas un regreso espectacular; por hoy basta con volver a ti en silencio." },
+      { "id": "animo-026", "en": "Keep one promise to yourself today and let that be evidence that change is underway.", "es": "Cumple hoy una promesa contigo y deja que sea la prueba de que el cambio ya ha empezado." },
+      { "id": "animo-027", "en": "What remains unfinished is not proof of failure; it is simply where your next step can begin.", "es": "Lo que sigue inacabado no demuestra un fracaso; es simplemente donde puede empezar tu siguiente paso." },
+      { "id": "animo-028", "en": "Some strength returns only after you stop demanding that it arrive all at once.", "es": "Hay fuerzas que solo regresan cuando dejas de exigir que vuelvan todas de golpe." },
+      { "id": "animo-029", "en": "Choose the smallest action that makes tomorrow less heavy, then give it your full care.", "es": "Elige la acción más pequeña que aligere mañana y dedícale toda tu atención." },
+      { "id": "animo-030", "en": "Your hope does not have to be loud; it only needs enough room to influence one decision.", "es": "Tu esperanza no tiene que hacer ruido; solo necesita espacio para influir en una decisión." }
+    ],
+    "foco": [
+      { "id": "foco-016", "en": "Protect the hour that can change your day from the messages that merely interrupt it.", "es": "Protege la hora que puede cambiar tu día de los mensajes que solo vienen a interrumpirla." },
+      { "id": "foco-017", "en": "A clear no can return more attention to your life than another clever schedule.", "es": "Un no claro puede devolver más atención a tu vida que otro horario ingenioso." },
+      { "id": "foco-018", "en": "Before adding a new task, ask which unfinished one is still occupying the room.", "es": "Antes de añadir otra tarea, pregunta cuál de las pendientes sigue ocupando la habitación." },
+      { "id": "foco-019", "en": "Leave enough silence around the work for your best thinking to find its way in.", "es": "Deja suficiente silencio alrededor del trabajo para que entre tu mejor manera de pensar." },
+      { "id": "foco-020", "en": "Decide what success means for this hour, not for your entire life.", "es": "Decide qué significa avanzar durante esta hora, no durante toda tu vida." },
+      { "id": "foco-021", "en": "Attention scattered across five good ideas may finish none of them.", "es": "La atención repartida entre cinco buenas ideas puede no terminar ninguna." },
+      { "id": "foco-022", "en": "Put the important task where your energy is real, not where your calendar looks impressive.", "es": "Pon la tarea importante donde tu energía sea real, no donde el calendario parezca brillante." },
+      { "id": "foco-023", "en": "You can answer later; the thought in front of you may not return in the same shape.", "es": "Puedes responder después; la idea que tienes delante quizá no vuelva con la misma forma." },
+      { "id": "foco-024", "en": "One deliberate hour can protect more of your day than a dozen hurried ones.", "es": "Una hora consciente puede proteger más de tu día que una docena vivida con prisa." },
+      { "id": "foco-025", "en": "Let completion, not novelty, decide where your attention goes next.", "es": "Deja que terminar, y no la novedad, decida hacia dónde va ahora tu atención." },
+      { "id": "foco-026", "en": "The task becomes clearer when you name the exact point where you will stop.", "es": "La tarea se vuelve más clara cuando nombras el punto exacto en el que vas a parar." },
+      { "id": "foco-027", "en": "Close the door on one distraction before asking yourself for deeper concentration.", "es": "Cierra la puerta a una distracción antes de pedirte una concentración más profunda." },
+      { "id": "foco-028", "en": "A short list chosen with care can hold more ambition than a crowded one.", "es": "Una lista corta y bien elegida puede contener más ambición que una lista abarrotada." },
+      { "id": "foco-029", "en": "When your mind starts wandering, return to the next visible action, not the entire plan.", "es": "Cuando la mente se disperse, vuelve a la siguiente acción visible, no al plan entero." },
+      { "id": "foco-030", "en": "Make room for depth by refusing one demand that was never truly yours.", "es": "Haz sitio para la profundidad rechazando una exigencia que nunca fue realmente tuya." }
+    ],
+    "calma": [
+      { "id": "calma-016", "en": "Let your shoulders receive the message that nothing must be solved in this breath.", "es": "Deja que tus hombros entiendan que nada tiene que resolverse durante esta respiración." },
+      { "id": "calma-017", "en": "You can wait for the feeling to settle before deciding what it means.", "es": "Puedes esperar a que la emoción se asiente antes de decidir qué significa." },
+      { "id": "calma-018", "en": "Move one thing off your inner table; you do not need to hold every concern at once.", "es": "Retira una cosa de tu mesa interior; no necesitas sostener todas las preocupaciones a la vez." },
+      { "id": "calma-019", "en": "A slower answer may protect both the truth and the person who needs to hear it.", "es": "Una respuesta más lenta puede cuidar la verdad y también a quien necesita escucharla." },
+      { "id": "calma-020", "en": "Notice what is steady: the floor, the chair, the breath arriving without instructions.", "es": "Observa lo que permanece: el suelo, la silla, el aire que llega sin instrucciones." },
+      { "id": "calma-021", "en": "Give the noise a boundary instead of asking yourself to become louder than it.", "es": "Ponle un límite al ruido en lugar de exigirte que hables más fuerte que él." },
+      { "id": "calma-022", "en": "The day can remain unfinished while you take a moment to become present again.", "es": "El día puede quedarse inacabado mientras te tomas un momento para volver a estar presente." },
+      { "id": "calma-023", "en": "Not every uneasy thought deserves a chair at the center of the room.", "es": "No todo pensamiento inquieto merece una silla en el centro de la habitación." },
+      { "id": "calma-024", "en": "Rest your attention on something ordinary until your mind stops running ahead.", "es": "Apoya la atención en algo cotidiano hasta que tu mente deje de correr por delante." },
+      { "id": "calma-025", "en": "You are not falling behind when you pause long enough to choose your next step well.", "es": "No te estás quedando atrás por detenerte lo suficiente para elegir bien el siguiente paso." },
+      { "id": "calma-026", "en": "Release the version of this conversation that has only happened in your imagination.", "es": "Suelta esa versión de la conversación que solo ha ocurrido dentro de tu imaginación." },
+      { "id": "calma-027", "en": "There is no need to turn a difficult minute into a prediction about the whole week.", "es": "No hace falta convertir un minuto difícil en una predicción sobre toda la semana." },
+      { "id": "calma-028", "en": "Let quiet be a place where you gather yourself, not another standard you must meet.", "es": "Deja que la quietud sea un lugar para recogerte, no otra meta que debas cumplir." },
+      { "id": "calma-029", "en": "Your nervous system may need evidence of safety more than another explanation.", "es": "Quizá tu sistema nervioso necesite señales de seguridad más que otra explicación." },
+      { "id": "calma-030", "en": "Make this moment smaller: this room, this breath, this one thing you can gently do.", "es": "Haz este momento más pequeño: esta habitación, este aire y una sola cosa que puedas hacer con calma." }
+    ],
+    "disciplina": [
+      { "id": "disciplina-016", "en": "Build a routine that still works when enthusiasm has somewhere else to be.", "es": "Construye una rutina que también funcione cuando el entusiasmo esté en otra parte." },
+      { "id": "disciplina-017", "en": "The useful plan is the one you can follow on an ordinary Wednesday.", "es": "El plan útil es el que puedes seguir un miércoles cualquiera." },
+      { "id": "disciplina-018", "en": "Keep the starting line close enough that excuses cannot hide the way to it.", "es": "Mantén cerca la línea de salida para que las excusas no puedan esconderte el camino." },
+      { "id": "disciplina-019", "en": "Do the agreed amount, then stop with the satisfaction of having kept your word.", "es": "Haz la cantidad acordada y para con la satisfacción de haber cumplido tu palabra." },
+      { "id": "disciplina-020", "en": "A boundary around your effort keeps commitment from turning into punishment.", "es": "Poner límites al esfuerzo evita que el compromiso termine convertido en castigo." },
+      { "id": "disciplina-021", "en": "Prepare the first action tonight so tomorrow has less room for negotiation.", "es": "Prepara esta noche la primera acción para que mañana quede menos espacio para negociar." },
+      { "id": "disciplina-022", "en": "Measure the return, not the interruption; coming back is the skill you are building.", "es": "Mide el regreso, no la interrupción; volver es la habilidad que estás construyendo." },
+      { "id": "disciplina-023", "en": "Choose a minimum that protects continuity without pretending every day is equal.", "es": "Elige un mínimo que proteja la continuidad sin fingir que todos los días son iguales." },
+      { "id": "disciplina-024", "en": "Your calendar should reflect your commitment before your mood gets a vote.", "es": "Haz que el calendario refleje tu compromiso antes de que tu ánimo pueda votar." },
+      { "id": "disciplina-025", "en": "Leave yourself visible proof: one finished repetition, honestly recorded.", "es": "Déjate una prueba visible: una repetición terminada y registrada con honestidad." },
+      { "id": "disciplina-026", "en": "A reliable pace is allowed to look unimpressive while it carries you forward.", "es": "Un ritmo fiable puede parecer poco impresionante mientras te lleva hacia delante." },
+      { "id": "disciplina-027", "en": "Remove one decision from the routine and save your effort for doing the work.", "es": "Quita una decisión de la rutina y reserva el esfuerzo para hacer el trabajo." },
+      { "id": "disciplina-028", "en": "Stop making tomorrow repay everything you postponed today; begin with one honest task.", "es": "No obligues a mañana a pagar todo lo que aplazaste hoy; empieza por una tarea sincera." },
+      { "id": "disciplina-029", "en": "Consistency grows when the promise is specific enough to know when it is complete.", "es": "La constancia crece cuando la promesa es tan concreta que sabes cuándo está cumplida." },
+      { "id": "disciplina-030", "en": "Respect the structure that helps you act, then adjust it when life genuinely changes.", "es": "Respeta la estructura que te ayuda a actuar y ajústala cuando la vida cambie de verdad." }
+    ],
+    "autoestima": [
+      { "id": "autoestima-016", "en": "You can correct your course without turning yourself into the enemy.", "es": "Puedes corregir el rumbo sin convertirte en tu propio enemigo." },
+      { "id": "autoestima-017", "en": "Let your inner voice become a place where mistakes can be examined without humiliation.", "es": "Haz de tu voz interior un lugar donde mirar los errores sin humillarte." },
+      { "id": "autoestima-018", "en": "The qualities you value in others are not evidence that you lack them.", "es": "Las cualidades que admiras en otros no demuestran que tú carezcas de ellas." },
+      { "id": "autoestima-019", "en": "You do not owe anyone a smaller version of yourself to make the room feel easier.", "es": "No le debes a nadie una versión reducida de ti para que la habitación resulte más cómoda." },
+      { "id": "autoestima-020", "en": "Your needs remain real even when you cannot explain them perfectly.", "es": "Tus necesidades siguen siendo reales aunque no sepas explicarlas a la perfección." },
+      { "id": "autoestima-021", "en": "Notice whose standards are speaking before you decide you are not enough.", "es": "Observa de quién son las exigencias antes de decidir que tú no eres suficiente." },
+      { "id": "autoestima-022", "en": "You can be proud of how you handled something and still wish it had been different.", "es": "Puedes sentir orgullo por cómo afrontaste algo y aun desear que hubiera sido distinto." },
+      { "id": "autoestima-023", "en": "Offer yourself the patience you naturally give to someone learning a difficult skill.", "es": "Ofrécete la paciencia que darías sin pensar a quien aprende algo difícil." },
+      { "id": "autoestima-024", "en": "A boundary is not evidence that you care less; sometimes it proves you include yourself.", "es": "Un límite no significa que te importe menos; a veces demuestra que también cuentas contigo." },
+      { "id": "autoestima-025", "en": "Do not make your most insecure hour responsible for defining your whole character.", "es": "No dejes que tu hora más insegura sea la encargada de definir todo tu carácter." },
+      { "id": "autoestima-026", "en": "You are allowed to enjoy what you have built before deciding how to improve it.", "es": "Puedes disfrutar de lo que has construido antes de decidir cómo mejorarlo." },
+      { "id": "autoestima-027", "en": "Treat your limits as information, not as a verdict on your worth.", "es": "Trata tus límites como información, no como un veredicto sobre tu valor." },
+      { "id": "autoestima-028", "en": "The right room will not require you to translate your dignity into an apology.", "es": "El lugar adecuado no te exigirá convertir tu dignidad en una disculpa." },
+      { "id": "autoestima-029", "en": "Speak one true thing about yourself that has nothing to do with achievement.", "es": "Di una verdad sobre ti que no tenga ninguna relación con tus logros." },
+      { "id": "autoestima-030", "en": "You can outgrow an old judgment without proving that the person who made it was wrong.", "es": "Puedes superar un juicio antiguo sin demostrar que quien lo hizo estaba equivocado." }
+    ],
+    "gratitud": [
+      { "id": "gratitud-016", "en": "Notice the quiet systems holding your day together before you call it ordinary.", "es": "Observa los apoyos silenciosos que sostienen tu día antes de llamarlo corriente." },
+      { "id": "gratitud-017", "en": "Thank the version of you who completed the small task you now take for granted.", "es": "Agradece a la versión de ti que hizo esa pequeña tarea que ahora das por sentada." },
+      { "id": "gratitud-018", "en": "Some goodness is easy to miss because it arrives faithfully instead of dramatically.", "es": "Hay cosas buenas que pasan inadvertidas porque llegan con fidelidad y no con espectáculo." },
+      { "id": "gratitud-019", "en": "Let one familiar comfort become visible again: warm water, clean sheets, an open window.", "es": "Vuelve a mirar un consuelo conocido: agua caliente, sábanas limpias, una ventana abierta." },
+      { "id": "gratitud-020", "en": "Gratitude can sit beside disappointment; neither has to erase the other.", "es": "La gratitud puede sentarse junto a la decepción; ninguna tiene que borrar a la otra." },
+      { "id": "gratitud-021", "en": "Remember one kindness that changed the temperature of an otherwise difficult day.", "es": "Recuerda una amabilidad que cambió la temperatura de un día que venía siendo difícil." },
+      { "id": "gratitud-022", "en": "What supports you quietly may deserve more attention than what impresses you briefly.", "es": "Lo que te sostiene en silencio quizá merezca más atención que lo que te impresiona un momento." },
+      { "id": "gratitud-023", "en": "Receive the good moment without asking it to justify everything that came before.", "es": "Recibe el buen momento sin pedirle que justifique todo lo ocurrido antes." },
+      { "id": "gratitud-024", "en": "A name, a meal, a message, a safe return: let one specific thing be enough to feel grateful.", "es": "Un nombre, una comida, un mensaje, un regreso seguro: deja que algo concreto baste para sentir gratitud." },
+      { "id": "gratitud-025", "en": "Notice what no longer hurts in the way it once did; healing can become familiar too.", "es": "Observa lo que ya no duele como antes; la recuperación también puede volverse cotidiana." },
+      { "id": "gratitud-026", "en": "The life you want is not only ahead of you; pieces of it may already be in the room.", "es": "La vida que deseas no está solo delante; quizá algunas partes ya estén en esta habitación." },
+      { "id": "gratitud-027", "en": "Say thank you while the ordinary moment is happening, not only after it becomes a memory.", "es": "Da las gracias mientras ocurre el momento cotidiano, no solo cuando se convierta en recuerdo." },
+      { "id": "gratitud-028", "en": "Name exactly what made this moment gentler; gratitude grows clearer in the details.", "es": "Nombra exactamente qué hizo este momento más amable; la gratitud se aclara en los detalles." },
+      { "id": "gratitud-029", "en": "Someone once made room for you; carry that warmth into the room you offer others.", "es": "Alguien te hizo sitio una vez; lleva esa calidez al espacio que tú ofreces a los demás." },
+      { "id": "gratitud-030", "en": "End the day by finding one thing that asked nothing from you and still offered comfort.", "es": "Termina el día encontrando algo que no te pidió nada y aun así te dio consuelo." }
+    ]
+  },
+  "weakExisting": [
+    {
+      "id": "animo-005",
+      "reason": "Broad and less distinctive than the surrounding set.",
+      "replacement": {
+        "en": "A modest day can still leave one corner of your life better than it found it.",
+        "es": "Un día modesto aún puede dejar un rincón de tu vida mejor de como lo encontró."
+      }
+    },
+    {
+      "id": "foco-004",
+      "reason": "Familiar productivity wording with little sensory or practical specificity.",
+      "replacement": {
+        "en": "When every task asks to be first, choose the one whose absence would matter tomorrow.",
+        "es": "Cuando todas las tareas quieran ir primero, elige la que mañana echarías en falta."
+      }
+    },
+    {
+      "id": "calma-004",
+      "reason": "Common slow-down formulation that feels generic beside stronger entries.",
+      "replacement": {
+        "en": "A slower pace can reveal the part of the day your hurry kept walking past.",
+        "es": "Un ritmo más lento puede mostrarte la parte del día que tu prisa dejaba atrás."
+      }
+    },
+    {
+      "id": "disciplina-015",
+      "reason": "Abstract claim with less useful tension or imagery than the category average.",
+      "replacement": {
+        "en": "Each promise kept makes the next beginning feel a little less unfamiliar.",
+        "es": "Cada promesa cumplida hace que el próximo comienzo resulte un poco menos extraño."
+      }
+    },
+    {
+      "id": "autoestima-012",
+      "reason": "Positive but generic; it does not offer a fresh or concrete perspective.",
+      "replacement": {
+        "en": "Make one decision today in which your own voice is not the last one consulted.",
+        "es": "Toma hoy una decisión en la que tu propia voz no sea la última en ser consultada."
+      }
+    },
+    {
+      "id": "gratitud-006",
+      "reason": "The wrapped-gift construction is widely used and close to a stock saying.",
+      "replacement": {
+        "en": "Some gifts look like an uneventful afternoon in which your body finally feels safe.",
+        "es": "Algunos regalos parecen una tarde tranquila en la que tu cuerpo por fin se siente seguro."
+      }
+    }
+  ]
+}

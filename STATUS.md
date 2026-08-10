@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **ficha privada bilingüe creada en App Store Connect; build 17 de QA pendiente de cierre firmado**
+Estado: **catálogo bilingüe ampliado y carril TestFlight preparado; pendiente de firma, QA físico y autorización de subida**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -15,18 +15,21 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
 - Apple rechazó el nombre exacto `Warm Words` por estar ya usado. La marca visible del binario sigue siendo `Warm Words`; la ficha usa `Warm Words: Daily Quotes` en inglés y `Warm Words: Frases Diarias` en español.
 - La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, políticas de privacidad inglesa/española, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se cargó build ni se añadió a revisión.
-- La clasificación por edades quedó configurada de forma conservadora: 9+ en 172 países, 12+ en Vietnam y Brasil, y `All` en Corea del Sur; se declaró que la app contiene temas generales de bienestar pero no información médica, contenido adulto, violencia, apuestas, UGC distribuido, chat, publicidad ni acceso web sin restricciones. También se declaró correctamente que no es un dispositivo médico regulado.
+- App Store Connect muestra actualmente una clasificación global 4+ con excepciones regionales; se declaró que la app contiene temas generales de bienestar pero no información médica, contenido adulto, violencia, apuestas, UGC distribuido, chat, publicidad ni acceso web sin restricciones. También se declaró correctamente que no es un dispositivo médico regulado.
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
+- El workflow manual `.github/workflows/build-ios-testflight.yml` ya define tests, firma Apple Distribution, archive, inspección y exportación. No se ha ejecutado: el environment protegido y los secretos de firma todavía no existen.
+- La subida está desactivada por defecto y sigue requiriendo autorización expresa en el momento de activarla.
+- TestFlight confirma que todavía no existe ninguna compilación. Las descripciones inglesa y española de App Store se actualizaron de 180 a 360 frases; no se creó grupo de testers ni se añadió información personal de contacto inventada.
 
 ## Cierre implementado localmente
 
-- Catálogos propios completos de 180 frases y 12 categorías en inglés y español, con los mismos IDs y orden. No contienen citas atribuidas ni dependen de una fuente externa.
+- Catálogos propios completos de 360 frases y 12 categorías en inglés y español, con los mismos IDs y orden. Incluyen 180 pares nuevos y 12 reescrituras editoriales que conservan IDs. No contienen citas atribuidas ni dependen de una fuente externa.
 - El alcance solo inglés quedó sustituido por una app bilingüe: idioma inicial según el iPhone, selector persistente en Settings y cambio conjunto de interfaz, catálogo, categorías, fechas, días y próximas notificaciones. Favoritos y datos personales se conservan por ID y las frases creadas por el usuario no se traducen.
 - Frase diaria basada en días continuos, sin reinicio por año.
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
 - Hora configurada con `DatePicker`, migración estricta de la preferencia antigua y manejo de cambios DST mediante el calendario del sistema.
 - Tarjetas propias: entrada vacía o categoría inválida no cierra la hoja; crear selecciona y persiste “Manual”; borrar exige confirmación y limpia favorito y notificaciones. Edición queda fuera de 1.0.
-- Compartir continúa como texto plano; no necesita nuevo material visual.
+- Compartir genera una tarjeta visual PNG con la marca Warm Words. El enlace inteligente permanece desactivado para no distribuir una URL 404 hasta que existan landing, AASA, entitlement y firma compatibles.
 - Accesibilidad puntual: labels y estados seleccionados, encabezados semánticos, fondos decorativos ocultos, botones táctiles, grid adaptado a tamaños AX, tipografías dinámicas críticas y dorado de texto oscurecido.
 - `PrivacyInfo.xcprivacy` declara `UserDefaults` con `CA92.1`; `Info.plist` usa región inglesa, iPhone portrait y `ITSAppUsesNonExemptEncryption=false` sujeto a inspección del archive final.
 - Target iPhone-only, firma automática sin team embebido y target XCTest explícito.
@@ -40,12 +43,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Verificaciones aprobadas en Windows
 
-- `node scripts/check-quotes.mjs`: 180 frases españolas y 180 inglesas, 12 categorías, sin duplicados y con paridad exacta de IDs/categorías.
+- `node scripts/check-quotes.mjs`: 360 frases españolas y 360 inglesas, 30 por categoría, sin duplicados exactos/normalizados/casi idénticos y con paridad exacta de IDs, orden y categorías.
 - `node scripts/check-ios-closeout.mjs`: idioma público, cola local, tarjetas, privacy manifest, proyecto y ausencia de release automática verificados estáticamente.
 - `content.json`, `content-en.json`, `Info.plist` y `PrivacyInfo.xcprivacy` parsean correctamente.
 - `project.yml` y el workflow parsean como YAML; el esquema incluye `InspiracionDiaTests`.
 - `git diff --check` no detecta errores y `git diff --name-only -- android` queda vacío.
 - La regeneración de ambos catálogos es byte a byte reproducible.
+- El workflow TestFlight se valida como YAML manual sin eventos automáticos y no contiene secretos; su ejecución real depende de macOS, certificado, perfil y environment protegido.
 
 ## Compilación macOS aprobada
 

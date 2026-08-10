@@ -13,6 +13,7 @@ const info = read("native-ios/Resources/Info.plist");
 const privacy = read("native-ios/Resources/PrivacyInfo.xcprivacy");
 const project = read("native-ios/project.yml");
 const workflow = read(".github/workflows/build-ios-unsigned.yml");
+const testFlightWorkflow = read(".github/workflows/build-ios-testflight.yml");
 const appIconContents = JSON.parse(read("native-ios/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json"));
 const appIconRootContents = JSON.parse(read("native-ios/Resources/Assets.xcassets/Contents.json"));
 const appIconEntry = appIconContents.images.find(
@@ -37,8 +38,8 @@ for (let offset = 8; offset + 12 <= png.length;) {
 assert.equal(appIconRootContents.info?.author, "xcode");
 assert.equal(appIconRootContents.info?.version, 1);
 
-assert.equal(spanish.quotes.length, 180, "Spanish legacy catalog must remain complete");
-assert.equal(english.quotes.length, 180, "English release catalog must contain 180 quotes");
+assert.equal(spanish.quotes.length, 360, "Spanish release catalog must contain 360 quotes");
+assert.equal(english.quotes.length, 360, "English release catalog must contain 360 quotes");
 assert.deepEqual(
   english.quotes.map(({ id }) => id),
   spanish.quotes.map(({ id }) => id),
@@ -156,6 +157,18 @@ assert.match(workflow, /CFBundleLocalizations:0[\s\S]*CFBundleLocalizations:1/);
 assert.match(workflow, /CFBundleIconName[\s\S]*AppIcon/);
 assert.match(workflow, /Assets\.car/);
 assert.doesNotMatch(workflow, /contents: write|gh release|Publish latest IPA release/);
+assert.match(testFlightWorkflow, /on:\s*\n\s*workflow_dispatch:/);
+assert.doesNotMatch(testFlightWorkflow, /\n\s+push:/);
+assert.match(testFlightWorkflow, /default: "false"/);
+assert.match(testFlightWorkflow, /environment: app-store-production/);
+assert.match(testFlightWorkflow, /BUILD_CERTIFICATE_BASE64/);
+assert.match(testFlightWorkflow, /BUILD_PROVISION_PROFILE_BASE64/);
+assert.match(testFlightWorkflow, /APP_STORE_CONNECT_API_KEY_BASE64/);
+assert.match(testFlightWorkflow, /xcodebuild[\s\S]*test[\s\S]*analyze[\s\S]*archive/);
+assert.match(testFlightWorkflow, /method string app-store-connect/);
+assert.match(testFlightWorkflow, /codesign --verify --deep --strict/);
+assert.match(testFlightWorkflow, /if: inputs\.upload_to_testflight == 'true'[\s\S]*altool --validate-app[\s\S]*altool --upload-app/);
+assert.doesNotMatch(testFlightWorkflow, /contents: write|gh release|\brm -rf\b/);
 
 const extractStringKeys = (name) => {
   const block = swift.match(new RegExp(`private static let ${name} = \\[([\\s\\S]*?)\\n  \\]`));

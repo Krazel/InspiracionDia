@@ -45,9 +45,9 @@ final class AppLogicTests: XCTestCase {
   func testDailyQuoteAdvancesAcrossYearBoundary() throws {
     let first = try XCTUnwrap(calendar.date(from: DateComponents(year: 2025, month: 12, day: 31)))
     let second = try XCTUnwrap(calendar.date(from: DateComponents(year: 2026, month: 1, day: 1)))
-    let firstIndex = try XCTUnwrap(DailyQuoteSelector.index(for: first, count: 180, calendar: calendar))
-    let secondIndex = try XCTUnwrap(DailyQuoteSelector.index(for: second, count: 180, calendar: calendar))
-    XCTAssertEqual(secondIndex, (firstIndex + 1) % 180)
+    let firstIndex = try XCTUnwrap(DailyQuoteSelector.index(for: first, count: 360, calendar: calendar))
+    let secondIndex = try XCTUnwrap(DailyQuoteSelector.index(for: second, count: 360, calendar: calendar))
+    XCTAssertEqual(secondIndex, (firstIndex + 1) % 360)
   }
 
   func testDailyQuoteRejectsEmptyCatalog() {

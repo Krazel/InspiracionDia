@@ -14,7 +14,7 @@ This checklist is for the first signed bilingual English/Spanish iPhone build. I
 - [ ] Confirm the built `.app` contains the active English `content-en.json` and Spanish `content.json` catalogs, `PrivacyInfo.xcprivacy`, both premium backgrounds, and an `Assets.car` compiled from the approved C — Protected thought AppIcon.
 - [ ] Confirm the built Info.plist declares both `en` and `es` in `CFBundleLocalizations`.
 - [ ] Confirm the built Info.plist has `Warm Words` as both display and bundle name, `AppIcon` as the primary icon name, version 1.0, the intended bundle ID, iPhone-only device family, and the expected encryption declaration.
-- [ ] Archive with automatic signing and the owner's selected team.
+- [ ] Archive with the manual TestFlight workflow, Apple Distribution signing, the matching App Store profile, and Team `B2X6D3A9J9`.
 - [ ] Run Analyze and Validate App; record every warning and resolution.
 
 ## Clean-install gate — physical iPhone
@@ -30,20 +30,19 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Today shows a valid date, quote, and category in the selected language.
 - [ ] Today shows the complete quote card, favorite/share actions, and tab bar without scrolling at the default text size on the smallest supported iPhone.
 - [ ] Tomorrow/date override selects the next deterministic quote and the sequence crosses year end without resetting.
-- [ ] All 12 categories open and together expose 180 unique quotes in English and 180 in Spanish.
+- [ ] All 12 categories open and together expose 360 unique quotes in English and 360 in Spanish.
 - [ ] Settings offers `English / Español`; changing it updates the current screen immediately and the choice survives relaunch.
-- [ ] Switching English → Spanish → English preserves the current category, bundled favorites, reminder preferences, personal categories, and personal quotes.
-- [ ] Personal quotes and category names remain exactly as written instead of being machine-translated.
+- [ ] Switching English → Spanish → English preserves the current category, bundled favorites, reminder preferences, and personal quotes.
+- [ ] Personal quotes remain exactly as written instead of being machine-translated.
 - [ ] Dates, day chips, VoiceOver weekday names, onboarding, Settings, Categories, Favorites, dialogs, and validation messages follow the selected language.
 - [ ] Save and unsave work from Today, Categories, and Favorites and survive relaunch.
-- [ ] Sharing from Today and a list opens the iOS share sheet with the correct quote and `Warm Words`.
+- [ ] Sharing from Today and a list opens the iOS share sheet with a complete visual quote card and `Warm Words` branding.
 - [ ] A whitespace-only personal quote cannot be added.
 - [ ] A personal quote over 240 characters is rejected with a visible counter/error and the sheet remains usable with the keyboard open.
 - [ ] A valid personal quote is trimmed, saved, shown under Personal, and survives relaunch.
-- [ ] A personal category can be created with its first quote, appears in Categories, and survives relaunch.
-- [ ] Empty, duplicate, reserved, over-24-character, and thirteenth personal-category names are rejected without leaving an empty category.
-- [ ] A personal quote shares through the standard iOS share sheet as its text followed by `Warm Words`.
-- [ ] Deleting the last quote in a personal category warns that the category will also be removed, then removes the empty category and any reminder-category reference.
+- [ ] New personal quotes go directly to Personal; the form does not expose category creation.
+- [ ] A personal quote shares through the standard iOS share sheet as a visual quote card.
+- [ ] Legacy personal categories and their quotes remain readable after an upgrade, without exposing new category creation.
 - [ ] Deleting a personal quote requires confirmation, removes it from favorites, and survives relaunch.
 - [ ] Existing valid legacy favorites and personal quotes survive an upgrade install.
 
@@ -77,6 +76,8 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 
 - [ ] Rights to every quote and bundled background are confirmed in writing by the owner.
 - [ ] Public privacy and support pages use the approved name and real contact information.
+- [ ] The public share landing opens the App Store URL `https://apps.apple.com/app/id6800058458` when the app is not installed.
+- [ ] The Universal Link opens Warm Words when installed; the AASA file declares `B2X6D3A9J9.com.dmkr.inspiraciondia` and the signed app contains `applinks:krazel.github.io`.
 - [ ] App Privacy answers match the final archive and third-party component scan.
 - [ ] Required-reason API report contains only declared uses or is reconciled.
 - [ ] Updated age-rating questionnaire, category, copyright, territories, price, DSA status, and manual release mode are complete.

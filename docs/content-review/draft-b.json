@@ -1,0 +1,531 @@
+{
+  "schemaVersion": 1,
+  "status": "editorial-draft-only",
+  "scope": {
+    "categories": [
+      "valentia",
+      "habitos",
+      "creatividad",
+      "resiliencia",
+      "relaciones",
+      "energia"
+    ],
+    "idRange": "016-030",
+    "pairsPerCategory": 15,
+    "characterRangePerLanguage": "32-138"
+  },
+  "categories": {
+    "valentia": [
+      {
+        "id": "valentia-016",
+        "es": "La valentía puede ser silenciosa: quedarte donde la verdad necesita una voz.",
+        "en": "Courage can be quiet: staying in the room when the truth needs a voice."
+      },
+      {
+        "id": "valentia-017",
+        "es": "No necesitas que el miedo desaparezca; basta con dejar de obedecerlo.",
+        "en": "You do not need fear to disappear; you only need to stop obeying it."
+      },
+      {
+        "id": "valentia-018",
+        "es": "El siguiente paso honesto puede incomodarte y seguir siendo el correcto.",
+        "en": "The next honest step can feel uncomfortable and still be the right one."
+      },
+      {
+        "id": "valentia-019",
+        "es": "Cada límite que expresas enseña a tu vida dónde quieres permanecer.",
+        "en": "Every boundary you voice teaches your life where you are willing to stay."
+      },
+      {
+        "id": "valentia-020",
+        "es": "A veces ser valiente es hacer la pregunta cuya respuesta podría cambiar tus planes.",
+        "en": "Sometimes courage means asking the question whose answer could change your plans."
+      },
+      {
+        "id": "valentia-021",
+        "es": "Puedes entrar en lo desconocido sin fingir que no tienes miedo.",
+        "en": "You can step into the unknown without pretending that you are unafraid."
+      },
+      {
+        "id": "valentia-022",
+        "es": "Hay puertas que solo se abren cuando aceptas no conocer la habitación siguiente.",
+        "en": "Some doors open only after you accept that you cannot see the next room."
+      },
+      {
+        "id": "valentia-023",
+        "es": "Decir «me equivoqué» puede exigir más fuerza que seguir defendiéndote.",
+        "en": "Saying “I was wrong” can require more strength than continuing to defend yourself."
+      },
+      {
+        "id": "valentia-024",
+        "es": "Cuando una elección importa, esperar indefinidamente también elige por ti.",
+        "en": "When a choice matters, waiting indefinitely is also a choice made for you."
+      },
+      {
+        "id": "valentia-025",
+        "es": "Deja que empiecen tus manos nerviosas; la confianza puede alcanzarlas después.",
+        "en": "Let your nervous hands begin; confidence can catch up with them later."
+      },
+      {
+        "id": "valentia-026",
+        "es": "Proteger lo que importa a veces exige soportar que no te entiendan durante un tiempo.",
+        "en": "Protecting what matters sometimes means being misunderstood for a while."
+      },
+      {
+        "id": "valentia-027",
+        "es": "Puedes dejar lo conocido antes de saber exactamente qué ocupará su lugar.",
+        "en": "You may leave what is familiar before knowing exactly what will replace it."
+      },
+      {
+        "id": "valentia-028",
+        "es": "El gesto valiente puede ser quedarte lo suficiente para aprender, no huir de la incomodidad.",
+        "en": "The brave act may be staying long enough to learn instead of escaping discomfort."
+      },
+      {
+        "id": "valentia-029",
+        "es": "Nombra con claridad lo que te duele; la vaguedad deja demasiado espacio al miedo.",
+        "en": "Name what hurts clearly; vagueness gives fear too much room to grow."
+      },
+      {
+        "id": "valentia-030",
+        "es": "Una verdad difícil se vuelve más habitable cuando por fin encuentra una voz.",
+        "en": "A difficult truth becomes easier to live with once it finally has a voice."
+      }
+    ],
+    "habitos": [
+      {
+        "id": "habitos-016",
+        "es": "Una rutina útil deja sitio a los días malos en vez de derrumbarse con ellos.",
+        "en": "A useful routine makes room for bad days instead of collapsing with them."
+      },
+      {
+        "id": "habitos-017",
+        "es": "Deja el primer paso donde tu versión cansada pueda encontrarlo sin pensar demasiado.",
+        "en": "Leave the first step where your tired self can find it without much thought."
+      },
+      {
+        "id": "habitos-018",
+        "es": "Mide cuánto tardas en volver, no cuántos días lograste ser impecable.",
+        "en": "Measure how quickly you return, not how many days you managed to be flawless."
+      },
+      {
+        "id": "habitos-019",
+        "es": "Un entorno bien preparado facilita la elección que te ayuda cuando estás cansado.",
+        "en": "A well-prepared environment makes the helpful choice easier when you are tired."
+      },
+      {
+        "id": "habitos-020",
+        "es": "Vincula la acción a una señal estable y recordarla requerirá menos esfuerzo.",
+        "en": "Tie the action to a steady cue, and remembering will require less effort."
+      },
+      {
+        "id": "habitos-021",
+        "es": "Si un hábito solo funciona cuando estás inspirado, todavía necesita una base más firme.",
+        "en": "If a habit only works when you feel inspired, it still needs a sturdier foundation."
+      },
+      {
+        "id": "habitos-022",
+        "es": "Deja una señal visible de lo que cumpliste; el progreso también necesita memoria.",
+        "en": "Leave visible evidence of what you completed; progress needs a memory too."
+      },
+      {
+        "id": "habitos-023",
+        "es": "Termina el día de una forma que le facilite el comienzo a tu yo de mañana.",
+        "en": "End the day in a way that makes tomorrow easier to begin."
+      },
+      {
+        "id": "habitos-024",
+        "es": "Protege una versión mínima del hábito para los días en que no puedas dar más.",
+        "en": "Protect a minimum version of the habit for days when you cannot give more."
+      },
+      {
+        "id": "habitos-025",
+        "es": "Los hábitos se vuelven más sostenibles cuando el descanso forma parte del diseño.",
+        "en": "Habits become more sustainable when rest is built into their design."
+      },
+      {
+        "id": "habitos-026",
+        "es": "Une la acción nueva a algo que ya ocurre para que sea más fácil recordar el comienzo.",
+        "en": "Attach the new action to something that already happens so the beginning becomes easier to remember."
+      },
+      {
+        "id": "habitos-027",
+        "es": "Saltarte una vez es un hecho; volver en la siguiente ocasión es una decisión.",
+        "en": "Missing once is an event; returning at the next opportunity is a decision."
+      },
+      {
+        "id": "habitos-028",
+        "es": "Mejora el camino del hábito antes de culparte por no recorrerlo mejor.",
+        "en": "Improve the path of the habit before blaming yourself for walking it poorly."
+      },
+      {
+        "id": "habitos-029",
+        "es": "El ritmo adecuado no solo funciona en semanas perfectas; también sobrevive a las ocupadas.",
+        "en": "The right pace works beyond perfect weeks; it also survives the busy ones."
+      },
+      {
+        "id": "habitos-030",
+        "es": "Elige una rutina que puedas perdonarte, retomar y seguir construyendo.",
+        "en": "Choose a routine you can forgive, resume, and continue building."
+      }
+    ],
+    "creatividad": [
+      {
+        "id": "creatividad-016",
+        "es": "Haz mejores preguntas; el trabajo interesante suele empezar donde falla la respuesta obvia.",
+        "en": "Ask better questions; interesting work often begins where the obvious answer fails."
+      },
+      {
+        "id": "creatividad-017",
+        "es": "Guarda los fragmentos extraños; no todas las ideas llegan con instrucciones.",
+        "en": "Save the strange fragments; not every idea arrives with instructions."
+      },
+      {
+        "id": "creatividad-018",
+        "es": "A veces el bloqueo creativo es exceso de ruido; despeja un rincón y vuelve a mirar.",
+        "en": "Sometimes a creative block is too much noise; clear one corner and look again."
+      },
+      {
+        "id": "creatividad-019",
+        "es": "Termina un boceto para descubrir qué estaba intentando decir realmente la idea.",
+        "en": "Finish a sketch to discover what the idea was actually trying to say."
+      },
+      {
+        "id": "creatividad-020",
+        "es": "Toma prestada una estructura, no una voz; las influencias pueden ser andamios.",
+        "en": "Borrow a structure, not a voice; influences can serve as scaffolding."
+      },
+      {
+        "id": "creatividad-021",
+        "es": "Una limitación bien elegida puede darle al proyecto la forma que la libertad no encontraba.",
+        "en": "A well-chosen limit can give the project a shape that freedom could not find."
+      },
+      {
+        "id": "creatividad-022",
+        "es": "Deja que la curiosidad avance unos pasos antes de exigirle que sea útil.",
+        "en": "Let curiosity walk a few steps before demanding that it be useful."
+      },
+      {
+        "id": "creatividad-023",
+        "es": "Observa lo que te irrita; puede estar señalando una pregunta que aún no terminaste.",
+        "en": "Notice what irritates you; it may point toward a question you have not finished."
+      },
+      {
+        "id": "creatividad-024",
+        "es": "Una obra que sorprende a quien la crea tiene alguna posibilidad de sorprender a otros.",
+        "en": "Work that surprises its maker has a chance of surprising someone else."
+      },
+      {
+        "id": "creatividad-025",
+        "es": "Si la idea se atasca, cambia de herramienta; otra forma puede mostrarte lo que faltaba.",
+        "en": "When an idea gets stuck, change tools; another form may reveal what was missing."
+      },
+      {
+        "id": "creatividad-026",
+        "es": "Protege el trabajo temprano de una audiencia prematura; primero necesita aprender a sostenerse.",
+        "en": "Protect early work from a premature audience; first it needs to learn how to stand."
+      },
+      {
+        "id": "creatividad-027",
+        "es": "La originalidad aparece al unir observaciones corrientes que solo tú habías reunido.",
+        "en": "Originality appears when ordinary observations meet in a combination only you noticed."
+      },
+      {
+        "id": "creatividad-028",
+        "es": "Hazle espacio al aburrimiento; una mente sin instrucciones empieza a buscar caminos propios.",
+        "en": "Make room for boredom; a mind without instructions begins finding its own paths."
+      },
+      {
+        "id": "creatividad-029",
+        "es": "Cada elección cierra posibilidades, y así es precisamente como una obra adquiere forma.",
+        "en": "Every choice closes possibilities, and that is exactly how a piece takes shape."
+      },
+      {
+        "id": "creatividad-030",
+        "es": "Deja de pulir la frase que el proyecto ya no necesita y escucha lo que pide ahora.",
+        "en": "Stop polishing the sentence the project no longer needs, and hear what it asks for now."
+      }
+    ],
+    "resiliencia": [
+      {
+        "id": "resiliencia-016",
+        "es": "Sanar no avanza en línea recta, pero aun así puede conservar una dirección.",
+        "en": "Healing does not move in a straight line, but it can still have direction."
+      },
+      {
+        "id": "resiliencia-017",
+        "es": "Un día difícil después de una buena semana no borra todo lo que esa semana te dio.",
+        "en": "One hard day after a good week does not erase everything that week gave you."
+      },
+      {
+        "id": "resiliencia-018",
+        "es": "Descansar puede formar parte de la reparación sin convertirse en una retirada.",
+        "en": "Rest can be part of repair without becoming a retreat."
+      },
+      {
+        "id": "resiliencia-019",
+        "es": "Lo que antes te sostuvo quizá necesite cambiar; resistir también es renovar las herramientas.",
+        "en": "What once sustained you may need updating; resilience includes changing your tools."
+      },
+      {
+        "id": "resiliencia-020",
+        "es": "Pide compañía antes de convertir el peso que llevas en una prueba de fortaleza.",
+        "en": "Ask for company before turning what you carry into proof of your strength."
+      },
+      {
+        "id": "resiliencia-021",
+        "es": "Puedes llorar lo que perdiste sin perder también el interés por lo que permanece.",
+        "en": "You can grieve what was lost without losing interest in what still remains."
+      },
+      {
+        "id": "resiliencia-022",
+        "es": "La recuperación se nota cuando un recuerdo difícil ocupa cada vez menos espacio dentro de ti.",
+        "en": "Recovery shows when a difficult memory takes up less and less room inside you."
+      },
+      {
+        "id": "resiliencia-023",
+        "es": "No necesitas agradecer la herida para sentir orgullo por cómo te has cuidado.",
+        "en": "You do not need to thank the wound to feel proud of how you cared for yourself."
+      },
+      {
+        "id": "resiliencia-024",
+        "es": "En algunas etapas, progresar consiste en mantener a salvo lo esencial.",
+        "en": "In some seasons, progress means keeping the essential things safe."
+      },
+      {
+        "id": "resiliencia-025",
+        "es": "La fortaleza puede ser cambiar el ritmo antes de que el cuerpo te obligue a parar.",
+        "en": "Strength can mean changing pace before your body forces you to stop."
+      },
+      {
+        "id": "resiliencia-026",
+        "es": "Sobreviviste no porque nada te afectara, sino porque seguiste aprendiendo a adaptarte.",
+        "en": "You survived not because nothing affected you, but because you kept adapting."
+      },
+      {
+        "id": "resiliencia-027",
+        "es": "Cuando vuelva un dolor antiguo, recíbelo con los recursos que hoy sí tienes.",
+        "en": "When old pain returns, meet it with the resources you have today."
+      },
+      {
+        "id": "resiliencia-028",
+        "es": "Un tropiezo aporta información sobre el terreno, no un veredicto sobre tu destino.",
+        "en": "A setback offers information about the terrain, not a verdict on your destination."
+      },
+      {
+        "id": "resiliencia-029",
+        "es": "Empieza otra vez desde donde estás, no desde donde crees que ya deberías estar.",
+        "en": "Begin again from where you are, not from where you think you should already be."
+      },
+      {
+        "id": "resiliencia-030",
+        "es": "La vida que reconstruyas no tiene que parecerse a la anterior para seguir siendo tuya.",
+        "en": "The life you rebuild does not need to resemble the old one to remain yours."
+      }
+    ],
+    "relaciones": [
+      {
+        "id": "relaciones-016",
+        "es": "Ser comprendido empieza por arriesgarte a decir lo que realmente quieres decir.",
+        "en": "Being understood begins with the risk of saying what you truly mean."
+      },
+      {
+        "id": "relaciones-017",
+        "es": "El cuidado sin curiosidad puede acabar respondiendo a quien alguien fue en el pasado.",
+        "en": "Care without curiosity can end up responding to who someone used to be."
+      },
+      {
+        "id": "relaciones-018",
+        "es": "Un vínculo sano puede sostener las diferencias sin convertirlas en amenazas.",
+        "en": "A healthy bond can hold differences without turning them into threats."
+      },
+      {
+        "id": "relaciones-019",
+        "es": "Pregunta antes de suponer; la imaginación sustituye muy mal a una conversación.",
+        "en": "Ask before assuming; imagination is a poor substitute for a conversation."
+      },
+      {
+        "id": "relaciones-020",
+        "es": "La fiabilidad es una forma de cariño que también aparece en el calendario.",
+        "en": "Reliability is a form of affection that also shows up on the calendar."
+      },
+      {
+        "id": "relaciones-021",
+        "es": "Puedes ser amable sin convertirte en una persona disponible a cualquier hora.",
+        "en": "You can be kind without making yourself available at every hour."
+      },
+      {
+        "id": "relaciones-022",
+        "es": "La reparación empieza cuando el impacto importa más que defender la intención.",
+        "en": "Repair begins when the impact matters more than defending the intention."
+      },
+      {
+        "id": "relaciones-023",
+        "es": "La amistad también necesita invitaciones concretas, no solo afecto silencioso.",
+        "en": "Friendship needs real invitations too, not only quiet affection."
+      },
+      {
+        "id": "relaciones-024",
+        "es": "Las personas cambian; querer su versión presente exige actualizar cómo las miras.",
+        "en": "People change; loving who they are now requires updating how you see them."
+      },
+      {
+        "id": "relaciones-025",
+        "es": "El silencio también puede ser compañía cuando nadie te obliga a llenarlo.",
+        "en": "Silence can be companionship when nobody pressures you to fill it."
+      },
+      {
+        "id": "relaciones-026",
+        "es": "Un conflicto tratado con respeto puede hacer que la cercanía sea más sincera.",
+        "en": "Conflict handled with respect can make closeness more honest."
+      },
+      {
+        "id": "relaciones-027",
+        "es": "No pongas pruebas secretas a los demás; cuéntales con claridad qué necesitas.",
+        "en": "Do not test people in secret; tell them clearly what you need."
+      },
+      {
+        "id": "relaciones-028",
+        "es": "La reciprocidad no tiene que ser idéntica, pero sí debe sentirse mutua.",
+        "en": "Reciprocity does not need to be identical, but it should feel mutual."
+      },
+      {
+        "id": "relaciones-029",
+        "es": "Celebra también las victorias corrientes de quienes quieres; allí transcurre gran parte de la vida.",
+        "en": "Celebrate the ordinary wins of those you love; much of life happens there."
+      },
+      {
+        "id": "relaciones-030",
+        "es": "Dejar espacio para un «no» hace que cada «sí» dentro del vínculo sea más honesto.",
+        "en": "Leaving room for a “no” makes every “yes” in the relationship more honest."
+      }
+    ],
+    "energia": [
+      {
+        "id": "energia-016",
+        "es": "Tu día necesita márgenes; sin ellos, cualquier imprevisto se convierte en una emergencia.",
+        "en": "Your day needs margins; without them, every surprise becomes an emergency."
+      },
+      {
+        "id": "energia-017",
+        "es": "Usa tus horas más lúcidas para crear y deja las tareas rutinarias para momentos más lentos.",
+        "en": "Use your clearest hours to create, and leave routine tasks for slower moments."
+      },
+      {
+        "id": "energia-018",
+        "es": "Prueba primero con luz, agua y movimiento antes de juzgar cómo estás funcionando.",
+        "en": "Try light, water, and movement before judging how well you are functioning."
+      },
+      {
+        "id": "energia-019",
+        "es": "Algunos cansancios piden sueño; otros, compañía, aire nuevo o cambiar de escenario.",
+        "en": "Some kinds of tiredness ask for sleep; others ask for company, fresh air, or a change of scene."
+      },
+      {
+        "id": "energia-020",
+        "es": "Detente antes de vaciarte para que mañana no tenga que pagar todo el coste.",
+        "en": "Stop before you are empty so tomorrow does not have to pay the full cost."
+      },
+      {
+        "id": "energia-021",
+        "es": "El interés puede despertar tu energía, pero tu cuerpo sigue necesitando combustible.",
+        "en": "Interest can awaken your energy, but your body still needs fuel."
+      },
+      {
+        "id": "energia-022",
+        "es": "Retira hoy una fuente de ruido y observa qué parte de ti vuelve a tener espacio.",
+        "en": "Remove one source of noise today and notice what regains room inside you."
+      },
+      {
+        "id": "energia-023",
+        "es": "Recuperarte no es el premio por llegar al límite; forma parte de un ritmo sostenible.",
+        "en": "Recovery is not a reward for reaching your limit; it is part of a sustainable rhythm."
+      },
+      {
+        "id": "energia-024",
+        "es": "Observa qué conversaciones te dejan más claro y cuáles te dispersan durante horas.",
+        "en": "Notice which conversations leave you clearer and which scatter you for hours."
+      },
+      {
+        "id": "energia-025",
+        "es": "Una mañana más lenta puede preparar una tarde mucho más útil.",
+        "en": "A slower morning can prepare a far more useful afternoon."
+      },
+      {
+        "id": "energia-026",
+        "es": "Acerca el trabajo exigente a las horas en que tu atención despierta con naturalidad.",
+        "en": "Place demanding work near the hours when your attention naturally wakes up."
+      },
+      {
+        "id": "energia-027",
+        "es": "Las pausas funcionan mejor antes de que la concentración desaparezca por completo.",
+        "en": "Breaks work better before your concentration disappears completely."
+      },
+      {
+        "id": "energia-028",
+        "es": "Protege la transición entre trabajar y descansar; tu mente necesita notar la diferencia.",
+        "en": "Protect the transition between work and rest; your mind needs to feel the difference."
+      },
+      {
+        "id": "energia-029",
+        "es": "La estimulación constante puede esconder el cansancio sin llegar a repararlo.",
+        "en": "Constant stimulation can hide exhaustion without ever repairing it."
+      },
+      {
+        "id": "energia-030",
+        "es": "No gastes la energía de mañana solo para demostrar que hoy podías terminarlo todo.",
+        "en": "Do not spend tomorrow’s energy just to prove you could finish everything today."
+      }
+    ]
+  },
+  "weakExisting": [
+    {
+      "id": "valentia-006",
+      "reason": "La idea de una versión futura esperando resulta genérica y muy usada.",
+      "replacement": {
+        "es": "La valentía también puede ser una decisión privada que nadie llega a aplaudir.",
+        "en": "Courage can also be a private decision that nobody ever applauds."
+      }
+    },
+    {
+      "id": "habitos-013",
+      "reason": "Es demasiado breve y abstracta para aportar una imagen o acción propia.",
+      "replacement": {
+        "es": "Un sistema útil hace más fácil comenzar y menos costoso volver después de fallar.",
+        "en": "A useful system makes starting easier and returning after a miss less costly."
+      }
+    },
+    {
+      "id": "creatividad-012",
+      "reason": "La definición ingeniosa de curiosidad suena construida y poco natural en inglés.",
+      "replacement": {
+        "es": "Sigue una pregunta un poco más lejos de lo razonable; allí suelen aparecer ideas nuevas.",
+        "en": "Follow a question slightly beyond what seems reasonable; new ideas often wait there."
+      }
+    },
+    {
+      "id": "resiliencia-007",
+      "reason": "La metáfora del capítulo y el libro es un cliché muy reconocible.",
+      "replacement": {
+        "es": "Lo que hoy ocupa toda tu vista no necesariamente ocupará todo tu futuro.",
+        "en": "What fills your whole view today does not have to fill your entire future."
+      }
+    },
+    {
+      "id": "relaciones-014",
+      "reason": "La combinación de «ser casa» y «abrir la puerta» acumula metáforas conocidas.",
+      "replacement": {
+        "es": "Haz sitio para quienes te permiten descansar sin pedirte que seas otra persona.",
+        "en": "Make room for people who let you rest without asking you to become someone else."
+      }
+    },
+    {
+      "id": "energia-002",
+      "reason": "La recomendación es correcta, pero demasiado genérica y sin detalle memorable.",
+      "replacement": {
+        "es": "Protege algo de energía antes de necesitarla; no toda reserva debe llegar a cero.",
+        "en": "Protect some energy before you need it; not every reserve has to reach zero."
+      }
+    }
+  ]
+}

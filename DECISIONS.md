@@ -63,10 +63,10 @@ Este archivo separa decisiones aprobadas de decisiones materiales todavía pendi
 
 Resuelve las antiguas PEND-002 a PEND-007:
 
-- Catálogo inglés completo de 180 frases, con IDs idénticos al español preservado.
+- Catálogo bilingüe completo de 360 pares, con IDs idénticos en inglés y español.
 - El antiguo cierre en inglés fijo queda sustituido por el alcance bilingüe de `DEC-022`.
 - Notificación local con una frase distinta por fecha y cola conservadora de 60 días.
-- Compartir texto plano; no tarjeta-imagen.
+- Compartir mediante tarjeta visual; el enlace inteligente queda desactivado hasta disponer de landing y Universal Links reales.
 - Tarjetas propias con crear, validar y borrar; edición pospuesta.
 - iPhone-only para 1.0.
 
@@ -157,14 +157,14 @@ Resuelve la antigua PEND-013:
 
 - El propietario pidió expresamente el 2026-08-10 conservar las frases propias y permitir cambiar el idioma desde Settings; esta decisión sustituye el alcance solo inglés de `DEC-002` y la parte correspondiente de `DEC-010`.
 - Una instalación limpia usa español cuando el idioma preferido del iPhone es español y usa inglés en los demás casos. La elección manual `English / Español` se aplica al instante y persiste.
-- El cambio de idioma afecta interfaz, catálogo incluido, categorías, fechas, días, accesibilidad y las próximas notificaciones. Los 180 pares conservan IDs y orden, por lo que favoritos, selección y frase diaria sobreviven al cambio.
+- El cambio de idioma afecta interfaz, catálogo incluido, categorías, fechas, días, accesibilidad y las próximas notificaciones. Los 360 pares conservan IDs y orden, por lo que favoritos, selección y frase diaria sobreviven al cambio.
 - Las frases y categorías creadas por el usuario se conservan literalmente; no se traducen ni se eliminan al cambiar de idioma.
 - **Warm Words** permanece como marca visible en ambos idiomas. La ficha principal de App Store puede seguir en inglés, pero el binario declara soporte para `en` y `es`; una localización española de tienda y sus capturas se prepara únicamente después del QA bilingüe.
 
 ### DEC-023 — El catálogo usa frases propias, no citas externas
 
 - Tras revisar opciones de fuentes externas, el propietario decidió el 2026-08-10 usar frases propias de Warm Words.
-- Los 180 pares inglés/español actuales se tratan como catálogo editorial original del proyecto, sin autores famosos, atribuciones ni scraping de sitios de citas.
+- Los 360 pares inglés/español actuales se tratan como catálogo editorial original del proyecto, sin autores famosos, atribuciones ni scraping de sitios de citas.
 - Las futuras correcciones o ampliaciones deben conservar ese criterio, revisión humana y paridad de IDs; no se incorporan citas existentes de terceros sin procedencia y licencia comprobables.
 
 ### DEC-024 — IPA bilingüe build 12 autorizada para QA local
@@ -179,7 +179,7 @@ Resuelve la antigua PEND-013:
 - El propietario pidió el 2026-08-10 que la tarjeta principal deje de parecer cuadrada y tenga proporción de carta alargada.
 - Se conserva la altura compacta aprobada para no reintroducir desplazamiento: 276 pt de ancho máximo y 330 pt de alto mínimo con texto normal, centrada en Today.
 - En tamaños de accesibilidad puede ocupar el ancho disponible y crecer a partir de 430 pt; legibilidad y acceso al contenido prevalecen sobre la proporción decorativa.
-- Las tarjetas de listas conservan su formato legible de fila; convertir las 180 frases en una cuadrícula de cartas sería un rediseño distinto y empeoraría la exploración.
+- Las tarjetas de listas conservan su formato legible de fila; convertir las 360 frases en una cuadrícula de cartas sería un rediseño distinto y empeoraría la exploración.
 - El cambio quedó compilado y verificado estáticamente en la IPA build 13 mediante el run `31347994854`; la aceptación visual final corresponde a la prueba en iPhone.
 - **Decisión sustituida por DEC-026:** la prueba en iPhone confirmó que 276 pt era demasiado estrecho y no correspondía a la imagen aprobada.
 
@@ -216,9 +216,17 @@ Resuelve la antigua PEND-013:
 - El propietario autorizó expresamente el 2026-08-10 crear la página de App Store y pidió inglés y castellano, con inglés como idioma principal.
 - Se creó la ficha iOS 1.0 con Apple ID `6800058458`, bundle ID `com.dmkr.inspiraciondia`, SKU `com.dmkr.inspiraciondia` e idioma principal Inglés (EE. UU.).
 - Se añadieron localizaciones Inglés (EE. UU.) y Español (España), categorías Lifestyle y Health & Fitness, precio gratuito, disponibilidad en 175 países, soporte y privacidad provisionales mediante GitHub, ausencia de login, distribución solo en iPhone y publicación manual.
-- La clasificación calculada es 9+ en la mayoría de regiones porque se declara contenido general de bienestar; no se redujo artificialmente. La app no es un dispositivo médico regulado.
+- App Store Connect muestra actualmente una clasificación global 4+ con excepciones regionales tras declarar de forma veraz el contenido general de bienestar. La app no es un dispositivo médico regulado.
 - La respuesta App Privacy “no se recopilan datos” está guardada como borrador y no publicada hasta poder contrastarla con el archive firmado final.
 - La creación y edición de la ficha no autorizan cargar builds, TestFlight, añadir a revisión ni publicar. Esas acciones siguen requiriendo una autorización expresa en el momento correspondiente.
+
+### DEC-031 — Ampliación editorial y preparación de TestFlight
+
+- El catálogo 1.0 se amplía de 180 a 360 pares originales en inglés y español: 30 por cada una de las 12 categorías, con IDs paralelos `001–030`.
+- Se añaden 180 pares nuevos y se reescriben 12 pares débiles conservando sus IDs para no romper favoritos ni referencias existentes.
+- `scripts/check-quotes.mjs` exige ahora tamaño, orden, paridad, longitud y ausencia de duplicados exactos, normalizados o casi idénticos. La trazabilidad queda en `docs/content-review/`.
+- Se prepara un workflow TestFlight manual, separado del CI unsigned, protegido por environment y con upload desactivado por defecto. No se ejecuta hasta configurar firma y secretos con autorización expresa.
+- El primer archive usará build `18` o el siguiente número libre. Subirlo a TestFlight sigue siendo una acción separada que requiere autorización en ese momento.
 
 ## Primera decisión pendiente del propietario
 
