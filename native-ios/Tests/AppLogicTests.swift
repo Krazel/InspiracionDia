@@ -166,17 +166,17 @@ final class AppLogicTests: XCTestCase {
   }
 
   func testCustomQuoteValidation() {
-    let categories: Set<String> = ["animo"]
+    let categories: Set<String> = ["custom"]
     XCTAssertEqual(
-      CustomQuoteValidator.normalizedText("  Keep going.\n", category: "animo", validCategoryIds: categories),
+      CustomQuoteValidator.normalizedText("  Keep going.\n", category: "custom", validCategoryIds: categories),
       "Keep going."
     )
-    XCTAssertNil(CustomQuoteValidator.normalizedText(" \n", category: "animo", validCategoryIds: categories))
+    XCTAssertNil(CustomQuoteValidator.normalizedText(" \n", category: "custom", validCategoryIds: categories))
     XCTAssertNil(CustomQuoteValidator.normalizedText("Keep going.", category: "missing", validCategoryIds: categories))
     XCTAssertNil(
       CustomQuoteValidator.normalizedText(
         String(repeating: "a", count: CustomQuoteValidator.maximumLength + 1),
-        category: "animo",
+        category: "custom",
         validCategoryIds: categories
       )
     )

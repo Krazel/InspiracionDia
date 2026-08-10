@@ -109,7 +109,17 @@ final class AppStore: ObservableObject {
   }
 
   var allCategories: [Category] {
-    content.categories + customCategories
+    content.categories + [personalCategory] + customCategories
+  }
+
+  var personalCategory: Category {
+    Category(
+      id: "custom",
+      name: t("manualCards"),
+      color: Self.customCategoryStyle.color,
+      softColor: Self.customCategoryStyle.softColor,
+      description: t("personalCategoryDescription")
+    )
   }
 
   var reminderDate: Date {
@@ -208,26 +218,9 @@ final class AppStore: ObservableObject {
   }
 
   @discardableResult
-  func addCustomQuote(
-    text: String,
-    category: String,
-    newCategoryName: String? = nil
-  ) -> Bool {
-    let pendingCategory: Category?
-    let targetCategoryId: String
-    if let newCategoryName {
-      guard let category = makeCustomCategory(name: newCategoryName) else { return false }
-      pendingCategory = category
-      targetCategoryId = category.id
-    } else {
-      pendingCategory = nil
-      targetCategoryId = category
-    }
-
-    var validCategoryIds = Set(allCategories.map(\.id))
-    if let pendingCategory {
-      validCategoryIds.insert(pendingCategory.id)
-    }
+  func addCustomQuote(text: String) -> Bool {
+    let targetCategoryId = "custom"
+    let validCategoryIds: Set<String> = [targetCategoryId]
     guard let normalizedText = CustomQuoteValidator.normalizedText(
       text,
       category: targetCategoryId,
@@ -236,10 +229,6 @@ final class AppStore: ObservableObject {
       return false
     }
 
-    if let pendingCategory {
-      customCategories.append(pendingCategory)
-      persistCustomCategories()
-    }
     let quote = Quote(
       id: "custom-\(UUID().uuidString)",
       category: targetCategoryId,
@@ -250,31 +239,6 @@ final class AppStore: ObservableObject {
     persistCustomQuotes()
     refreshReminderIfEnabled()
     return true
-  }
-
-  private func makeCustomCategory(name: String) -> Category? {
-    guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return nil }
-    let reservedNames = customCategories.map(\.name) + Strings.reservedCategoryNames
-    guard let normalizedName = CustomCategoryValidator.normalizedName(
-      name,
-      existingNames: reservedNames
-    ) else {
-      return nil
-    }
-
-    return Category(
-      id: "user-category-\(UUID().uuidString)",
-      name: normalizedName,
-      color: Self.customCategoryStyle.color,
-      softColor: Self.customCategoryStyle.softColor,
-      description: t("personalCategoryDescription")
-    )
-  }
-
-  func canCreateCustomCategory(named name: String) -> Bool {
-    guard customCategories.count < CustomCategoryValidator.maximumCategoryCount else { return false }
-    let reservedNames = customCategories.map(\.name) + Strings.reservedCategoryNames
-    return CustomCategoryValidator.normalizedName(name, existingNames: reservedNames) != nil
   }
 
   func isCustomCategory(_ category: Category) -> Bool {
@@ -693,7 +657,11 @@ final class AppStore: ObservableObject {
 
     let allowedSelections = validCategoryIds.union(["all", "favorites", "custom"])
     let storedSelection = defaults.string(forKey: selectedCategoryKey) ?? "all"
-    selectedCategory = allowedSelections.contains(storedSelection) ? storedSelection : "all"
+    if storedSelection.hasPrefix("user-category-") {
+      selectedCategory = "custom"
+    } else {
+      selectedCategory = allowedSelections.contains(storedSelection) ? storedSelection : "all"
+    }
     defaults.set(selectedCategory, forKey: selectedCategoryKey)
 
     let validQuoteIds = Set(allQuotes.map(\.id))
@@ -710,7 +678,7 @@ struct RootView: View {
   @State private var showingSettings = false
 
   var body: some View {
-    Group {
+    ZStack {
       if store.needsReminderOnboarding {
         ReminderOnboardingView()
       } else {
@@ -954,9 +922,6 @@ struct CategoriesView: View {
             CategoryTile(id: "all", title: store.t("all"), icon: "sparkles")
             CategoryTile(id: "custom", title: store.t("manualCards"), icon: "plus.square")
             CategoryTile(id: "favorites", title: store.t("favorites"), icon: "heart")
-            ForEach(store.customCategories) { category in
-              CategoryTile(id: category.id, title: category.name, icon: "folder")
-            }
             ForEach(store.content.categories) { category in
               CategoryTile(id: category.id, title: store.localizedCategoryName(category), icon: icon(for: category.id))
             }
@@ -1173,19 +1138,10 @@ struct AddCardView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dismiss) private var dismiss
   @State private var text = ""
-  @State private var category = "animo"
-  @State private var newCategoryName = ""
-  private let newCategoryId = "create-new-category"
 
   private var canAdd: Bool {
     let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-    guard !trimmedText.isEmpty, trimmedText.count <= CustomQuoteValidator.maximumLength else {
-      return false
-    }
-    if category == newCategoryId {
-      return store.canCreateCustomCategory(named: newCategoryName)
-    }
-    return store.allCategories.contains(where: { $0.id == category })
+    return !trimmedText.isEmpty && trimmedText.count <= CustomQuoteValidator.maximumLength
   }
 
   var body: some View {
@@ -1226,46 +1182,8 @@ struct AddCardView: View {
             .foregroundStyle(.secondary)
           }
 
-          VStack(alignment: .leading, spacing: 8) {
-            Text(store.t("category"))
-              .font(.headline)
-            Picker(store.t("category"), selection: $category) {
-              ForEach(store.allCategories) { item in
-                Text(store.localizedCategoryName(item)).tag(item.id)
-              }
-              Text(store.t("createNewCategory")).tag(newCategoryId)
-            }
-            .pickerStyle(.menu)
-            .frame(maxWidth: .infinity, minHeight: 52, alignment: .leading)
-            .padding(.horizontal, 14)
-            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
-          }
-
-          if category == newCategoryId {
-            VStack(alignment: .leading, spacing: 8) {
-              Text(store.t("categoryName"))
-                .font(.headline)
-              TextField(store.t("categoryNameExample"), text: $newCategoryName)
-                .textInputAutocapitalization(.words)
-                .padding(14)
-                .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
-              Text(store.t("categoryNameHelp"))
-                .font(.footnote)
-                .foregroundStyle(.secondary)
-              if !newCategoryName.isEmpty && !store.canCreateCustomCategory(named: newCategoryName) {
-                Text(store.t("categoryNameInvalid"))
-                  .font(.footnote)
-                  .foregroundStyle(.red)
-              }
-            }
-          }
-
           Button(store.t("addCard")) {
-            if store.addCustomQuote(
-              text: text,
-              category: category,
-              newCategoryName: category == newCategoryId ? newCategoryName : nil
-            ) {
+            if store.addCustomQuote(text: text) {
               dismiss()
             }
           }
@@ -1391,6 +1309,7 @@ struct QuoteCard: View {
 }
 struct CategoryTile: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   let id: String
   let title: String
   let icon: String
@@ -1400,12 +1319,15 @@ struct CategoryTile: View {
   }
 
   var body: some View {
+    let tileHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 132 : 112
+    let maximumTileHeight: CGFloat? = dynamicTypeSize.isAccessibilitySize ? nil : tileHeight
     Button {
       store.selectCategory(id)
     } label: {
       VStack(spacing: 10) {
         Image(systemName: icon)
           .font(.system(size: 26, weight: .light))
+          .frame(width: 32, height: 32)
           .foregroundStyle(Premium.gold)
           .accessibilityHidden(true)
         Text(title)
@@ -1413,12 +1335,16 @@ struct CategoryTile: View {
           .foregroundStyle(Premium.ink)
           .lineLimit(2)
           .minimumScaleFactor(0.9)
+          .multilineTextAlignment(.center)
+          .frame(maxWidth: .infinity, minHeight: 34, alignment: .center)
       }
-      .frame(maxWidth: .infinity, minHeight: 108)
+      .frame(maxWidth: .infinity, minHeight: tileHeight, maxHeight: maximumTileHeight)
       .background(.white.opacity(selected ? 0.92 : 0.62), in: RoundedRectangle(cornerRadius: 12))
-      .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? Premium.gold : .white.opacity(0.7), lineWidth: selected ? 1.2 : 1))
+      .overlay(RoundedRectangle(cornerRadius: 12).stroke(selected ? Premium.gold : .white.opacity(0.7), lineWidth: 1.2))
       .shadow(color: Color.black.opacity(0.06), radius: 12, x: 0, y: 8)
     }
+    .buttonStyle(.plain)
+    .frame(maxWidth: .infinity)
     .accessibilityValue(store.t(selected ? "selected" : "notSelected"))
     .accessibilityAddTraits(selected ? .isSelected : [])
   }
@@ -1948,7 +1874,7 @@ func icon(for id: String) -> String {
     "autoestima": "person",
     "gratitud": "heart",
     "valentia": "shield",
-    "habitos": "calendar.badge.checkmark",
+    "habitos": "checkmark.circle",
     "creatividad": "lightbulb",
     "resiliencia": "tree",
     "relaciones": "person.2",
