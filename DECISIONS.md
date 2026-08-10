@@ -180,6 +180,7 @@ Resuelve la antigua PEND-013:
 - Se conserva la altura compacta aprobada para no reintroducir desplazamiento: 276 pt de ancho máximo y 330 pt de alto mínimo con texto normal, centrada en Today.
 - En tamaños de accesibilidad puede ocupar el ancho disponible y crecer a partir de 430 pt; legibilidad y acceso al contenido prevalecen sobre la proporción decorativa.
 - Las tarjetas de listas conservan su formato legible de fila; convertir las 180 frases en una cuadrícula de cartas sería un rediseño distinto y empeoraría la exploración.
+- El cambio quedó compilado y verificado estáticamente en la IPA build 13 mediante el run `31347994854`; la aceptación visual final corresponde a la prueba en iPhone.
 
 ## Primera decisión pendiente del propietario
 

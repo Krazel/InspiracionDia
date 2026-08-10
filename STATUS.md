@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **IPA unsigned bilingüe iOS 1.0 build 12 compilada y verificada para Sideloadly**
+Estado: **IPA unsigned bilingüe iOS 1.0 build 13 con carta vertical compilada y verificada para Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -82,12 +82,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Inspección interna confirma ZIP/CRC válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 12, `en`+`es`, 180+180 frases con IDs paralelos, AppIcon, Assets.car y PrivacyInfo.
 - La siguiente puerta es instalar build 12 mediante Sideloadly y probar en iPhone el idioma inicial, el selector, persistencia, notificación en ambos idiomas y migración desde build 11.
 
-## Ajuste Today posterior a build 12
+## Ajuste Today cerrado en build 13
 
 - El propietario indicó que la tarjeta principal seguía pareciendo cuadrada y pidió una proporción de carta vertical.
 - El cambio local mantiene 330 pt de altura mínima y reduce el ancho máximo normal a 276 pt, centrado; Dynamic Type de accesibilidad conserva ancho flexible y 430 pt mínimos.
 - El fondo continúa como background recortado y no participa en el cálculo de tamaño. Las listas conservan filas legibles.
-- Validadores Windows pasan; falta compilar y verificar la IPA build 13.
+- GitHub Actions run `31347994854`, job `93333435638`, pasó validadores, XcodeGen, XCTest, Release, empaquetado y artifact.
+- IPA verificada: `dist/Warm-Words-Sideloadly-portrait-card-build-13.ipa`, 6.039.718 bytes, SHA-256 `ED1F64CAB286904F2255EE71739DE615A9142D43DB3C97FD080FBD601232D263`.
+- Inspección interna confirma ZIP/CRC, versión 1.0 build 13, ambos idiomas/catálogos, IDs paralelos, AppIcon, Assets.car y PrivacyInfo.
+- Falta la comprobación visual en iPhone de la proporción final y que Today siga cabiendo sin desplazamiento a tamaño de texto normal.
 
 ## Primer bloqueo material de App Store
 
