@@ -148,6 +148,7 @@ assert.match(project, /CODE_SIGN_STYLE: Automatic/);
 assert.match(project, /ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon/);
 assert.match(project, /InspiracionDiaTests:/);
 assert.match(project, /PRODUCT_BUNDLE_IDENTIFIER: com\.dmkr\.inspiraciondia\.tests/);
+assert.match(project, /PRODUCT_BUNDLE_IDENTIFIER: com\.dmkr\.inspiraciondia\.B2X6D3A9J9/);
 assert.match(workflow, /permissions:\s*\n\s*contents: read/);
 assert.match(workflow, /runs-on: macos-26/);
 assert.match(workflow, /xcodebuild[\s\S]*test/);

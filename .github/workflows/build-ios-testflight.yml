@@ -30,7 +30,7 @@ jobs:
     environment: app-store-production
     env:
       APP_VERSION: "1.0"
-      APP_BUNDLE_ID: com.dmkr.inspiraciondia
+      APP_BUNDLE_ID: com.dmkr.inspiraciondia.B2X6D3A9J9
       APPLE_TEAM_ID: B2X6D3A9J9
 
     steps:
