@@ -167,6 +167,13 @@ Resuelve la antigua PEND-013:
 - Los 180 pares inglés/español actuales se tratan como catálogo editorial original del proyecto, sin autores famosos, atribuciones ni scraping de sitios de citas.
 - Las futuras correcciones o ampliaciones deben conservar ese criterio, revisión humana y paridad de IDs; no se incorporan citas existentes de terceros sin procedencia y licencia comprobables.
 
+### DEC-024 — IPA bilingüe build 12 autorizada para QA local
+
+- El propietario aprobó generar la nueva IPA el 2026-08-10 después de confirmar que el sistema de apoyo StoreKit se mantiene fuera de esta build de Sideloadly.
+- El commit `ec7af63` pasó el workflow `31346772665` completo y produjo `dist/Warm-Words-Sideloadly-bilingual-build-12.ipa`.
+- Esta build gratuita incluye inglés y español, pero no muestra una suscripción ficticia. “Support the app” se implementará únicamente con productos, precios, restauración, términos y privacidad reales.
+- La autorización cubre commit, push y artifact unsigned local; no cubre TestFlight, App Store Connect, IAP, App Review ni publicación.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

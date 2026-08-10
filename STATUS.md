@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **build 11 verificada; cambio bilingüe inglés/español implementado localmente y pendiente de compilación macOS**
+Estado: **IPA unsigned bilingüe iOS 1.0 build 12 compilada y verificada para Sideloadly**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`. La última IPA verificada corresponde a `6dca776`; el cambio bilingüe posterior aún no tiene IPA verificada.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit bilingüe `ec7af63`.
 - El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -68,7 +68,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - IPA verificada: `dist/Warm-Words-Sideloadly-build-11.ipa`, 6,024,614 bytes, SHA-256 `0087D21A6CC48ECF46ACF196E704AF28BC7BD7AC0A371C52002343BA30AF206A`.
 - Inspección interna confirma ZIP válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 11, `AppIcon`, catálogo inglés, assets compilados y privacy manifest.
 
-## Cambio bilingüe en curso
+## Cambio bilingüe cerrado en build 12
 
 - Decisión registrada en `DEC-022`: Warm Words 1.0 ofrece inglés y español; `DEC-002` queda histórica.
 - `AppLanguage` prioriza una elección guardada y, sin ella, usa español para variantes `es-*` del iPhone e inglés para el resto.
@@ -76,7 +76,11 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Ambos recursos se cargan con fallback seguro; los 180 pares mantienen favoritos, selección, entrega y frase diaria. Las categorías personales históricas no se eliminan por colisionar con una traducción.
 - Fechas, hora de vista previa, días cortos/completos, VoiceOver y todo el copy 1.1 tienen paridad inglés/español. Cambiar el idioma vuelve a generar la cola local autorizada sin pedir permiso otra vez.
 - `CFBundleLocalizations` declara `en` y `es`; tests, validadores, workflow y checklist QA cubren ambos idiomas.
-- Validación Windows actual: exportaciones reproducibles, 180+180 frases, paridad de IDs/categorías y claves UI, plist/configuración, `git diff --check` y ausencia de diff Android. Falta ejecutar XCTest/build en macOS y generar la IPA siguiente.
+- Validación Windows: exportaciones reproducibles, 180+180 frases, paridad de IDs/categorías y claves UI, plist/configuración, `git diff --check` y ausencia de diff Android.
+- GitHub Actions run `31346772665`, job `93330043852`, pasó Xcode/SDK 26+, validadores, XcodeGen, XCTest, build Release, empaquetado e integración de recursos.
+- IPA verificada: `dist/Warm-Words-Sideloadly-bilingual-build-12.ipa`, 6.039.556 bytes, SHA-256 `24C9F10329A73AB751A2BA7A143D803259B36E02B5E39AF296C1CE028EDDAAB9`.
+- Inspección interna confirma ZIP/CRC válido, `Warm Words`, bundle `com.dmkr.inspiraciondia`, versión 1.0 build 12, `en`+`es`, 180+180 frases con IDs paralelos, AppIcon, Assets.car y PrivacyInfo.
+- La siguiente puerta es instalar build 12 mediante Sideloadly y probar en iPhone el idioma inicial, el selector, persistencia, notificación en ambos idiomas y migración desde build 11.
 
 ## Primer bloqueo material de App Store
 
