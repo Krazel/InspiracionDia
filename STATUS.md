@@ -7,7 +7,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit bilingüe `ec7af63`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; rama de compilación `agent/warm-words-ios-ipa`, commit actual verificado `4ba5de9`.
 - El propietario autorizó commit, push y compilación de la IPA el 2026-08-09. No se creó release ni se publicó o subió a TestFlight/App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -141,6 +141,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - GitHub Actions run `31416957423`, job `93548147914`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
 - IPA de prueba visual: `dist/Warm-Words-Sideloadly-share-card-preview-build-17.ipa`, 6.058.270 bytes, SHA-256 `616680229730AB6B87AE647C3EFD9B45FB2AA0CB31B178D430C4155B1EBAB5AF`.
 - Esta build permite probar la tarjeta como imagen. No es el cierre de la función de enlace inteligente ni reemplaza la build 16 como último candidato funcional cerrado.
+
+## Catálogo ampliado y carril TestFlight verificados en build 19
+
+- El catálogo de producción contiene ahora 360 frases propias en inglés y 360 en español, 30 por cada una de las 12 categorías. Se añadieron 180 pares bilingües y se reescribieron 12 pares débiles conservando sus IDs.
+- Los validadores exigen paridad exacta EN/ES, IDs ordenados, longitudes editoriales y ausencia de duplicados exactos, normalizados o casi idénticos.
+- El workflow manual de TestFlight quedó preparado con XCTest, Analyze, archive Apple Distribution, inspección, exportación App Store Connect y subida desactivada por defecto. No contiene certificados ni secretos y no se ha ejecutado ni subido ningún build firmado.
+- GitHub Actions run `31424514733` (número 19), job `93572928211`, commit `4ba5de9`, pasó Xcode/SDK 26+, validadores, XcodeGen, XCTest, build Release unsigned, empaquetado y artifact el 2026-08-10.
+- Los actions de checkout y artifact usan sus versiones Node 24 actuales. Solo queda un aviso no bloqueante de Homebrew sobre un tap ajeno preinstalado en el runner.
+- IPA descargada y verificada: `dist/Warm-Words-Sideloadly-360-quotes-build-19.ipa`, 6.071.590 bytes, SHA-256 `0AE98F3D420FD9B50D5A0F00D2E35B1293DD446943B1582B1CE2E25C964DB3B6`.
+- La inspección interna confirma ZIP válido, ambos catálogos con 360 frases y 12 categorías, AppIcon, `Assets.car` y `PrivacyInfo.xcprivacy`. Sigue siendo unsigned y no es una subida a TestFlight.
 
 ## Primer bloqueo material de App Store
 
