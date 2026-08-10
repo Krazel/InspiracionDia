@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **IPA unsigned bilingüe iOS 1.0 build 13 con carta vertical compilada y verificada para Sideloadly**
+Estado: **build 13 compilada, pero con presentación de Settings defectuosa en dispositivo; corrección local pendiente de build 14**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -91,6 +91,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - IPA verificada: `dist/Warm-Words-Sideloadly-portrait-card-build-13.ipa`, 6.039.718 bytes, SHA-256 `ED1F64CAB286904F2255EE71739DE615A9142D43DB3C97FD080FBD601232D263`.
 - Inspección interna confirma ZIP/CRC, versión 1.0 build 13, ambos idiomas/catálogos, IDs paralelos, AppIcon, Assets.car y PrivacyInfo.
 - Falta la comprobación visual en iPhone de la proporción final y que Today siga cabiendo sin desplazamiento a tamaño de texto normal.
+
+## Corrección Settings posterior a build 13
+
+- El propietario comprobó en iPhone que tocar el engranaje no abría Settings.
+- El `Binding` y el área táctil eran correctos; el punto frágil era presentar `.sheet` desde el `TabView`, cuya jerarquía UIKit puede cambiar o competir con otras presentaciones.
+- La hoja se adjuntó al `Group` estable de `RootView`, manteniendo el mismo estado y contenido, y el botón recibió un identificador estable para QA.
+- Validadores Windows pasan; falta XCTest/build 14 y repetir la prueba física del engranaje.
 
 ## Primer bloqueo material de App Store
 

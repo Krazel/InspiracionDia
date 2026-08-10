@@ -77,6 +77,8 @@ assert.match(swift, /func completeInitialReminderSetup/);
 assert.match(swift, /func saveReminderSettings/);
 assert.match(swift, /struct ReminderOnboardingView/);
 assert.match(swift, /if store\.needsReminderOnboarding/);
+assert.match(swift, /struct RootView[\s\S]*?Group \{[\s\S]*?\n    \}\n    \.sheet\(isPresented: \$showingSettings\)/);
+assert.match(swift, /accessibilityIdentifier\("settings-button"\)/);
 assert.match(swift, /struct WeekdayPicker/);
 assert.match(swift, /deliveryUsesAllCategories/);
 assert.match(swift, /customCategories: \[Category\]/);

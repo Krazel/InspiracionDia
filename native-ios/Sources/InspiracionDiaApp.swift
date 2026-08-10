@@ -728,11 +728,11 @@ struct RootView: View {
             .tag(2)
         }
         .tint(Premium.gold)
-        .sheet(isPresented: $showingSettings) {
-          SettingsView()
-            .environmentObject(store)
-        }
       }
+    }
+    .sheet(isPresented: $showingSettings) {
+      SettingsView()
+        .environmentObject(store)
     }
     .onChange(of: scenePhase) { phase in
       if phase == .active {
@@ -870,6 +870,7 @@ struct TodayView: View {
                 .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
             }
             .accessibilityLabel(store.t("settings"))
+            .accessibilityIdentifier("settings-button")
           }
 
           Text(store.currentDate.formatted(AppFormatters.day(language: store.language)))
