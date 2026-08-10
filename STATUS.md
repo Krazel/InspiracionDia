@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-10**
-Estado: **IPA unsigned bilingüe iOS 1.0 build 16 con Settings y categorías corregidos, compilada y verificada para Sideloadly**
+Estado: **build 17 de QA compila tarjetas compartibles; enlace inteligente pendiente de infraestructura pública**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -122,6 +122,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - GitHub Actions run `31415280600`, job `93542716643`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
 - IPA verificada: `dist/Warm-Words-Sideloadly-settings-categories-build-16.ipa`, 6.033.570 bytes, SHA-256 `6B5ABC789662582D4FDDAA737F23D0BC837D8EB924098EDE081A60CC1CFE4CA8`.
 - La inspección interna confirma ZIP/CRC, versión 1.0 build 16, ambos idiomas con 180 frases, AppIcon, Assets.car y PrivacyInfo. Falta comprobar en iPhone abrir/cerrar/reabrir Settings y la cuadrícula de categorías.
+
+## Tarjeta compartible preparada en build 17
+
+- Los dos `ShareLink` de texto fueron sustituidos por una tarjeta PNG dinámica de 1080 × 1350 y la hoja nativa de iOS. La composición reutiliza el fondo de montaña, paleta, tipografía, categoría localizada y marca aprobadas.
+- La referencia visual aprobada y el contrato están en `docs/design/share-card/`; la imagen generada es solo referencia y no se empaqueta como contenido runtime.
+- La app acepta el esquema local `warmwords` y valida la futura ruta HTTPS `https://krazel.github.io/warm-words/share/`.
+- El enlace HTTPS permanece desactivado: la ruta pública y el AASA devuelven 404, y faltan Team ID, Apple ID de App Store, Associated Domains y firma compatible. Ninguna IPA comparte un enlace muerto.
+- GitHub Actions run `31416957423`, job `93548147914`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
+- IPA de prueba visual: `dist/Warm-Words-Sideloadly-share-card-preview-build-17.ipa`, 6.058.270 bytes, SHA-256 `616680229730AB6B87AE647C3EFD9B45FB2AA0CB31B178D430C4155B1EBAB5AF`.
+- Esta build permite probar la tarjeta como imagen. No es el cierre de la función de enlace inteligente ni reemplaza la build 16 como último candidato funcional cerrado.
 
 ## Primer bloqueo material de App Store
 

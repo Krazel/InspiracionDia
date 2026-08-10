@@ -204,6 +204,13 @@ Resuelve la antigua PEND-013:
 - Las categorías y frases históricas se preservan para no perder datos. Sus frases siguen accesibles desde Personal, aunque ya no se muestran mosaicos separados de categorías propias.
 - El mismo cierre corrige el host de Settings, uniforma los mosaicos de categorías y sustituye el icono incompatible de Hábitos.
 
+### DEC-029 — Compartir usa tarjeta visual y enlace inteligente
+
+- El propietario decidió el 2026-08-10 sustituir el texto plano por una tarjeta visual de Warm Words acompañada de un enlace que abra la app instalada o su descarga.
+- Dirección aprobada: PNG dinámica 1080 × 1350 basada en la carta Today y un único enlace HTTPS; no se añade backend, cuenta, sincronización ni publicación de frases personales.
+- WhatsApp y otras extensiones deciden cómo representan `[imagen, URL]`; iOS no puede garantizar que la imagen adjunta sea pulsable. La promesa verificable es compartir la imagen y el enlace, no controlar la composición de terceros.
+- La implementación del PNG puede avanzar localmente. Activar el enlace exige landing pública, App Store URL real, AASA, Team ID, Associated Domains y firma compatible; no se comparte una URL 404.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
