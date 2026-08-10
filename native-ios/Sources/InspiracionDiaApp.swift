@@ -843,74 +843,86 @@ struct ReminderOnboardingView: View {
 
 struct TodayView: View {
   @EnvironmentObject private var store: AppStore
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
   @Binding var showingSettings: Bool
 
   var body: some View {
     NavigationStack {
-      ScrollView {
-        VStack(spacing: 14) {
-          HStack(alignment: .top) {
-            VStack(alignment: .leading, spacing: 5) {
-              Text(AppBrand.name)
-                .font(Premium.titleFont)
-                .foregroundStyle(Premium.ink)
-              Text(store.t("premiumConcept").uppercased())
-                .font(.system(size: 13, weight: .semibold))
-                .tracking(3)
-                .foregroundStyle(Premium.gold)
-            }
-            Spacer()
-            Button {
-              showingSettings = true
-            } label: {
-              Image(systemName: "gearshape")
-                .font(.title3)
-                .foregroundStyle(Premium.gold)
-                .frame(width: 46, height: 46)
-                .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
-            }
-            .accessibilityLabel(store.t("settings"))
-            .accessibilityIdentifier("settings-button")
+      Group {
+        if dynamicTypeSize.isAccessibilitySize {
+          ScrollView {
+            todayContent
           }
-
-          Text(store.currentDate.formatted(AppFormatters.day(language: store.language)))
-            .font(.system(size: 15))
-            .foregroundStyle(Premium.gold)
-
-          QuoteHero(quote: store.todayQuote)
-
-          HStack(spacing: 18) {
-            Button {
-              store.toggleFavorite(store.todayQuote)
-            } label: {
-              Image(systemName: store.favoriteIds.contains(store.todayQuote.id) ? "heart.fill" : "heart")
-                .font(.title3)
-                .frame(width: 54, height: 54)
-            }
-            .buttonStyle(CircleGoldButtonStyle())
-            .accessibilityLabel(
-              store.favoriteIds.contains(store.todayQuote.id) ? store.t("saved") : store.t("save")
-            )
-            .accessibilityAddTraits(
-              store.favoriteIds.contains(store.todayQuote.id) ? .isSelected : []
-            )
-
-            ShareLink(item: "\(store.todayQuote.text)\n\n\(AppBrand.name)") {
-              Image(systemName: "square.and.arrow.up")
-                .font(.title3)
-                .frame(width: 54, height: 54)
-            }
-            .buttonStyle(CircleGoldButtonStyle())
-            .accessibilityLabel(store.t("share"))
-          }
-
+        } else {
+          todayContent
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
-        .padding(.horizontal, 18)
-        .padding(.top, 14)
-        .padding(.bottom, 12)
       }
       .background(PremiumBackground())
     }
+  }
+
+  private var todayContent: some View {
+    VStack(spacing: 12) {
+      HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 5) {
+          Text(AppBrand.name)
+            .font(Premium.titleFont)
+            .foregroundStyle(Premium.ink)
+          Text(store.t("premiumConcept").uppercased())
+            .font(.system(size: 13, weight: .semibold))
+            .tracking(3)
+            .foregroundStyle(Premium.gold)
+        }
+        Spacer()
+        Button {
+          showingSettings = true
+        } label: {
+          Image(systemName: "gearshape")
+            .font(.title3)
+            .foregroundStyle(Premium.gold)
+            .frame(width: 46, height: 46)
+            .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
+        }
+        .accessibilityLabel(store.t("settings"))
+        .accessibilityIdentifier("settings-button")
+      }
+
+      Text(store.currentDate.formatted(AppFormatters.day(language: store.language)))
+        .font(.system(size: 15))
+        .foregroundStyle(Premium.gold)
+
+      QuoteHero(quote: store.todayQuote)
+        .layoutPriority(1)
+
+      HStack(spacing: 18) {
+        Button {
+          store.toggleFavorite(store.todayQuote)
+        } label: {
+          Image(systemName: store.favoriteIds.contains(store.todayQuote.id) ? "heart.fill" : "heart")
+            .font(.title3)
+            .frame(width: 54, height: 54)
+        }
+        .buttonStyle(CircleGoldButtonStyle())
+        .accessibilityLabel(
+          store.favoriteIds.contains(store.todayQuote.id) ? store.t("saved") : store.t("save")
+        )
+        .accessibilityAddTraits(
+          store.favoriteIds.contains(store.todayQuote.id) ? .isSelected : []
+        )
+
+        ShareLink(item: "\(store.todayQuote.text)\n\n\(AppBrand.name)") {
+          Image(systemName: "square.and.arrow.up")
+            .font(.title3)
+            .frame(width: 54, height: 54)
+        }
+        .buttonStyle(CircleGoldButtonStyle())
+        .accessibilityLabel(store.t("share"))
+      }
+    }
+    .padding(.horizontal, 18)
+    .padding(.top, 14)
+    .padding(.bottom, 12)
   }
 }
 
@@ -1274,8 +1286,8 @@ struct QuoteHero: View {
 
   var body: some View {
     let category = store.category(for: quote.category)
-    let minimumHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 430 : 330
-    let cardWidth: CGFloat = dynamicTypeSize.isAccessibilitySize ? .infinity : 276
+    let minimumHeight: CGFloat = dynamicTypeSize.isAccessibilitySize ? 430 : 300
+    let maximumHeight: CGFloat? = dynamicTypeSize.isAccessibilitySize ? nil : .infinity
     VStack(spacing: 14) {
       Text("\"")
         .font(.system(size: 38, weight: .semibold, design: .serif))
@@ -1298,7 +1310,7 @@ struct QuoteHero: View {
     }
     .padding(.horizontal, 26)
     .padding(.vertical, 24)
-    .frame(maxWidth: cardWidth, minHeight: minimumHeight)
+    .frame(maxWidth: .infinity, minHeight: minimumHeight, maxHeight: maximumHeight)
     .background {
       BundledImage(name: "premium-mountains", fallback: PremiumBackground())
         .frame(maxWidth: .infinity, maxHeight: .infinity)

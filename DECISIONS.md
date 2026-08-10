@@ -181,6 +181,15 @@ Resuelve la antigua PEND-013:
 - En tamaños de accesibilidad puede ocupar el ancho disponible y crecer a partir de 430 pt; legibilidad y acceso al contenido prevalecen sobre la proporción decorativa.
 - Las tarjetas de listas conservan su formato legible de fila; convertir las 180 frases en una cuadrícula de cartas sería un rediseño distinto y empeoraría la exploración.
 - El cambio quedó compilado y verificado estáticamente en la IPA build 13 mediante el run `31347994854`; la aceptación visual final corresponde a la prueba en iPhone.
+- **Decisión sustituida por DEC-026:** la prueba en iPhone confirmó que 276 pt era demasiado estrecho y no correspondía a la imagen aprobada.
+
+### DEC-026 — Today ocupa la pantalla fija disponible
+
+- El propietario reafirmó el 2026-08-10 `docs/design/reminder-v2/warm-words-today-compact-proposal.png` como referencia exacta y rechazó la carta estrecha de build 13/14.
+- Con texto normal, Today no se desplaza: la carta ocupa todo el ancho útil y absorbe toda la altura disponible entre la fecha y las acciones.
+- Me gusta y Compartir permanecen siempre visibles directamente encima de la barra de pestañas.
+- Los tamaños de texto de accesibilidad conservan una excepción desplazable para no cortar texto ni acciones.
+- No se genera una imagen nueva porque la propuesta completa existente ya define exactamente esta composición y cuenta con aprobación del propietario.
 
 ## Primera decisión pendiente del propietario
 
