@@ -55,10 +55,10 @@ Do not put these values in repository secrets, source files, logs, artifacts, is
 
 ## Remaining release gates
 
-- Dedicated public privacy and support pages under `https://krazel.github.io/warm-words/` do not exist yet; the private store record currently uses provisional GitHub URLs.
+- Dedicated public privacy and support pages under `https://krazel.github.io/warm-words/` returned 404 on 2026-08-11; the private store record still uses provisional GitHub URLs. Replace them only after the dedicated pages and support alias are live, and do not expose the repository or personal contact details.
 - Smart sharing remains disabled until the public landing and AASA file exist, the app has the Associated Domains entitlement, and the signed profile supports it. The landing must fall back to `https://apps.apple.com/app/id6800058458`.
 - English and Spanish App Store screenshots must come from the final signed build.
-- Copyright, App Review contact, DSA confirmation, final privacy publication, build selection, and owner review remain incomplete.
+- Copyright, private App Review contact, truthful DSA confirmation, final privacy publication, build selection, and owner review remain incomplete. Optional public fields stay empty unless required.
 - Optional supporter subscriptions remain outside 1.0 until real App Store products, localized prices, restore purchases, terms, privacy, and review configuration are explicitly authorized.
 
 ## Prepared TestFlight copy
@@ -79,6 +79,6 @@ Spanish “Qué probar”:
 
 > Prueba la configuración inicial del recordatorio; abrir, cerrar y volver a abrir Ajustes; el cambio y la persistencia de inglés/español; Today sin desplazamiento con texto estándar; todas las tarjetas de categoría y el icono de Hábitos; favoritos; añadir y eliminar una frase Personal; permitir o denegar notificaciones y su programación; y compartir una tarjeta visual por WhatsApp u otra extensión.
 
-The feedback email and Beta App Review contact fields remain empty because they require the owner's real contact details and must not be invented.
+The feedback email and Beta App Review contact fields remain empty because they require accurate contact details and must not be invented. A dedicated support alias belongs on public support material; the minimum real App Review contact belongs only in Apple's private review fields.
 
 References: Apple documents that uploaded builds are associated using bundle ID, version, and a unique build string, and must finish processing before appearing in TestFlight. GitHub environments should gate access to signing and upload secrets.

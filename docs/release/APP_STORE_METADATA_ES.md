@@ -1,6 +1,6 @@
 # Metadatos de App Store — iOS 1.0 (Español)
 
-Estado: localización Española (España) guardada en la ficha privada de App Store Connect el 2026-08-10. Faltan capturas, URL de privacidad, contacto de revisión, copyright y build. No subir ni publicar sin autorización expresa.
+Estado: localización Española (España) guardada en la ficha privada de App Store Connect el 10 de agosto de 2026. La build 20 está en TestFlight interno. Faltan capturas, URL públicas dedicadas, copyright, confirmación DSA y contacto privado de App Review. No enviar ni publicar sin autorización expresa.
 
 ## Página de producto
 
@@ -19,8 +19,11 @@ Estado: localización Española (España) guardada en la ficha privada de App St
 - **Apple ID:** `6800058458`
 - **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
-- **URL de soporte:** `https://github.com/Krazel/InspiracionDia/issues` (provisional)
-- **URL de privacidad:** `https://github.com/Krazel/InspiracionDia/blob/agent/warm-words-ios-ipa/docs/release/PRIVACY_POLICY_ES.md`
+- **URL de soporte:** `https://krazel.github.io/warm-words/support/` — obligatoria, actualmente devuelve 404 y no debe registrarse como final hasta que funcionen la página y el alias exclusivo
+- **URL de privacidad:** `https://krazel.github.io/warm-words/privacy/` — obligatoria, actualmente devuelve 404 y no debe registrarse como final hasta publicar la política exacta
+- **URL de marketing:** dejar vacía en 1.0
+- **URL de opciones de privacidad:** dejar vacía; no hay cuenta, datos recopilados por el desarrollador ni controles de privacidad remotos
+- **Condiciones / EULA:** usar el contrato de licencia estándar de Apple; no añadir una URL de condiciones propia para 1.0
 
 ### Texto promocional
 
@@ -54,7 +57,10 @@ No necesitas una cuenta. Warm Words funciona sin conectarse a ningún servicio. 
 ## Pendiente antes de revisión
 
 - Capturas reales en español después del QA físico.
-- Sustituir las URL provisionales de GitHub por páginas públicas propias antes del lanzamiento si están disponibles.
-- Copyright y contacto de revisión.
-- Copyright, contacto de revisión y fecha final de lanzamiento.
-- Archive firmado y build validada.
+- Publicar y verificar las páginas dedicadas de privacidad y soporte; no exponer repositorio, incidencias públicas, cuentas personales, domicilio, teléfono ni correo personal.
+- Crear y probar un alias exclusivo de soporte.
+- Copyright con el valor legal público mínimo necesario.
+- Contacto de App Review con el nombre, correo y teléfono exactos que Apple exija, solo en los campos privados de revisión.
+- Confirmación veraz del estado DSA trader; aportar información pública adicional únicamente si corresponde legalmente.
+- Dejar vacíos URL de marketing, URL de opciones de privacidad y demás campos opcionales que no necesite la versión 1.0.
+- Seleccionar la build validada solo cuando se autorice el envío a revisión.

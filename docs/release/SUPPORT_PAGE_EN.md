@@ -1,46 +1,33 @@
-# Support
+# Warm Words Support
 
-## Warm Words
+For help, feedback, or an accessibility issue, email the dedicated Warm Words support address:
 
-For help, feedback, or an accessibility issue, open a request on the [Warm Words support page](https://github.com/Krazel/InspiracionDia/issues).
+`[DEDICATED SUPPORT EMAIL REQUIRED BEFORE PUBLICATION]`
 
-When reporting a problem, include:
+Include only the information needed to understand the issue: app version, iOS version, and a short description. An iPhone model is useful only when the problem appears device-specific. Do not send passwords, payment information, personal quotes, screenshots containing private information, or other sensitive data.
 
-- iPhone model;
-- iOS version;
-- app version;
-- a short description of what happened and what you expected.
-
-Do not include private or sensitive information.
+This support address must be created and tested before publishing this page. It must not be replaced by a public repository, public issue tracker, personal account, or the private App Review contact.
 
 ## Common questions
 
-### How do I enable the daily reminder?
+### How do I enable reminders?
 
-On first launch, choose a time and the days you want, then select Set reminder. Every day is preselected and recommended. Later, open Settings to change the reminder, time, weekdays, or quote categories and select Save reminder. iOS asks for notification permission only after one of these explicit actions.
+On first launch, choose a time and weekdays, then select Set reminder. Later, open Settings to change the reminder schedule or delivery categories. iOS asks for notification permission only after you choose to set or test a reminder.
 
 ### Why did reminders stop?
 
-Check notification permission in iOS Settings and open the app again so it can refresh its local reminder schedule.
+Check notification access in iOS Settings and open Warm Words again so it can refresh its local reminder schedule. Warm Words schedules reminders locally in advance; opening the app periodically refreshes that schedule.
 
 ### Where are favorites and personal quotes stored?
 
-They remain locally on the device. The app does not use an account or cloud synchronization.
+They stay on the iPhone. Warm Words has no account or cloud synchronization.
 
 ### How do I change the language?
 
-Open Settings and choose English or Español. The interface, built-in quote catalog, dates, weekdays, and future reminders change together. Favorites and personal quotes remain unchanged.
+Open Settings and choose English or Español. The built-in interface, catalog, dates, weekdays, and future reminders change together. Personal quotes are left exactly as written.
 
-### Can I share a personal quote?
+### How do I share or delete a personal quote?
 
-Yes. Use Share on the personal quote to open the standard iOS share sheet. Warm Words renders a visual quote card; it does not transfer app data or create an account.
+Open Personal. Share creates a visual card and opens the iOS share sheet. Delete removes the quote after confirmation.
 
-### How do I remove a personal quote?
-
-Open the Personal category, choose Delete on the quote, and confirm.
-
-### Why did reminders stop after a long time?
-
-Warm Words schedules reminders locally in advance. Open the app periodically so it can refresh the schedule, especially after changing time zone or notification settings.
-
-This page must be reviewed after final device QA.
+Release gate: verify this page against the final device-tested build and activate the dedicated support address before using this URL in App Store Connect.

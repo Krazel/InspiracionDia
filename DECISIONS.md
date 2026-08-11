@@ -1,6 +1,6 @@
 # Decisiones de Inspiración Día
 
-Actualizado: **2026-08-10**
+Actualizado: **2026-08-11**
 
 Este archivo separa decisiones aprobadas de decisiones materiales todavía pendientes. Las elecciones reversibles y técnicas corresponden al cerebro de producto; solo una decisión material se eleva cada vez, con una recomendación única.
 
@@ -237,6 +237,22 @@ Resuelve la antigua PEND-013:
 - El grupo interno `Warm Words Internal` contiene build 20 y a la cuenta propietaria como único tester. La distribución automática futura quedó desactivada.
 - Esta autorización no incluye testers externos, Beta App Review, App Review, selección del build para publicación ni lanzamiento en App Store.
 
+### DEC-033 — Manifiesto visual canónico y sustituciones no destructivas
+
+- Desde el 2026-08-11, `design/APPROVALS.md` es la fuente de verdad para las imágenes completas aprobadas que gobiernan Warm Words.
+- Cada pantalla/estado cubierto conserva una única referencia vigente con ruta, lienzo o dispositivo, orientación, idioma, fecha y SHA-256. Las propuestas no elegidas, assets fuente, capturas runtime y capturas de tienda quedan separados.
+- Una sustitución aprobada añade una nueva maestra y marca la anterior como reemplazada o retirada sin borrarla. La propuesta de creación inline de categorías se conserva como referencia retirada tras `DEC-028`.
+- Las capturas de tienda usarán estas maestras como dirección de arte, pero su captura base debe salir de una build real y enlazarse al manifiesto. No se inventan capturas de implementación donde todavía no existe evidencia física.
+
+### DEC-034 — Minimización estricta de datos e información pública
+
+- Cada build iOS publicable debe auditarse con la skill central `ios-app-launch` y mantener un inventario exacto de datos, almacenamiento, transmisiones, permisos y SDKs.
+- Warm Words 1.0 build 20 no recopila datos para el desarrollador: usa solo frameworks Apple, no hace red y no contiene cuentas, nube, publicidad, analítica, tracking, StoreKit, compras ni SDKs de terceros. Solo solicita notificaciones locales después de una acción explícita.
+- Privacidad, soporte, metadata y App Store Privacy describirán la build exacta, sin cláusulas hipotéticas ni omisiones. Un cambio de SDK, permiso, red o monetización obliga a repetir la auditoría antes de distribuir.
+- El soporte público usará una página propia y un alias exclusivo. No se publicarán repositorio, incidencias, cuentas personales, nombre completo, domicilio, teléfono ni correo personal salvo obligación concreta de Apple o de la ley.
+- El contacto de App Review es privado y contendrá únicamente los datos reales mínimos que Apple exija. URL de marketing, URL de opciones de privacidad y demás campos opcionales permanecen vacíos si no son necesarios.
+- El estado DSA trader no se presume ni se elude: se eleva como decisión material y, si aplica, se proporcionará la información pública legalmente exigida.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
@@ -245,7 +261,7 @@ La dirección de producto de usar frases propias ya está aprobada. Antes de App
 
 ### PEND-010 — Privacidad y soporte públicos
 
-Las políticas bilingües y GitHub Issues sirven como URL públicas provisionales. Deben sustituirse por páginas propias si están disponibles. La declaración “no data collected” está preparada pero no se publicará hasta inspeccionar el binario final.
+Las URL de GitHub guardadas provisionalmente en la ficha no son aptas para lanzamiento. Las rutas dedicadas `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` devolvían 404 el 2026-08-11. Hay que publicar las políticas bilingües exactas, crear y probar un alias exclusivo de soporte y sustituir las URL sin exponer repositorio ni datos personales. La respuesta App Privacy “no se recopilan datos” coincide con build 20 y sigue como borrador no publicado.
 
 ### PEND-011 — Configuración comercial de App Store
 
@@ -254,3 +270,7 @@ Categorías, precio gratuito, 175 países, distribución pública, clasificació
 ### PEND-014 — QA Apple y autorización de distribución oficial
 
 El archive firmado, Validate App, upload y procesamiento TestFlight de build 20 ya pasaron. Faltan QA físico en iPhone, capturas inglesas/españolas y publicar la declaración de privacidad tras verificar el binario. Testers externos, App Review y publicación necesitan autorización expresa adicional en ese momento.
+
+### PEND-015 — Estado DSA trader
+
+Antes de mantener distribución en la Unión Europea, el propietario debe confirmar si ofrece Warm Words en relación con una actividad comercial, empresarial, artesanal o profesional. Recomendación actual: declarar **non-trader** para esta 1.0 gratuita, sin anuncios, compras ni suscripciones, únicamente si el propietario confirma que es un proyecto personal ajeno a su actividad profesional; si no puede confirmarlo, declarar **trader** y aportar a Apple la información verificada que exijan la DSA y App Store Connect. No se inventará ni ocultará ningún dato.

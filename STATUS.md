@@ -1,6 +1,6 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-10**
+Actualizado: **2026-08-11**
 Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; pendiente de QA físico y cierre de App Store**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
@@ -14,12 +14,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
 - App Store Connect contiene la ficha privada iOS 1.0 con Apple ID `6800058458`, SKU `com.dmkr.inspiraciondia` y bundle ID registrado `com.dmkr.inspiraciondia.B2X6D3A9J9`. Inglés (EE. UU.) permanece como idioma principal y Español (España) está añadido como localización completa.
 - Apple rechazó el nombre exacto `Warm Words` por estar ya usado. La marca visible del binario sigue siendo `Warm Words`; la ficha usa `Warm Words: Daily Quotes` en inglés y `Warm Words: Frases Diarias` en español.
-- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte mediante GitHub Issues, políticas de privacidad inglesa/española, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se añadió a App Review.
+- La ficha guarda subtítulos, textos promocionales, descripciones, palabras clave, soporte y privacidad provisionales mediante GitHub, categorías Lifestyle / Health & Fitness, precio gratuito, disponibilidad en 175 países, ausencia de login y publicación manual. Esas URL provisionales ya no se consideran aptas para lanzamiento porque exponen infraestructura y las rutas dedicadas previstas siguen en 404. La distribución automática del binario iOS en Mac y Vision Pro está desactivada. No se añadió a App Review.
 - App Store Connect muestra actualmente una clasificación global 4+ con excepciones regionales; se declaró que la app contiene temas generales de bienestar pero no información médica, contenido adulto, violencia, apuestas, UGC distribuido, chat, publicidad ni acceso web sin restricciones. También se declaró correctamente que no es un dispositivo médico regulado.
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
 - TestFlight contiene Warm Words 1.0 build 20 en estado **En pruebas**, asignada al grupo interno `Warm Words Internal` con la cuenta propietaria como único tester. No se creó grupo externo ni se solicitó Beta App Review.
+- `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
+- La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
+- Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
 
 ## Cierre implementado localmente
 
@@ -170,9 +173,10 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 1. Instalar build 20 desde TestFlight y completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
-3. Publicar páginas propias de privacidad/soporte y la declaración App Privacy después de contrastarla con la build probada.
-4. Preparar capturas inglesas y españolas, copyright y contacto de revisión.
-5. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
+3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
+4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
+5. Confirmar verazmente el estado DSA trader antes de distribuir en la UE; no ocultar una obligación ni publicar datos adicionales si no corresponde.
+6. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 
