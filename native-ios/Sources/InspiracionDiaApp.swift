@@ -742,7 +742,6 @@ struct RootView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.scenePhase) private var scenePhase
   @State private var tab = 0
-  @State private var showingSettings = false
   @State private var incomingSharedQuote: SharedQuotePayload?
   @State private var pendingSharedQuote: SharedQuotePayload?
   @State private var showingInvalidShareLink = false
@@ -753,7 +752,7 @@ struct RootView: View {
         ReminderOnboardingView()
       } else {
         TabView(selection: $tab) {
-          TodayView(showingSettings: $showingSettings)
+          TodayView()
             .tabItem { Label(store.t("today"), systemImage: "sun.max") }
             .tag(0)
 
@@ -767,10 +766,6 @@ struct RootView: View {
         }
         .tint(Premium.gold)
       }
-    }
-    .sheet(isPresented: $showingSettings) {
-      SettingsView()
-        .environmentObject(store)
     }
     .fullScreenCover(item: $incomingSharedQuote) { payload in
       SharedQuoteView(payload: payload)
@@ -825,7 +820,6 @@ struct RootView: View {
 
   private func presentSharedQuote(_ payload: SharedQuotePayload) {
     tab = 0
-    showingSettings = false
     Task { @MainActor in
       await Task.yield()
       incomingSharedQuote = payload
@@ -1040,7 +1034,7 @@ struct ReminderOnboardingView: View {
 struct TodayView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-  @Binding var showingSettings: Bool
+  @State private var showingSettings = false
 
   var body: some View {
     NavigationStack {
@@ -1055,6 +1049,10 @@ struct TodayView: View {
         }
       }
       .background(PremiumBackground())
+    }
+    .sheet(isPresented: $showingSettings) {
+      SettingsView()
+        .environmentObject(store)
     }
   }
 

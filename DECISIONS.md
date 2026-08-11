@@ -262,6 +262,12 @@ Resuelve la antigua PEND-013:
 - No existe deferred deep linking completo sin infraestructura adicional: quien instale la app desde la landing debe volver al mensaje original y tocar el enlace otra vez. WhatsApp y otras extensiones deciden cómo muestran la pareja imagen/enlace.
 - La implementación local exige Universal Links, AASA, Associated Domains y un nuevo perfil/build. La landing y AASA pueden prepararse localmente, pero no se distribuye una build con enlaces activos hasta verificar HTTP, CDN de Apple, firma y App Store URL. Publicar el sitio o subir la build sigue siendo una acción separada.
 
+### DEC-036 — Ajustes se presenta desde Today y TestFlight continúa en el tren 1.0
+
+- Tras reproducirse otra vez el botón de Ajustes sin respuesta, la hoja deja de depender del estado y presenter de `RootView`. `TodayView` conserva su propio estado y presenta `SettingsView` directamente desde su `NavigationStack`, permitiendo abrir, cerrar y volver a abrir sin depender del `TabView` ni de otras portadas.
+- El propietario autorizó expresamente el 2026-08-12 corregirlo y subir una nueva build a TestFlight. Como App Store Connect ya contiene el tren 1.0 y todavía no existe una versión pública, se conserva marketing version `1.0` y se usa build `21`; no se crea artificialmente una versión pública 1.1 antes del primer lanzamiento.
+- La autorización de TestFlight no se amplía silenciosamente a publicar GitHub Pages. Build 21 mantiene apagado el enlace inteligente y no firma Associated Domains hasta que el propietario autorice expresamente hacer pública la landing/AASA y estas respondan correctamente.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

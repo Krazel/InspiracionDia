@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-12**
-Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; candidato posterior con enlaces de frase en implementación/verificación**
+Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; build 21 autorizada para corregir Ajustes, pendiente de CI/upload**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -29,9 +29,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El candidato implementa la generación de tarjeta PNG y URL específico versionado, pero mantiene el feature gate apagado hasta verificar la infraestructura. Las frases incluidas viajan por ID+idioma; las personales incluyen solo el texto normalizado dentro del fragmento `#`, de modo que GitHub Pages no lo recibe.
 - Al abrir un enlace válido, Warm Words muestra una pantalla completa bilingüe basada en `WW-SCREEN-004`. Una frase incluida puede guardarse en Favoritos; una personal se importa, deduplica y marca favorita únicamente tras confirmación explícita.
 - Se rechazan host, ruta, versión, ID, texto, longitud y caracteres de control inválidos. Si el primer onboarding sigue pendiente, la vista recibida se difiere hasta completarlo.
-- El proyecto declara `applinks:krazel.github.io`; el workflow firmado exige que tanto el perfil como el archive contengan Associated Domains. El perfil usado por build 20 no sirve hasta habilitar la capacidad y regenerarlo.
+- El entitlement fuente para `applinks:krazel.github.io` está preparado, pero no se vincula al target ni se exige al perfil de build 21 mientras la landing/AASA no estén publicados. Associated Domains necesitará una build posterior y un perfil regenerado.
 - La landing y las dos copias de AASA están preparadas únicamente en el repositorio local canónico `krazel.github.io`; no se han publicado. `ShareLinkRoute.isPublicLinkEnabled` permanece en `false` hasta que respondan 200, el CDN de Apple acepte AASA y la URL de App Store sea pública.
 - Privacidad, soporte, inventario y QA describen el envío voluntario de imagen+enlace, la ausencia de backend y la limitación real: después de instalar desde la landing hay que volver al mensaje original y tocar el enlace otra vez.
+
+## Corrección de Ajustes para build 21
+
+- `TodayView` pasa a ser propietario del estado de su hoja de Ajustes y la presenta directamente desde su `NavigationStack`. Se elimina el binding y presenter remoto de `RootView`, que había vuelto a fallar en dispositivo.
+- El cierre estático exige `TodayView()` sin binding, estado local `showingSettings` y presentación local de `SettingsView`; la puerta física sigue siendo abrir, cerrar y reabrir Ajustes en la build 21.
+- Se conserva marketing version 1.0 porque es el tren existente anterior al primer lanzamiento público; la nueva combinación autorizada es **1.0 (21)**.
 
 ## Cierre implementado localmente
 
