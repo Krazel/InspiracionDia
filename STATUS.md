@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-11**
-Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; pendiente de QA físico y cierre de App Store**
+Actualizado: **2026-08-12**
+Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; candidato posterior con enlaces de frase en implementación/verificación**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -24,6 +24,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
 
+## Enlace inteligente posterior a build 20
+
+- El candidato implementa la generación de tarjeta PNG y URL específico versionado, pero mantiene el feature gate apagado hasta verificar la infraestructura. Las frases incluidas viajan por ID+idioma; las personales incluyen solo el texto normalizado dentro del fragmento `#`, de modo que GitHub Pages no lo recibe.
+- Al abrir un enlace válido, Warm Words muestra una pantalla completa bilingüe basada en `WW-SCREEN-004`. Una frase incluida puede guardarse en Favoritos; una personal se importa, deduplica y marca favorita únicamente tras confirmación explícita.
+- Se rechazan host, ruta, versión, ID, texto, longitud y caracteres de control inválidos. Si el primer onboarding sigue pendiente, la vista recibida se difiere hasta completarlo.
+- El proyecto declara `applinks:krazel.github.io`; el workflow firmado exige que tanto el perfil como el archive contengan Associated Domains. El perfil usado por build 20 no sirve hasta habilitar la capacidad y regenerarlo.
+- La landing y las dos copias de AASA están preparadas únicamente en el repositorio local canónico `krazel.github.io`; no se han publicado. `ShareLinkRoute.isPublicLinkEnabled` permanece en `false` hasta que respondan 200, el CDN de Apple acepte AASA y la URL de App Store sea pública.
+- Privacidad, soporte, inventario y QA describen el envío voluntario de imagen+enlace, la ausencia de backend y la limitación real: después de instalar desde la landing hay que volver al mensaje original y tocar el enlace otra vez.
+
 ## Cierre implementado localmente
 
 - Catálogos propios completos de 360 frases y 12 categorías en inglés y español, con los mismos IDs y orden. Incluyen 180 pares nuevos y 12 reescrituras editoriales que conservan IDs. No contienen citas atribuidas ni dependen de una fuente externa.
@@ -32,7 +41,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
 - Hora configurada con `DatePicker`, migración estricta de la preferencia antigua y manejo de cambios DST mediante el calendario del sistema.
 - Tarjetas propias: entrada vacía o categoría inválida no cierra la hoja; crear selecciona y persiste “Manual”; borrar exige confirmación y limpia favorito y notificaciones. Edición queda fuera de 1.0.
-- Compartir genera una tarjeta visual PNG con la marca Warm Words. El enlace inteligente permanece desactivado para no distribuir una URL 404 hasta que existan landing, AASA, entitlement y firma compatibles.
+- Build 20 comparte una tarjeta visual PNG sin enlace. El candidato local posterior genera además el enlace específico, pero no puede distribuirse hasta que landing, AASA, entitlement y firma compatibles estén verificados.
 - Accesibilidad puntual: labels y estados seleccionados, encabezados semánticos, fondos decorativos ocultos, botones táctiles, grid adaptado a tamaños AX, tipografías dinámicas críticas y dorado de texto oscurecido.
 - `PrivacyInfo.xcprivacy` declara `UserDefaults` con `CA92.1`; `Info.plist` usa región inglesa, iPhone portrait y `ITSAppUsesNonExemptEncryption=false` sujeto a inspección del archive final.
 - Target iPhone-only, firma automática sin team embebido y target XCTest explícito.
@@ -139,8 +148,8 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 - Los dos `ShareLink` de texto fueron sustituidos por una tarjeta PNG dinámica de 1080 × 1350 y la hoja nativa de iOS. La composición reutiliza el fondo de montaña, paleta, tipografía, categoría localizada y marca aprobadas.
 - La referencia visual aprobada y el contrato están en `docs/design/share-card/`; la imagen generada es solo referencia y no se empaqueta como contenido runtime.
-- La app acepta el esquema local `warmwords` y valida la futura ruta HTTPS `https://krazel.github.io/warm-words/share/`.
-- El enlace HTTPS permanece desactivado: la ruta pública y el AASA devuelven 404, y faltan Team ID, Apple ID de App Store, Associated Domains y firma compatible. Ninguna IPA comparte un enlace muerto.
+- Build 17 añadió el esquema local `warmwords` y la validación inicial de la ruta HTTPS `https://krazel.github.io/warm-words/share/`; el candidato posterior añade el payload de frase y la recepción completa.
+- En las IPA distribuidas hasta build 20 el enlace HTTPS permanece desactivado. La ruta pública y AASA seguían en 404 antes de preparar los archivos locales; la nueva capacidad Associated Domains y su perfil firmado aún deben configurarse y verificarse. Ninguna IPA distribuida comparte un enlace muerto.
 - GitHub Actions run `31416957423`, job `93548147914`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
 - IPA de prueba visual: `dist/Warm-Words-Sideloadly-share-card-preview-build-17.ipa`, 6.058.270 bytes, SHA-256 `616680229730AB6B87AE647C3EFD9B45FB2AA0CB31B178D430C4155B1EBAB5AF`.
 - Esta build permite probar la tarjeta como imagen. No es el cierre de la función de enlace inteligente ni reemplaza la build 16 como último candidato funcional cerrado.

@@ -1,6 +1,6 @@
 # Warm Words — manifiesto canónico de aprobaciones visuales
 
-Actualizado: **2026-08-11**
+Actualizado: **2026-08-12**
 
 Este archivo es la fuente de verdad de las imágenes completas aprobadas que gobiernan la app iOS. Una referencia `vigente` define la dirección visual de una pantalla o salida; no implica por sí sola que exista una captura equivalente de la build real. Las propuestas no elegidas, referencias retiradas, assets fuente y capturas runtime se registran por separado.
 
@@ -11,6 +11,7 @@ Este archivo es la fuente de verdad de las imágenes completas aprobadas que gob
 | WW-SCREEN-001 | Today — texto normal, carta completa y acciones visibles | `docs/design/reminder-v2/warm-words-today-compact-proposal.png` | iPhone, 853 × 1844 px | Vertical | Inglés; la misma dirección gobierna español | 2026-08-09; reafirmada 2026-08-10 | `a0bf19666b5f467156fecf813614fe1a0226f30dead7fe9b877d48462e7de144` |
 | WW-SCREEN-002 | Primer inicio — recordatorio, 07:30 y siete días seleccionados | `docs/design/reminder-v2/warm-words-onboarding-proposal.png` | iPhone, 853 × 1844 px | Vertical | Inglés; la misma dirección gobierna español | 2026-08-09 | `9de1202b16a5715ccd0c1ae0742446bdcb218ab1a131317724f17dbc8a812d72` |
 | WW-SCREEN-003 | Settings — recordatorio activado, hora, días y categorías | `docs/design/reminder-v2/warm-words-settings-proposal.png` | iPhone, 853 × 1844 px | Vertical | Inglés; la misma dirección gobierna español | 2026-08-09 | `e349f6b2efc922c28325732a59cf078de041cb6f0e8a9eb3990170585c05216c` |
+| WW-SCREEN-004 | Frase personal recibida — vista previa y guardado explícito | `docs/design/share-link/warm-words-shared-personal-quote-approved.png` | iPhone, 853 × 1844 px | Vertical | Inglés; la misma dirección y copy localizado gobiernan español | 2026-08-12; aprobación directa conforme a DEC-019 y alcance aprobado en DEC-029 | `1b8770c8764652326156c7723e9a71f5dff6fd5a46d237d42e3e34b7a8540ada` |
 | WW-OUTPUT-001 | Tarjeta compartida — cita, categoría y marca | `docs/design/share-card/warm-words-share-card-approved.png` | Referencia 1122 × 1402 px; salida runtime 1080 × 1350 px | Vertical | Inglés; el renderer usa el idioma activo | 2026-08-10 | `8d2fe0df07d4aeaa12c1348ed42ad07de927a76b5d81f054cb2014d744b2fb7d` |
 
 ### Cambios aprobados que matizan las referencias
@@ -18,7 +19,8 @@ Este archivo es la fuente de verdad de las imágenes completas aprobadas que gob
 - **WW-SCREEN-001:** se retiraron la franja promocional y `Explore categories`. La carta usa todo el ancho útil y el alto restante; favorito y compartir permanecen visibles sobre la barra de pestañas sin desplazamiento con texto normal. Dynamic Type de accesibilidad puede crecer y desplazarse para evitar recortes.
 - **WW-SCREEN-002:** el permiso de notificaciones solo se solicita después de `Set reminder`; `Not now` completa el onboarding sin activar recordatorios. Hora, días y copy se localizan en inglés o español.
 - **WW-SCREEN-003:** la imagen conserva la dirección de arte y jerarquía vigentes, pero no es una captura exacta de build 20. El propietario aprobó después el selector inmediato `English / Español` y retiró la creación de categorías propias; las frases nuevas van a `Personal`. Estas correcciones no autorizan un rediseño.
-- **WW-OUTPUT-001:** la app recrea la composición en tiempo de ejecución; la imagen de referencia no se empaqueta. El enlace inteligente permanece desactivado hasta que landing, AASA y Associated Domains sean reales.
+- **WW-SCREEN-004:** aparece únicamente al abrir un enlace de frase válido. Reutiliza el fondo, paleta y jerarquía aprobados; una frase personal no se importa hasta tocar `Save to Personal & Favorites`. La versión española localiza la interfaz, pero conserva literalmente el texto personal recibido.
+- **WW-OUTPUT-001:** la app recrea la composición en tiempo de ejecución; la imagen de referencia no se empaqueta. Ninguna build con el enlace activo puede distribuirse hasta que landing, AASA y Associated Domains sean reales y estén verificados.
 
 ## AppIcon vigente y asset integrado
 

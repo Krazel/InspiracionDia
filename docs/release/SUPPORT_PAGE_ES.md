@@ -28,6 +28,8 @@ Abre Ajustes y elige English o Español. La interfaz incluida, el catálogo, las
 
 ### ¿Cómo comparto o elimino una frase personal?
 
-Abre Personal. Compartir crea una tarjeta visual y abre la hoja de compartir de iOS. Eliminar borra la frase después de confirmarlo.
+Abre Personal. Compartir crea una tarjeta visual y un enlace, y abre la hoja de compartir de iOS. Un destinatario que tenga Warm Words verá esa frase en la app. Una frase personal compartida solo se guarda cuando el destinatario elige **Guardar en Personales y Favoritos**. Eliminar borra tu frase local después de confirmarlo.
+
+Si el destinatario no tiene Warm Words, el enlace abre la página de descarga. Tras instalarla, debe volver al mensaje original y tocar otra vez el enlace; Warm Words no utiliza una cuenta ni un servidor para importarla automáticamente.
 
 Puerta de lanzamiento: verificar esta página con la build final probada en dispositivo y activar la dirección exclusiva de soporte antes de usar esta URL en App Store Connect.

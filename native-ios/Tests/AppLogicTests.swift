@@ -34,6 +34,103 @@ final class AppLogicTests: XCTestCase {
     XCTAssertFalse(ShareLinkRoute.handles(URL(string: "https://krazel.github.io/warm-words/share-elsewhere")!))
   }
 
+  func testBuiltInShareLinkRoundTripsStableIDAndLanguage() throws {
+    let payload = SharedQuotePayload.builtIn(id: "animo-001", language: .es)
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(ShareLinkRoute.payload(from: url), payload)
+    XCTAssertEqual(url.host, "krazel.github.io")
+    XCTAssertEqual(url.path, "/warm-words/share/")
+    XCTAssertTrue(url.fragment?.hasPrefix("ww=") == true)
+  }
+
+  func testPersonalShareLinkRoundTripsUnicodeWithoutServerQuery() throws {
+    let payload = SharedQuotePayload.personal(
+      text: "Respira: este paso también cuenta.",
+      language: .es
+    )
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(ShareLinkRoute.payload(from: url), payload)
+    XCTAssertNil(url.query)
+    XCTAssertNotNil(url.fragment)
+  }
+
+  func testPersonalShareLinkNormalizesAndRejectsUnsafeText() throws {
+    let decomposed = "Cafe\u{301}"
+    let normalizedURL = try XCTUnwrap(
+      ShareLinkRoute.shareURL(for: .personal(text: decomposed, language: .en))
+    )
+    XCTAssertEqual(
+      ShareLinkRoute.payload(from: normalizedURL)?.text,
+      decomposed.precomposedStringWithCanonicalMapping
+    )
+    XCTAssertNil(ShareLinkRoute.shareURL(for: .personal(text: "Hello\u{0000}", language: .en)))
+    XCTAssertNil(ShareLinkRoute.shareURL(for: .personal(text: "safe\u{202E}txt", language: .en)))
+    XCTAssertNil(
+      ShareLinkRoute.shareURL(
+        for: .personal(
+          text: String(repeating: "a", count: CustomQuoteValidator.maximumLength + 1),
+          language: .en
+        )
+      )
+    )
+  }
+
+  func testPersonalShareLinkPreservesMultipleLines() throws {
+    let payload = SharedQuotePayload.personal(
+      text: "Take one step.\r\nThen take another.",
+      language: .en
+    )
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(
+      ShareLinkRoute.payload(from: url)?.text,
+      "Take one step.\nThen take another."
+    )
+  }
+
+  func testPersonalShareImportCreatesOnceAndDeduplicatesUnicode() {
+    let created = SharedQuoteImporter.personalQuote(
+      text: "Café",
+      existing: [],
+      makeID: { "custom-test" }
+    )
+    XCTAssertTrue(created.isNew)
+    XCTAssertEqual(created.quote.id, "custom-test")
+    XCTAssertEqual(created.quote.category, "custom")
+
+    let duplicate = SharedQuoteImporter.personalQuote(
+      text: "Cafe\u{301}",
+      existing: [created.quote],
+      makeID: { "custom-should-not-be-used" }
+    )
+    XCTAssertFalse(duplicate.isNew)
+    XCTAssertEqual(duplicate.quote, created.quote)
+  }
+
+  func testShareLinkRejectsMalformedUnknownAndUnversionedPayloads() throws {
+    XCTAssertNil(ShareLinkRoute.payload(from: ShareLinkRoute.landingPageURL))
+    XCTAssertNil(
+      ShareLinkRoute.payload(
+        from: URL(string: "https://krazel.github.io/warm-words/share/#ww=not-base64")!
+      )
+    )
+    let future = SharedQuotePayload(
+      version: SharedQuotePayload.currentVersion + 1,
+      kind: .builtIn,
+      quoteID: "animo-001",
+      text: nil,
+      language: .en
+    )
+    XCTAssertNil(ShareLinkRoute.shareURL(for: future))
+    let validURL = try XCTUnwrap(
+      ShareLinkRoute.shareURL(for: .builtIn(id: "animo-001", language: .en))
+    )
+    let foreignURL = URL(string: validURL.absoluteString.replacingOccurrences(
+      of: "krazel.github.io",
+      with: "example.com"
+    ))!
+    XCTAssertNil(ShareLinkRoute.payload(from: foreignURL))
+  }
+
   func testWeekdayLabelsAreLocalizedWithoutChangingScheduleValues() {
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .en), "M")
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .es), "L")

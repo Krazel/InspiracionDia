@@ -212,6 +212,67 @@ final class AppStore: ObservableObject {
     persistFavorites()
   }
 
+  func sharedQuote(for payload: SharedQuotePayload) -> (quote: Quote, category: Category)? {
+    guard let payload = payload.validated else { return nil }
+    switch payload.kind {
+    case .builtIn:
+      guard let quoteID = payload.quoteID else { return nil }
+      let sharedContent = contentBundle(for: payload.language ?? language) ?? content
+      guard let quote = sharedContent.quotes.first(where: { $0.id == quoteID }) else { return nil }
+      let category = sharedContent.categories.first(where: { $0.id == quote.category }) ??
+        category(for: quote.category)
+      return (quote, category)
+    case .personal:
+      guard let text = payload.text else { return nil }
+      return (
+        Quote(id: payload.id, category: "custom", text: text),
+        personalCategory
+      )
+    }
+  }
+
+  func isSharedQuoteSaved(_ payload: SharedQuotePayload) -> Bool {
+    switch payload.kind {
+    case .builtIn:
+      guard let quoteID = payload.quoteID else { return false }
+      return favoriteIds.contains(quoteID)
+    case .personal:
+      guard let text = payload.validated?.text else { return false }
+      return customQuotes.contains {
+        $0.text.precomposedStringWithCanonicalMapping == text && favoriteIds.contains($0.id)
+      }
+    }
+  }
+
+  @discardableResult
+  func saveSharedQuote(_ payload: SharedQuotePayload) -> Bool {
+    guard let payload = payload.validated else { return false }
+    switch payload.kind {
+    case .builtIn:
+      guard let quoteID = payload.quoteID,
+            contentBundle(for: payload.language ?? language)?.quotes.contains(where: { $0.id == quoteID }) == true
+      else {
+        return false
+      }
+      favoriteIds.insert(quoteID)
+      persistFavorites()
+      return true
+    case .personal:
+      guard let text = payload.text else { return false }
+      let imported = SharedQuoteImporter.personalQuote(text: text, existing: customQuotes)
+      if imported.isNew {
+        customQuotes.insert(imported.quote, at: 0)
+      }
+      favoriteIds.insert(imported.quote.id)
+      persistFavorites()
+      if imported.isNew {
+        persistCustomQuotes()
+        refreshReminderIfEnabled()
+      }
+      return true
+    }
+  }
+
   func selectCategory(_ id: String) {
     selectedCategory = id
     UserDefaults.standard.set(id, forKey: selectedCategoryKey)
@@ -541,6 +602,12 @@ final class AppStore: ObservableObject {
   }
 
   private func loadContent() {
+    if let selectedContent = contentBundle(for: language) {
+      content = selectedContent
+    }
+  }
+
+  private func contentBundle(for language: AppLanguage) -> ContentBundle? {
     let preferredResource = language == .es ? "content" : "content-en"
     let fallbackResource = language == .es ? "content-en" : "content"
     for resourceName in [preferredResource, fallbackResource] {
@@ -551,9 +618,9 @@ final class AppStore: ObservableObject {
       else {
         continue
       }
-      content = decoded
-      return
+      return decoded
     }
+    return nil
   }
 
   private func loadSettings() {
@@ -676,6 +743,9 @@ struct RootView: View {
   @Environment(\.scenePhase) private var scenePhase
   @State private var tab = 0
   @State private var showingSettings = false
+  @State private var incomingSharedQuote: SharedQuotePayload?
+  @State private var pendingSharedQuote: SharedQuotePayload?
+  @State private var showingInvalidShareLink = false
 
   var body: some View {
     ZStack {
@@ -702,6 +772,10 @@ struct RootView: View {
       SettingsView()
         .environmentObject(store)
     }
+    .fullScreenCover(item: $incomingSharedQuote) { payload in
+      SharedQuoteView(payload: payload)
+        .environmentObject(store)
+    }
     .onChange(of: scenePhase) { phase in
       if phase == .active {
         store.refreshCurrentDate()
@@ -713,8 +787,12 @@ struct RootView: View {
       store.refreshReminderIfEnabled()
     }
     .onOpenURL { url in
-      guard ShareLinkRoute.handles(url) else { return }
-      tab = 0
+      handleIncomingShareURL(url)
+    }
+    .onChange(of: store.needsReminderOnboarding) { needsOnboarding in
+      guard !needsOnboarding, let payload = pendingSharedQuote else { return }
+      pendingSharedQuote = nil
+      presentSharedQuote(payload)
     }
     .alert(
       store.t("notificationsAreOffTitle"),
@@ -724,6 +802,152 @@ struct RootView: View {
     } message: {
       Text(store.t("notificationsAreOffBody"))
     }
+    .alert(store.t("sharedQuoteUnavailableTitle"), isPresented: $showingInvalidShareLink) {
+      Button(store.t("close"), role: .cancel) {}
+    } message: {
+      Text(store.t("sharedQuoteUnavailableBody"))
+    }
+  }
+
+  private func handleIncomingShareURL(_ url: URL) {
+    guard ShareLinkRoute.handles(url) else { return }
+    guard let payload = ShareLinkRoute.payload(from: url),
+          store.sharedQuote(for: payload) != nil else {
+      showingInvalidShareLink = true
+      return
+    }
+    if store.needsReminderOnboarding {
+      pendingSharedQuote = payload
+    } else {
+      presentSharedQuote(payload)
+    }
+  }
+
+  private func presentSharedQuote(_ payload: SharedQuotePayload) {
+    tab = 0
+    showingSettings = false
+    Task { @MainActor in
+      await Task.yield()
+      incomingSharedQuote = payload
+    }
+  }
+}
+
+struct SharedQuoteView: View {
+  @EnvironmentObject private var store: AppStore
+  @Environment(\.dismiss) private var dismiss
+  @State private var saved = false
+
+  let payload: SharedQuotePayload
+
+  var body: some View {
+    ScrollView {
+      VStack(spacing: 22) {
+        HStack {
+          Text(store.t("sharedWithYou"))
+            .font(.caption.weight(.semibold))
+            .tracking(2.6)
+            .foregroundStyle(Premium.gold)
+          Spacer()
+          Button {
+            dismiss()
+          } label: {
+            Image(systemName: "xmark")
+              .font(.headline)
+              .frame(width: 44, height: 44)
+              .background(.white.opacity(0.76), in: Circle())
+          }
+          .buttonStyle(.plain)
+          .foregroundStyle(Premium.ink)
+          .accessibilityLabel(store.t("close"))
+        }
+
+        Text(AppBrand.name)
+          .font(Premium.titleFont)
+          .foregroundStyle(Premium.ink)
+          .accessibilityAddTraits(.isHeader)
+
+        if let shared = store.sharedQuote(for: payload) {
+          sharedCard(quote: shared.quote, category: shared.category)
+
+          Text(
+            store.t(payload.kind == .personal ? "sharedPersonalHelp" : "sharedBuiltInHelp")
+          )
+          .font(.subheadline)
+          .multilineTextAlignment(.center)
+          .foregroundStyle(.secondary)
+
+          Button(
+            store.t(
+              saved
+                ? (payload.kind == .personal ? "savedToPersonalFavorites" : "savedToFavorites")
+                : (payload.kind == .personal ? "saveToPersonalFavorites" : "saveToFavorites")
+            )
+          ) {
+            saved = store.saveSharedQuote(payload)
+          }
+          .buttonStyle(PrimaryGoldButtonStyle())
+          .disabled(saved)
+
+          Button(store.t("notNow")) {
+            dismiss()
+          }
+          .font(.body.weight(.semibold))
+          .foregroundStyle(Premium.gold)
+          .frame(minHeight: 44)
+        }
+      }
+      .padding(.horizontal, 22)
+      .padding(.top, 18)
+      .padding(.bottom, 30)
+    }
+    .background(PremiumBackground())
+    .onAppear {
+      saved = store.isSharedQuoteSaved(payload)
+    }
+  }
+
+  private func sharedCard(quote: Quote, category: Category) -> some View {
+    let locale = Locale(identifier: (payload.language ?? store.language).localeIdentifier)
+    return VStack(spacing: 18) {
+      Text("\"")
+        .font(.system(size: 54, weight: .semibold, design: .serif))
+        .foregroundStyle(Premium.gold)
+      Text(quote.text)
+        .font(.system(.title2, design: .serif, weight: .regular))
+        .multilineTextAlignment(.center)
+        .lineSpacing(5)
+        .foregroundStyle(Premium.ink)
+      Divider()
+        .frame(width: 58)
+        .overlay(Premium.gold)
+      Text(category.name.uppercased(with: locale))
+        .font(.caption.weight(.semibold))
+        .tracking(2)
+        .padding(.horizontal, 20)
+        .padding(.vertical, 9)
+        .background(Premium.gold.opacity(0.14), in: Capsule())
+        .foregroundStyle(Premium.gold)
+    }
+    .padding(.horizontal, 28)
+    .padding(.vertical, 34)
+    .frame(maxWidth: .infinity, minHeight: 500)
+    .background {
+      BundledImage(name: "premium-mountains", fallback: PremiumBackground())
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .accessibilityHidden(true)
+        .clipped()
+        .overlay(
+          LinearGradient(
+            colors: [.white.opacity(0.94), .white.opacity(0.62), .white.opacity(0.2)],
+            startPoint: .top,
+            endPoint: .bottom
+          )
+        )
+    }
+    .clipShape(RoundedRectangle(cornerRadius: 28))
+    .overlay(RoundedRectangle(cornerRadius: 28).stroke(.white.opacity(0.82), lineWidth: 1))
+    .shadow(color: .black.opacity(0.13), radius: 24, x: 0, y: 16)
   }
 }
 
@@ -1777,6 +2001,15 @@ enum Strings {
     "saved": "Guardada",
     "save": "Guardar",
     "share": "Compartir",
+    "sharedWithYou": "COMPARTIDA CONTIGO",
+    "sharedPersonalHelp": "Una frase personal que han compartido contigo.",
+    "sharedBuiltInHelp": "Una frase de Warm Words compartida contigo.",
+    "saveToPersonalFavorites": "Guardar en Personales y Favoritos",
+    "saveToFavorites": "Guardar en Favoritos",
+    "savedToPersonalFavorites": "Guardada en Personales y Favoritos",
+    "savedToFavorites": "Guardada en Favoritos",
+    "sharedQuoteUnavailableTitle": "No se puede abrir esta frase",
+    "sharedQuoteUnavailableBody": "El enlace está dañado, es demasiado antiguo o la frase ya no está disponible.",
     "motivation": "Ánimo",
     "fallbackCategoryDescription": "Para ayudarte a dar el siguiente paso.",
     "notificationTitle": "Tu frase del día",
@@ -1852,6 +2085,15 @@ enum Strings {
     "saved": "Saved",
     "save": "Save",
     "share": "Share",
+    "sharedWithYou": "SHARED WITH YOU",
+    "sharedPersonalHelp": "A personal quote shared with you.",
+    "sharedBuiltInHelp": "A Warm Words quote shared with you.",
+    "saveToPersonalFavorites": "Save to Personal & Favorites",
+    "saveToFavorites": "Save to Favorites",
+    "savedToPersonalFavorites": "Saved to Personal & Favorites",
+    "savedToFavorites": "Saved to Favorites",
+    "sharedQuoteUnavailableTitle": "This quote can’t be opened",
+    "sharedQuoteUnavailableBody": "The link is damaged, too old, or the quote is no longer available.",
     "motivation": "Motivation",
     "fallbackCategoryDescription": "To help you take the next step.",
     "notificationTitle": "Your daily quote",

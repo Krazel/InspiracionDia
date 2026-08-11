@@ -151,6 +151,10 @@ jobs:
           PROFILE_NAME="$(/usr/libexec/PlistBuddy -c 'Print :Name' "${PROFILE_PLIST}")"
           PROFILE_TEAM="$(/usr/libexec/PlistBuddy -c 'Print :TeamIdentifier:0' "${PROFILE_PLIST}")"
           PROFILE_APP_ID="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:application-identifier' "${PROFILE_PLIST}")"
+          if ! PROFILE_ASSOCIATED_DOMAIN="$(/usr/libexec/PlistBuddy -c 'Print :Entitlements:com.apple.developer.associated-domains:0' "${PROFILE_PLIST}" 2>/dev/null)"; then
+            echo "The provisioning profile does not include Associated Domains."
+            exit 1
+          fi
 
           if [ "${PROFILE_TEAM}" != "${APPLE_TEAM_ID}" ]; then
             echo "The provisioning profile belongs to a different Apple team."
@@ -158,6 +162,10 @@ jobs:
           fi
           if [ "${PROFILE_APP_ID}" != "${APPLE_TEAM_ID}.${APP_BUNDLE_ID}" ]; then
             echo "The provisioning profile does not match ${APP_BUNDLE_ID}."
+            exit 1
+          fi
+          if [ "${PROFILE_ASSOCIATED_DOMAIN}" != "applinks:krazel.github.io" ]; then
+            echo "The provisioning profile does not allow applinks:krazel.github.io."
             exit 1
           fi
 
@@ -200,6 +208,8 @@ jobs:
           test -f "${APP_PATH}/content.json"
           test -f "${APP_PATH}/content-en.json"
           /usr/bin/codesign --verify --deep --strict --verbose=2 "${APP_PATH}"
+          /usr/bin/codesign -d --entitlements :- "${APP_PATH}" > "${RUNNER_TEMP}/WarmWords-entitlements.plist"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :com.apple.developer.associated-domains:0' "${RUNNER_TEMP}/WarmWords-entitlements.plist")" = "applinks:krazel.github.io"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "${APP_PATH}/Info.plist")" = "${APP_BUNDLE_ID}"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' "${APP_PATH}/Info.plist")" = "${APP_VERSION}"
           test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "${APP_PATH}/Info.plist")" = "${BUILD_NUMBER}"

@@ -36,12 +36,12 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Personal quotes remain exactly as written instead of being machine-translated.
 - [ ] Dates, day chips, VoiceOver weekday names, onboarding, Settings, Categories, Favorites, dialogs, and validation messages follow the selected language.
 - [ ] Save and unsave work from Today, Categories, and Favorites and survive relaunch.
-- [ ] Sharing from Today and a list opens the iOS share sheet with a complete visual quote card and `Warm Words` branding.
+- [ ] Sharing from Today and a list opens the iOS share sheet with a complete visual quote card, `Warm Words` branding, and a card-specific HTTPS link.
 - [ ] A whitespace-only personal quote cannot be added.
 - [ ] A personal quote over 240 characters is rejected with a visible counter/error and the sheet remains usable with the keyboard open.
 - [ ] A valid personal quote is trimmed, saved, shown under Personal, and survives relaunch.
 - [ ] New personal quotes go directly to Personal; the form does not expose category creation.
-- [ ] A personal quote shares through the standard iOS share sheet as a visual quote card.
+- [ ] A personal quote shares through the standard iOS share sheet as a visual quote card plus a link; the URL has no query and keeps its versioned payload after `#`.
 - [ ] Legacy personal categories and their quotes remain readable after an upgrade, without exposing new category creation.
 - [ ] Deleting a personal quote requires confirmation, removes it from favorites, and survives relaunch.
 - [ ] Existing valid legacy favorites and personal quotes survive an upgrade install.
@@ -78,6 +78,13 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Dedicated public privacy and support pages return 200, use the approved name, and expose only a tested support alias—not a repository, issue tracker, personal account, home address, personal phone, or personal email.
 - [ ] The public share landing opens the App Store URL `https://apps.apple.com/app/id6800058458` when the app is not installed.
 - [ ] The Universal Link opens Warm Words when installed; the AASA file declares `B2X6D3A9J9.com.dmkr.inspiraciondia.B2X6D3A9J9` and the signed app contains `applinks:krazel.github.io`.
+- [ ] A shared included quote opens the exact quote and can be saved to Favorites in English and Spanish.
+- [ ] A shared personal quote opens the exact text but is not imported automatically; **Save to Personal & Favorites** creates one local copy and marks it favorite.
+- [ ] Opening the same personal link twice deduplicates it instead of creating a second quote; an already saved item shows the saved state.
+- [ ] Malformed, oversized, unsupported-version, wrong-host, wrong-path, unknown-ID, and control-character payloads are rejected with localized feedback and no data change.
+- [ ] Opening a valid link during first-run onboarding defers the shared-card view until onboarding finishes.
+- [ ] Notes, Messages, WhatsApp, Mail, and at least one additional share destination are checked on a physical device; any destination-specific image/link limitation is recorded rather than hidden.
+- [ ] With the app absent, the landing explains that after installation the recipient must return to the original message and tap the link again; no deferred-deep-link promise is made.
 - [ ] `docs/release/DATA_INVENTORY_1_0.md`, public policies, and App Privacy answers match the exact final archive and third-party component scan.
 - [ ] Required-reason API report contains only declared uses or is reconciled.
 - [ ] The final target requests only notification permission; any new permission, SDK, network request, StoreKit product, analytics, or advertising has been removed or disclosed exactly.

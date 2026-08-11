@@ -253,6 +253,15 @@ Resuelve la antigua PEND-013:
 - El contacto de App Review es privado y contendrá únicamente los datos reales mínimos que Apple exija. URL de marketing, URL de opciones de privacidad y demás campos opcionales permanecen vacíos si no son necesarios.
 - El estado DSA trader no se presume ni se elude: se eleva como decisión material y, si aplica, se proporcionará la información pública legalmente exigida.
 
+### DEC-035 — Los enlaces compartidos abren la frase exacta y permiten guardar frases personales
+
+- El propietario pidió el 2026-08-12 que Compartir entregue la tarjeta PNG y un enlace específico. Con la app instalada, el enlace abre una vista previa de esa misma frase; sin la app, abre una landing que conduce a App Store.
+- Las frases incluidas se identifican por su ID estable y el idioma del emisor. Las frases personales incluyen únicamente su texto normalizado —máximo 240 caracteres— dentro del fragmento `#` del enlace; no incluyen identidad, UUID local, estado de favorito ni datos del dispositivo.
+- El fragmento evita que el host web reciba el texto, pero no es secreto: el servicio de mensajería y el destinatario pueden verlo. No se añade backend, cuenta, nube, analítica ni seguimiento.
+- Una frase personal recibida nunca se importa automáticamente. La pantalla aprobada `WW-SCREEN-004` exige tocar `Save to Personal & Favorites`; entonces se crea o reutiliza una sola copia local y se marca como favorita. Las frases incluidas se guardan en Favoritos por ID.
+- No existe deferred deep linking completo sin infraestructura adicional: quien instale la app desde la landing debe volver al mensaje original y tocar el enlace otra vez. WhatsApp y otras extensiones deciden cómo muestran la pareja imagen/enlace.
+- La implementación local exige Universal Links, AASA, Associated Domains y un nuevo perfil/build. La landing y AASA pueden prepararse localmente, pero no se distribuye una build con enlaces activos hasta verificar HTTP, CDN de Apple, firma y App Store URL. Publicar el sitio o subir la build sigue siendo una acción separada.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

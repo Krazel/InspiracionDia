@@ -1,6 +1,6 @@
 import Foundation
 
-enum AppLanguage: String, CaseIterable, Hashable {
+enum AppLanguage: String, CaseIterable, Hashable, Codable {
   case en
   case es
 
@@ -19,14 +19,150 @@ enum AppLanguage: String, CaseIterable, Hashable {
   }
 }
 
+enum SharedQuoteKind: String, Codable, Hashable {
+  case builtIn = "b"
+  case personal = "p"
+}
+
+struct SharedQuotePayload: Codable, Hashable, Identifiable {
+  static let currentVersion = 1
+
+  let version: Int
+  let kind: SharedQuoteKind
+  let quoteID: String?
+  let text: String?
+  let language: AppLanguage?
+
+  private enum CodingKeys: String, CodingKey {
+    case version = "v"
+    case kind = "k"
+    case quoteID = "i"
+    case text = "t"
+    case language = "l"
+  }
+
+  var id: String {
+    switch kind {
+    case .builtIn:
+      return "built-in:\(quoteID ?? "")"
+    case .personal:
+      return "personal:\(text ?? "")"
+    }
+  }
+
+  static func builtIn(id: String, language: AppLanguage? = nil) -> SharedQuotePayload {
+    SharedQuotePayload(
+      version: currentVersion,
+      kind: .builtIn,
+      quoteID: id,
+      text: nil,
+      language: language
+    )
+  }
+
+  static func personal(text: String, language: AppLanguage? = nil) -> SharedQuotePayload {
+    SharedQuotePayload(
+      version: currentVersion,
+      kind: .personal,
+      quoteID: nil,
+      text: text,
+      language: language
+    )
+  }
+
+  var validated: SharedQuotePayload? {
+    guard version == Self.currentVersion else { return nil }
+    switch kind {
+    case .builtIn:
+      guard
+        let quoteID,
+        !quoteID.isEmpty,
+        quoteID.count <= 64,
+        quoteID.unicodeScalars.allSatisfy({
+          CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-_")).contains($0)
+        })
+      else {
+        return nil
+      }
+      return .builtIn(id: quoteID, language: language)
+    case .personal:
+      guard let text = CustomQuoteValidator.normalizedText(
+        text ?? "",
+        category: "custom",
+        validCategoryIds: ["custom"]
+      ) else {
+        return nil
+      }
+      return .personal(
+        text: text.precomposedStringWithCanonicalMapping,
+        language: language
+      )
+    }
+  }
+}
+
+enum SharedQuoteImporter {
+  static func personalQuote(
+    text: String,
+    existing: [Quote],
+    makeID: () -> String = { "custom-\(UUID().uuidString)" }
+  ) -> (quote: Quote, isNew: Bool) {
+    let normalized = text.precomposedStringWithCanonicalMapping
+    if let quote = existing.first(where: {
+      $0.text.precomposedStringWithCanonicalMapping == normalized
+    }) {
+      return (quote, false)
+    }
+    return (Quote(id: makeID(), category: "custom", text: normalized), true)
+  }
+}
+
 enum ShareLinkRoute {
   static let landingPageURL = URL(string: "https://krazel.github.io/warm-words/share/")!
   static let customScheme = "warmwords"
   static let isPublicLinkEnabled = false
+  private static let fragmentPrefix = "ww="
+  private static let maximumEncodedPayloadLength = 2_048
+
+  static func shareURL(for payload: SharedQuotePayload) -> URL? {
+    guard let payload = payload.validated,
+          let data = try? JSONEncoder().encode(payload) else {
+      return nil
+    }
+    let encoded = data.base64EncodedString()
+      .replacingOccurrences(of: "+", with: "-")
+      .replacingOccurrences(of: "/", with: "_")
+      .replacingOccurrences(of: "=", with: "")
+    guard encoded.count <= maximumEncodedPayloadLength else { return nil }
+    return URL(string: landingPageURL.absoluteString + "#" + fragmentPrefix + encoded)
+  }
+
+  static func payload(from url: URL) -> SharedQuotePayload? {
+    guard handles(url),
+          let fragment = url.fragment,
+          fragment.hasPrefix(fragmentPrefix) else {
+      return nil
+    }
+    let encoded = String(fragment.dropFirst(fragmentPrefix.count))
+    guard !encoded.isEmpty, encoded.count <= maximumEncodedPayloadLength else { return nil }
+    var base64 = encoded
+      .replacingOccurrences(of: "-", with: "+")
+      .replacingOccurrences(of: "_", with: "/")
+    let padding = (4 - base64.count % 4) % 4
+    base64.append(String(repeating: "=", count: padding))
+    guard
+      let data = Data(base64Encoded: base64),
+      data.count <= 1_536,
+      let decoded = try? JSONDecoder().decode(SharedQuotePayload.self, from: data)
+    else {
+      return nil
+    }
+    return decoded.validated
+  }
 
   static func handles(_ url: URL) -> Bool {
     if url.scheme?.lowercased() == customScheme {
-      return true
+      return url.host?.lowercased() == "share" || url.host?.lowercased() == "open"
     }
     let isSharePath = url.path == "/warm-words/share" || url.path.hasPrefix("/warm-words/share/")
     return url.scheme?.lowercased() == "https" &&
@@ -202,15 +338,33 @@ enum ReminderWeekdays {
 
 enum CustomQuoteValidator {
   static let maximumLength = 240
+  private static let bidirectionalFormattingScalars: Set<UInt32> = [
+    0x061C, 0x200E, 0x200F,
+    0x202A, 0x202B, 0x202C, 0x202D, 0x202E,
+    0x2066, 0x2067, 0x2068, 0x2069
+  ]
 
   static func normalizedText(_ text: String, category: String, validCategoryIds: Set<String>) -> String? {
-    let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+    let trimmed = text
+      .replacingOccurrences(of: "\r\n", with: "\n")
+      .replacingOccurrences(of: "\r", with: "\n")
+      .replacingOccurrences(of: "\t", with: " ")
+      .trimmingCharacters(in: .whitespacesAndNewlines)
+      .precomposedStringWithCanonicalMapping
     guard
       !trimmed.isEmpty,
       trimmed.count <= maximumLength,
-      validCategoryIds.contains(category)
+      validCategoryIds.contains(category),
+      !trimmed.unicodeScalars.contains(where: isUnsafeForSharing)
     else { return nil }
     return trimmed
+  }
+
+  private static func isUnsafeForSharing(_ scalar: Unicode.Scalar) -> Bool {
+    if bidirectionalFormattingScalars.contains(scalar.value) {
+      return true
+    }
+    return scalar.value != 0x0A && CharacterSet.controlCharacters.contains(scalar)
   }
 }
 
