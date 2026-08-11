@@ -39,7 +39,7 @@ final class AppLogicTests: XCTestCase {
     let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
     XCTAssertEqual(ShareLinkRoute.payload(from: url), payload)
     XCTAssertEqual(url.host, "krazel.github.io")
-    XCTAssertEqual(url.path, "/warm-words/share/")
+    XCTAssertEqual(url.path, "/warm-words/share")
     XCTAssertTrue(url.fragment?.hasPrefix("ww=") == true)
   }
 
