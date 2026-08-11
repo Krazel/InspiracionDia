@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-12**
-Estado: **Warm Words 1.0 build 20 disponible en TestFlight interno; build 21 autorizada para corregir Ajustes, pendiente de CI/upload**
+Estado: **Warm Words 1.0 build 21 firmada, validada y subida a TestFlight; pendiente de procesamiento de Apple y QA físico de Ajustes**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -19,7 +19,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
-- TestFlight contiene Warm Words 1.0 build 20 en estado **En pruebas**, asignada al grupo interno `Warm Words Internal` con la cuenta propietaria como único tester. No se creó grupo externo ni se solicitó Beta App Review.
+- TestFlight conserva Warm Words 1.0 build 20 en el grupo interno. Build 21 fue aceptada por el transporte de Apple el 2026-08-12 y está pendiente de terminar su procesamiento antes de poder confirmarla en el grupo; no se creó grupo externo ni se solicitó Beta App Review.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -36,8 +36,9 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 ## Corrección de Ajustes para build 21
 
 - `TodayView` pasa a ser propietario del estado de su hoja de Ajustes y la presenta directamente desde su `NavigationStack`. Se elimina el binding y presenter remoto de `RootView`, que había vuelto a fallar en dispositivo.
-- El cierre estático exige `TodayView()` sin binding, estado local `showingSettings` y presentación local de `SettingsView`; la puerta física sigue siendo abrir, cerrar y reabrir Ajustes en la build 21.
+- El cierre estático exige `TodayView()` sin binding, estado local `showingSettings` y presentación local de `SettingsView`; la puerta física sigue siendo abrir, cerrar y reabrir Ajustes tras instalar build 21.
 - Se conserva marketing version 1.0 porque es el tren existente anterior al primer lanzamiento público; la nueva combinación autorizada es **1.0 (21)**.
+- GitHub Actions run `31547517180`, job `93963069521`, commit `ef5da11`, completó 24 tests, Analyze, firma, archive, inspección, exportación, validación y upload. Artifact `Warm-Words-TestFlight-v1.0-build-21`: 6.274.725 bytes, disponible de forma efímera hasta el 2026-08-14.
 
 ## Cierre implementado localmente
 
@@ -47,7 +48,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
 - Hora configurada con `DatePicker`, migración estricta de la preferencia antigua y manejo de cambios DST mediante el calendario del sistema.
 - Tarjetas propias: entrada vacía o categoría inválida no cierra la hoja; crear selecciona y persiste “Manual”; borrar exige confirmación y limpia favorito y notificaciones. Edición queda fuera de 1.0.
-- Build 20 comparte una tarjeta visual PNG sin enlace. El candidato local posterior genera además el enlace específico, pero no puede distribuirse hasta que landing, AASA, entitlement y firma compatibles estén verificados.
+- Builds 20 y 21 comparten la tarjeta visual PNG sin enlace. El código posterior contiene la implementación específica bajo un feature gate apagado; no puede activarse hasta que landing, AASA, entitlement y firma compatibles estén publicados y verificados.
 - Accesibilidad puntual: labels y estados seleccionados, encabezados semánticos, fondos decorativos ocultos, botones táctiles, grid adaptado a tamaños AX, tipografías dinámicas críticas y dorado de texto oscurecido.
 - `PrivacyInfo.xcprivacy` declara `UserDefaults` con `CA92.1`; `Info.plist` usa región inglesa, iPhone portrait y `ITSAppUsesNonExemptEncryption=false` sujeto a inspección del archive final.
 - Target iPhone-only, firma automática sin team embebido y target XCTest explícito.
@@ -155,7 +156,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Los dos `ShareLink` de texto fueron sustituidos por una tarjeta PNG dinámica de 1080 × 1350 y la hoja nativa de iOS. La composición reutiliza el fondo de montaña, paleta, tipografía, categoría localizada y marca aprobadas.
 - La referencia visual aprobada y el contrato están en `docs/design/share-card/`; la imagen generada es solo referencia y no se empaqueta como contenido runtime.
 - Build 17 añadió el esquema local `warmwords` y la validación inicial de la ruta HTTPS `https://krazel.github.io/warm-words/share/`; el candidato posterior añade el payload de frase y la recepción completa.
-- En las IPA distribuidas hasta build 20 el enlace HTTPS permanece desactivado. La ruta pública y AASA seguían en 404 antes de preparar los archivos locales; la nueva capacidad Associated Domains y su perfil firmado aún deben configurarse y verificarse. Ninguna IPA distribuida comparte un enlace muerto.
+- En las IPA distribuidas hasta build 21 el enlace HTTPS permanece desactivado. La ruta pública y AASA seguían en 404 antes de preparar los archivos locales; la nueva capacidad Associated Domains y su perfil firmado aún deben configurarse y verificarse. Ninguna IPA distribuida comparte un enlace muerto.
 - GitHub Actions run `31416957423`, job `93548147914`, pasó validadores, XcodeGen, XCTest, build Release, empaquetado y artifact.
 - IPA de prueba visual: `dist/Warm-Words-Sideloadly-share-card-preview-build-17.ipa`, 6.058.270 bytes, SHA-256 `616680229730AB6B87AE647C3EFD9B45FB2AA0CB31B178D430C4155B1EBAB5AF`.
 - Esta build permite probar la tarjeta como imagen. No es el cierre de la función de enlace inteligente ni reemplaza la build 16 como último candidato funcional cerrado.
@@ -178,6 +179,12 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - GitHub Actions run `31429710903`, job `93589855913`, commit `423da40`, completó tests, Analyze, instalación de firma, archive, `codesign`, inspección de recursos/versión/bundle, exportación, validación y subida.
 - Artifact firmado efímero `Warm-Words-TestFlight-v1.0-build-20`: 6.220.816 bytes, SHA-256 `B789F43C3CD25E9024CE9DEEB45834FACCF99EC6B1D380F42D1EB6694EFE8976`, con caducidad de tres días.
 - Apple procesó Warm Words 1.0 build 20. El grupo interno `Warm Words Internal` contiene una build y la cuenta propietaria como único tester; el estado visible es **En pruebas** y caduca en 90 días.
+
+## TestFlight build 21 subida
+
+- El primer intento run `31547083020` se detuvo antes de firma por una única expectativa de test sobre cómo Foundation representa la barra final de `URL.path`; 23 de 24 tests pasaron y Apple no recibió ese intento.
+- La expectativa se corrigió sin cambiar el comportamiento del enlace. El run final `31547517180` pasó los 24 tests y todas las puertas de firma, archive, exportación, validación y upload.
+- Apple aceptó el upload de Warm Words 1.0 (21). El procesamiento y la asignación visible al grupo interno pueden tardar; no se afirma todavía que esté instalable hasta verificarlo en TestFlight/App Store Connect.
 - “Qué se debe probar” está guardado en inglés. No hay testers externos, Beta App Review, App Review ni publicación.
 
 ## Primer bloqueo material de App Store
@@ -186,7 +193,7 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Instalar build 20 desde TestFlight y completar QA real en iPhone/iOS 16 e iOS 26.
+1. Esperar el procesamiento de build 21, instalarla desde TestFlight y comprobar específicamente abrir, cerrar y reabrir Ajustes; después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
