@@ -270,6 +270,50 @@ final class AppLogicTests: XCTestCase {
     XCTAssertEqual(ReminderWeekday(calendarWeekday: 2), .monday)
   }
 
+  func testReminderDeliveryDefaultsToAllCategories() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: [],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: true,
+        reminderEnabled: true
+      ),
+      []
+    )
+  }
+
+  func testReminderDeliveryFiltersSpecificCategoriesAndRejectsEmptyEnabledSelection() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["animo", "removed"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      ),
+      ["animo"]
+    )
+    XCTAssertNil(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["removed"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      )
+    )
+  }
+
+  func testReminderDeliveryAllowsEmptySpecificSelectionWhenReminderIsOff() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: [],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: false
+      ),
+      []
+    )
+  }
+
   func testCustomQuoteValidation() {
     let categories: Set<String> = ["custom"]
     XCTAssertEqual(

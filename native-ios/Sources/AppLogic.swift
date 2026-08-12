@@ -336,6 +336,21 @@ enum ReminderWeekdays {
   }
 }
 
+enum ReminderDeliveryValidator {
+  static func resolvedCategories(
+    requested: Set<String>,
+    validCategoryIds: Set<String>,
+    useAllCategories: Bool,
+    reminderEnabled: Bool
+  ) -> Set<String>? {
+    if useAllCategories {
+      return []
+    }
+    let resolved = requested.intersection(validCategoryIds)
+    return reminderEnabled && resolved.isEmpty ? nil : resolved
+  }
+}
+
 enum CustomQuoteValidator {
   static let maximumLength = 240
   private static let bidirectionalFormattingScalars: Set<UInt32> = [

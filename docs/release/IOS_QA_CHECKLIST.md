@@ -23,7 +23,9 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 
 - [ ] Clean install on an iPhone whose preferred language is Spanish opens in Spanish; English and other preferred languages open in English.
 - [ ] Clean install in either language opens without a crash, blank state, raw localization key, or mixed-language built-in copy.
-- [ ] Clean install shows one-screen reminder setup with 07:30 and all seven days selected; no notification prompt appears before Set reminder.
+- [ ] Clean install shows one scrollable reminder setup with 07:30, all seven days, and all 12 bundled categories selected; no notification prompt appears before Set reminder.
+- [ ] Tapping a category while `All categories` is active switches to a specific selection and deselects that category; the user can restore `All categories`.
+- [ ] An enabled first-run reminder cannot be confirmed with zero days or zero specifically selected categories.
 - [ ] Not now completes onboarding, leaves reminders off, and does not ask for permission.
 - [ ] `Warm Words` and the approved C — Protected thought icon are correct on the Home Screen, Spotlight/Search, notifications, share sheet, and system settings.
 - [ ] The icon remains clear at small sizes and in default, dark, tinted, and clear system presentations on iOS 16 and iOS 26 where each presentation is available.
@@ -58,7 +60,8 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] All seven days are the default and clearly recommended; an enabled reminder cannot be saved with zero days.
 - [ ] Closing Settings without Save discards toggle, time, day, and category drafts without changing pending requests.
 - [ ] Saving rapid time/day/category changes leaves only the final requested schedule.
-- [ ] Selecting categories changes the scheduled quote pool; selecting none uses all categories.
+- [ ] `All categories` schedules from every bundled category; a specific selection changes the scheduled quote pool and cannot be saved empty while reminders are enabled.
+- [ ] The Settings gear opens through native navigation, Back returns to Today, and open → close → reopen works repeatedly after switching tabs.
 - [ ] Changing time zone or returning from inactive refreshes the schedule.
 - [ ] Spring-forward and fall-back behavior matches the unit-test policy.
 - [ ] Disabling reminders removes only this app's daily reminder requests.

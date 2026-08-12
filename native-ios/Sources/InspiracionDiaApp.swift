@@ -361,8 +361,14 @@ final class AppStore: ObservableObject {
   ) -> Bool {
     guard !enabled || !weekdays.isEmpty else { return false }
     let validCategoryIds = Set(allCategories.map(\.id))
-    let resolvedDeliveryCategories = deliveryCategories.intersection(validCategoryIds)
-    guard !enabled || useAllCategories || !resolvedDeliveryCategories.isEmpty else { return false }
+    guard let resolvedDeliveryCategories = ReminderDeliveryValidator.resolvedCategories(
+      requested: deliveryCategories,
+      validCategoryIds: validCategoryIds,
+      useAllCategories: useAllCategories,
+      reminderEnabled: enabled
+    ) else {
+      return false
+    }
     reminderMinutes = ReminderTimeCodec.minutes(from: time)
     reminderWeekdays = weekdays.isEmpty ? ReminderWeekdays.all : weekdays
     deliveryUsesAllCategories = useAllCategories
@@ -385,17 +391,25 @@ final class AppStore: ObservableObject {
     return true
   }
 
-  func completeInitialReminderSetup(time: Date, weekdays: Set<ReminderWeekday>) {
-    guard !weekdays.isEmpty else { return }
-    reminderOnboardingVersion = currentReminderOnboardingVersion
-    UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
-    _ = saveReminderSettings(
+  @discardableResult
+  func completeInitialReminderSetup(
+    time: Date,
+    weekdays: Set<ReminderWeekday>,
+    deliveryCategories: Set<String>,
+    useAllCategories: Bool
+  ) -> Bool {
+    guard saveReminderSettings(
       enabled: true,
       time: time,
       weekdays: weekdays,
-      deliveryCategories: [],
-      useAllCategories: true
-    )
+      deliveryCategories: deliveryCategories,
+      useAllCategories: useAllCategories
+    ) else {
+      return false
+    }
+    reminderOnboardingVersion = currentReminderOnboardingVersion
+    UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
+    return true
   }
 
   func skipInitialReminderSetup() {
@@ -949,6 +963,13 @@ struct ReminderOnboardingView: View {
   @EnvironmentObject private var store: AppStore
   @State private var draftTime = ReminderTimeCodec.date(for: ReminderTimeCodec.defaultMinutes)
   @State private var draftWeekdays = ReminderWeekdays.all
+  @State private var draftDeliveryCategories: Set<String> = []
+  @State private var draftUseAllCategories = true
+
+  private var canSave: Bool {
+    !draftWeekdays.isEmpty &&
+      (draftUseAllCategories || !draftDeliveryCategories.isEmpty)
+  }
 
   var body: some View {
     ScrollView {
@@ -1001,11 +1022,24 @@ struct ReminderOnboardingView: View {
             helper: store.t("everyDayRecommended")
           )
 
+          DeliveryCategoryPicker(
+            selection: $draftDeliveryCategories,
+            useAllCategories: $draftUseAllCategories,
+            enabled: true,
+            categories: store.content.categories,
+            showsSelectedCategoriesWhenUsingAll: true
+          )
+
           Button(store.t("setReminder")) {
-            store.completeInitialReminderSetup(time: draftTime, weekdays: draftWeekdays)
+            store.completeInitialReminderSetup(
+              time: draftTime,
+              weekdays: draftWeekdays,
+              deliveryCategories: draftDeliveryCategories,
+              useAllCategories: draftUseAllCategories
+            )
           }
           .buttonStyle(PrimaryGoldButtonStyle())
-          .disabled(draftWeekdays.isEmpty)
+          .disabled(!canSave)
         }
         .padding(22)
         .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
@@ -1027,6 +1061,8 @@ struct ReminderOnboardingView: View {
     .onAppear {
       draftTime = store.reminderDate
       draftWeekdays = store.reminderWeekdays
+      draftDeliveryCategories = store.deliveryCategoryIds
+      draftUseAllCategories = store.deliveryUsesAllCategories
     }
   }
 }
@@ -1034,7 +1070,6 @@ struct ReminderOnboardingView: View {
 struct TodayView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-  @State private var showingSettings = false
 
   var body: some View {
     NavigationStack {
@@ -1049,10 +1084,6 @@ struct TodayView: View {
         }
       }
       .background(PremiumBackground())
-    }
-    .sheet(isPresented: $showingSettings) {
-      SettingsView()
-        .environmentObject(store)
     }
   }
 
@@ -1069,8 +1100,9 @@ struct TodayView: View {
             .foregroundStyle(Premium.gold)
         }
         Spacer()
-        Button {
-          showingSettings = true
+        NavigationLink {
+          SettingsView()
+            .environmentObject(store)
         } label: {
           Image(systemName: "gearshape")
             .font(.title3)
@@ -1078,6 +1110,7 @@ struct TodayView: View {
             .frame(width: 46, height: 46)
             .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
         }
+        .buttonStyle(.plain)
         .accessibilityLabel(store.t("settings"))
         .accessibilityIdentifier("settings-button")
       }
@@ -1220,9 +1253,8 @@ struct SettingsView: View {
   }
 
   var body: some View {
-    NavigationStack {
-      ScrollView {
-        VStack(alignment: .leading, spacing: 18) {
+    ScrollView {
+      VStack(alignment: .leading, spacing: 18) {
           HStack(spacing: 12) {
             Button {
               dismiss()
@@ -1343,20 +1375,23 @@ struct SettingsView: View {
           }
 
           NotificationPreview()
-        }
-        .padding(22)
-        .padding(.bottom, 36)
       }
-      .background(SettingsBackground())
-      .onAppear {
-        guard !hasLoadedDraft else { return }
-        draftTime = store.reminderDate
-        draftEnabled = store.reminderEnabled
-        draftWeekdays = store.reminderWeekdays
-        draftDeliveryCategories = store.deliveryCategoryIds
-        draftUseAllCategories = store.deliveryUsesAllCategories
-        hasLoadedDraft = true
-      }
+      .padding(22)
+      .padding(.bottom, 36)
+    }
+    .background(SettingsBackground())
+    .navigationBarBackButtonHidden(true)
+    .toolbar(.hidden, for: .navigationBar)
+    .toolbar(.hidden, for: .tabBar)
+    .accessibilityIdentifier("settings-screen")
+    .onAppear {
+      guard !hasLoadedDraft else { return }
+      draftTime = store.reminderDate
+      draftEnabled = store.reminderEnabled
+      draftWeekdays = store.reminderWeekdays
+      draftDeliveryCategories = store.deliveryCategoryIds
+      draftUseAllCategories = store.deliveryUsesAllCategories
+      hasLoadedDraft = true
     }
   }
 }
@@ -1631,6 +1666,12 @@ struct DeliveryCategoryPicker: View {
   @Binding var selection: Set<String>
   @Binding var useAllCategories: Bool
   let enabled: Bool
+  var categories: [Category]? = nil
+  var showsSelectedCategoriesWhenUsingAll = false
+
+  private var displayedCategories: [Category] {
+    categories ?? store.allCategories
+  }
 
   private var columns: [GridItem] {
     dynamicTypeSize.isAccessibilitySize
@@ -1647,7 +1688,7 @@ struct DeliveryCategoryPicker: View {
       Button {
         if useAllCategories {
           useAllCategories = false
-          selection = Set(store.allCategories.map(\.id))
+          selection = Set(displayedCategories.map(\.id))
         } else {
           useAllCategories = true
           selection = []
@@ -1669,11 +1710,16 @@ struct DeliveryCategoryPicker: View {
         .font(.footnote)
         .foregroundStyle(.secondary)
 
-      if !useAllCategories {
+      if !useAllCategories || showsSelectedCategoriesWhenUsingAll {
         Divider()
         LazyVGrid(columns: columns, spacing: 8) {
-          ForEach(store.allCategories) { category in
+          ForEach(displayedCategories) { category in
+            let selected = useAllCategories || selection.contains(category.id)
             Button {
+              if useAllCategories {
+                useAllCategories = false
+                selection = Set(displayedCategories.map(\.id))
+              }
               if selection.contains(category.id) {
                 selection.remove(category.id)
               } else {
@@ -1684,21 +1730,21 @@ struct DeliveryCategoryPicker: View {
                 Text(store.localizedCategoryName(category))
                   .lineLimit(2)
                 Spacer()
-                Image(systemName: selection.contains(category.id) ? "checkmark.circle.fill" : "circle")
+                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
               }
               .font(.subheadline.weight(.medium))
               .padding(12)
               .frame(minHeight: 48)
               .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 14))
-              .foregroundStyle(selection.contains(category.id) ? Premium.gold : Premium.ink)
+              .foregroundStyle(selected ? Premium.gold : Premium.ink)
             }
             .accessibilityValue(
-              store.t(selection.contains(category.id) ? "selected" : "notSelected")
+              store.t(selected ? "selected" : "notSelected")
             )
-            .accessibilityAddTraits(selection.contains(category.id) ? .isSelected : [])
+            .accessibilityAddTraits(selected ? .isSelected : [])
           }
         }
-        if selection.isEmpty {
+        if !useAllCategories && selection.isEmpty {
           Text(store.t("chooseOneCategory"))
             .font(.footnote)
             .foregroundStyle(.red)
@@ -1954,7 +2000,7 @@ enum Strings {
     "closeSettings": "Cerrar ajustes",
     "welcomeToWarmWords": "BIENVENIDO A",
     "onboardingTitle": "¿Cuándo quieres recibir tu frase?",
-    "onboardingBody": "Elige una hora y los días en los que quieres recibir un recordatorio.",
+    "onboardingBody": "Elige una hora, los días y los tipos de palabras que quieres recibir.",
     "everyDayRecommended": "Recomendamos todos los días",
     "setReminder": "Activar recordatorio",
     "notNow": "Ahora no",
@@ -2038,7 +2084,7 @@ enum Strings {
     "closeSettings": "Close settings",
     "welcomeToWarmWords": "WELCOME TO",
     "onboardingTitle": "When should your quote arrive?",
-    "onboardingBody": "Choose a time and the days you’d like a reminder.",
+    "onboardingBody": "Choose a time, days, and the kinds of words you’d like to receive.",
     "everyDayRecommended": "Every day is recommended",
     "setReminder": "Set reminder",
     "notNow": "Not now",

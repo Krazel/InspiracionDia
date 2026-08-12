@@ -268,6 +268,14 @@ Resuelve la antigua PEND-013:
 - El propietario autorizó expresamente el 2026-08-12 corregirlo y subir una nueva build a TestFlight. Como App Store Connect ya contiene el tren 1.0 y todavía no existe una versión pública, se conserva marketing version `1.0` y se usa build `21`; no se crea artificialmente una versión pública 1.1 antes del primer lanzamiento.
 - La autorización de TestFlight no se amplía silenciosamente a publicar GitHub Pages. Build 21 mantiene apagado el enlace inteligente y no firma Associated Domains hasta que el propietario autorice expresamente hacer pública la landing/AASA y estas respondan correctamente.
 
+### DEC-037 — Intereses en primer inicio y navegación nativa de Ajustes
+
+- El propietario aprobó el 2026-08-12 que una instalación limpia permita escoger las categorías de sus recordatorios junto con la hora y los días. Las 12 categorías incluidas empiezan activas mediante `All categories`; el usuario puede reducirlas a una selección específica y no puede confirmar un recordatorio activo con cero categorías.
+- La selección inicial usa los mismos IDs estables, persistencia local y planificador de Settings. No añade datos recopilados, red, cuentas ni permisos.
+- Tras repetirse el fallo del engranaje con varias ubicaciones de una hoja modal, Ajustes deja de presentarse como `.sheet`: el engranaje es un `NavigationLink` nativo dentro del `NavigationStack` de Today. Volver hace `pop` con el control existente y la ruta puede abrirse de nuevo sin estado modal.
+- `WW-SCREEN-002` queda reemplazada no destructivamente por la maestra completa de onboarding con categorías. La autorización permanente `DEC-019` permite integrar esta imagen necesaria sin otra pausa de aprobación.
+- El propietario autorizó expresamente corregir, verificar y subir Warm Words **1.0 build 22** a TestFlight. No autoriza TestFlight externo, App Review, publicación pública ni activar los enlaces inteligentes todavía.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
