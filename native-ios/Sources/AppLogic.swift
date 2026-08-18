@@ -336,6 +336,40 @@ enum ReminderWeekdays {
   }
 }
 
+enum ReminderOnboardingStep: Hashable {
+  case categories
+  case schedule
+}
+
+struct ReminderDeliverySelection: Equatable {
+  let categoryIds: Set<String>
+  let usesAllCategories: Bool
+
+  static func toggling(
+    categoryId: String,
+    current: Set<String>,
+    allCategoryIds: Set<String>,
+    usesAllCategories: Bool
+  ) -> ReminderDeliverySelection {
+    guard !allCategoryIds.isEmpty, allCategoryIds.contains(categoryId) else {
+      return ReminderDeliverySelection(
+        categoryIds: usesAllCategories ? [] : current.intersection(allCategoryIds),
+        usesAllCategories: usesAllCategories
+      )
+    }
+    var next = usesAllCategories ? allCategoryIds : current.intersection(allCategoryIds)
+    if next.contains(categoryId) {
+      next.remove(categoryId)
+    } else {
+      next.insert(categoryId)
+    }
+    if next == allCategoryIds {
+      return ReminderDeliverySelection(categoryIds: [], usesAllCategories: true)
+    }
+    return ReminderDeliverySelection(categoryIds: next, usesAllCategories: false)
+  }
+}
+
 enum ReminderDeliveryValidator {
   static func resolvedCategories(
     requested: Set<String>,

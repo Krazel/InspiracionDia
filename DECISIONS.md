@@ -276,6 +276,14 @@ Resuelve la antigua PEND-013:
 - `WW-SCREEN-002` queda reemplazada no destructivamente por la maestra completa de onboarding con categorías. La autorización permanente `DEC-019` permite integrar esta imagen necesaria sin otra pausa de aprobación.
 - El propietario autorizó expresamente corregir, verificar y subir Warm Words **1.0 build 22** a TestFlight. No autoriza TestFlight externo, App Review, publicación pública ni activar los enlaces inteligentes todavía.
 
+### DEC-038 — Onboarding de intereses separado en dos pasos
+
+- El propietario indicó el 2026-08-18 que la selección de intereses del onboarding combinado no resultaba visible. La instalación limpia pasa a dos pasos: primero las 12 categorías, todas activas; después la pantalla existente de hora y días.
+- `Continue` no persiste, no programa y no pide permiso. El borrador conjunto solo se confirma con `Set reminder` en el segundo paso. `Back` conserva la selección y una selección específica vacía no puede continuar.
+- `currentReminderOnboardingVersion` permanece en `1`: una actualización no fuerza a usuarios existentes a repetir una experiencia definida para primera instalación. Para verificarla hay que borrar la app/datos y hacer clean install.
+- La maestra combinada queda reemplazada sin borrarse. `WW-SCREEN-002A` gobierna intereses y la antigua pantalla de hora/días vuelve como `WW-SCREEN-002B`.
+- Este cambio no añade datos recopilados, red, permisos, SDKs ni assets de ejecución. Una futura build debe usar el siguiente número libre; subirla a TestFlight sigue requiriendo autorización expresa en ese momento.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

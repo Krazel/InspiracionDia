@@ -314,6 +314,28 @@ final class AppLogicTests: XCTestCase {
     )
   }
 
+  func testReminderInterestSelectionStartsWithAllAndDeselectsOneCategory() {
+    let result = ReminderDeliverySelection.toggling(
+      categoryId: "foco",
+      current: [],
+      allCategoryIds: ["animo", "foco", "calma"],
+      usesAllCategories: true
+    )
+    XCTAssertFalse(result.usesAllCategories)
+    XCTAssertEqual(result.categoryIds, ["animo", "calma"])
+  }
+
+  func testReminderInterestSelectionCanonicalizesAllCategories() {
+    let result = ReminderDeliverySelection.toggling(
+      categoryId: "foco",
+      current: ["animo", "calma"],
+      allCategoryIds: ["animo", "foco", "calma"],
+      usesAllCategories: false
+    )
+    XCTAssertTrue(result.usesAllCategories)
+    XCTAssertEqual(result.categoryIds, [])
+  }
+
   func testCustomQuoteValidation() {
     let categories: Set<String> = ["custom"]
     XCTAssertEqual(

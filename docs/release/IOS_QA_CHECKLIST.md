@@ -23,9 +23,11 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 
 - [ ] Clean install on an iPhone whose preferred language is Spanish opens in Spanish; English and other preferred languages open in English.
 - [ ] Clean install in either language opens without a crash, blank state, raw localization key, or mixed-language built-in copy.
-- [ ] Clean install shows one scrollable reminder setup with 07:30, all seven days, and all 12 bundled categories selected; no notification prompt appears before Set reminder.
-- [ ] Tapping a category while `All categories` is active switches to a specific selection and deselects that category; the user can restore `All categories`.
-- [ ] An enabled first-run reminder cannot be confirmed with zero days or zero specifically selected categories.
+- [ ] Clean install opens step 1 of 2 with only the 12 bundled categories; all are selected and no time/day controls or notification prompt are visible.
+- [ ] Tapping a category while `All categories` is active switches to a specific selection and deselects it; restoring all 12 canonicalizes the draft back to `All categories`.
+- [ ] `Continue` opens step 2 with 07:30 and all seven days selected, without persisting or requesting permission; `Back` preserves the category draft.
+- [ ] A specific selection with zero categories cannot continue, and an enabled first-run reminder cannot be confirmed with zero days.
+- [ ] Updating from build 22 does not repeat the first-install onboarding; validating the two-step flow requires deleting app data and installing clean.
 - [ ] Not now completes onboarding, leaves reminders off, and does not ask for permission.
 - [ ] `Warm Words` and the approved C — Protected thought icon are correct on the Home Screen, Spotlight/Search, notifications, share sheet, and system settings.
 - [ ] The icon remains clear at small sizes and in default, dark, tinted, and clear system presentations on iOS 16 and iOS 26 where each presentation is available.

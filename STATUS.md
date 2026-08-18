@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-12**
-Estado: **Warm Words 1.0 build 22 firmada, validada y subida a TestFlight; pendiente de procesamiento de Apple y QA físico del onboarding/Ajustes**
+Actualizado: **2026-08-18**
+Estado: **flujo local posterior a build 22 actualizado a onboarding de dos pasos; pendiente de compilación macOS, QA físico y autorización de una nueva subida TestFlight**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -41,6 +41,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El cierre estático rechaza que vuelvan `showingSettings` o la hoja de Settings y exige la ruta y los identificadores de accesibilidad. La puerta física es abrir → volver → reabrir, también después de cambiar de pestaña.
 - Se conserva marketing version 1.0 porque es el tren existente anterior al primer lanzamiento público; la nueva combinación autorizada es **1.0 (22)**.
 - GitHub Actions run `31607436785`, job `94149911543`, commit `b3de5b0`, completó **27 tests sin fallos**, Analyze, firma, archive, inspección, exportación y upload. Apple respondió `No errors uploading archive`.
+
+## Cambio local posterior a build 22 — onboarding de dos pasos
+
+- El propietario indicó que las categorías no resultaban visibles en el onboarding combinado. El flujo local abre ahora un paso 1 exclusivo para las 12 categorías, todas activas por defecto, y después un paso 2 con la hora y los días existentes.
+- `Continue` solo conserva el borrador; no guarda, no programa y no solicita permiso. `Back` conserva intereses y `Set reminder` confirma conjuntamente categorías, hora y días.
+- El selector canoniza de nuevo a `All categories` al reactivar las 12. Una selección específica vacía no puede avanzar y un catálogo vacío tampoco.
+- La persistencia se ordenó para que el onboarding se marque completado antes de solicitar/programar notificaciones; `Not now` persiste primero el recordatorio apagado.
+- El onboarding sigue en versión `1`: las actualizaciones no lo repiten. Para probar este cambio hay que borrar datos e instalar limpio.
+- La nueva maestra `WW-SCREEN-002A` y la pantalla horaria reactivada `WW-SCREEN-002B` están registradas en `design/APPROVALS.md`. La pantalla combinada anterior se conserva como reemplazada.
+- No se han añadido red, datos recopilados, permisos, SDKs ni assets de ejecución. El siguiente binario posible es 1.0 (23), pero todavía no se ha compilado, firmado ni subido.
 
 ## Cierre implementado localmente
 

@@ -340,19 +340,28 @@ final class AppStore: ObservableObject {
     return customQuotes.filter { $0.category == quote.category }.count == 1
   }
 
-  private func setReminder(enabled: Bool) {
-    reminderEnabled = enabled
-    UserDefaults.standard.set(enabled, forKey: reminderEnabledKey)
-    if enabled {
-      scheduleReminderRequestingPermission()
-    } else {
-      removeOwnedPendingReminders()
-      notificationStatus = t("notificationsOff")
-    }
-  }
-
   @discardableResult
   func saveReminderSettings(
+    enabled: Bool,
+    time: Date,
+    weekdays: Set<ReminderWeekday>,
+    deliveryCategories: Set<String>,
+    useAllCategories: Bool
+  ) -> Bool {
+    guard persistReminderSettings(
+      enabled: enabled,
+      time: time,
+      weekdays: weekdays,
+      deliveryCategories: deliveryCategories,
+      useAllCategories: useAllCategories
+    ) else {
+      return false
+    }
+    applyPersistedReminderState()
+    return true
+  }
+
+  private func persistReminderSettings(
     enabled: Bool,
     time: Date,
     weekdays: Set<ReminderWeekday>,
@@ -381,14 +390,16 @@ final class AppStore: ObservableObject {
     defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
     defaults.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
     defaults.set(reminderEnabled, forKey: reminderEnabledKey)
+    return true
+  }
 
-    if enabled {
+  private func applyPersistedReminderState() {
+    if reminderEnabled {
       scheduleReminderRequestingPermission()
     } else {
       removeOwnedPendingReminders()
       notificationStatus = t("notificationsOff")
     }
-    return true
   }
 
   @discardableResult
@@ -398,7 +409,7 @@ final class AppStore: ObservableObject {
     deliveryCategories: Set<String>,
     useAllCategories: Bool
   ) -> Bool {
-    guard saveReminderSettings(
+    guard persistReminderSettings(
       enabled: true,
       time: time,
       weekdays: weekdays,
@@ -409,13 +420,23 @@ final class AppStore: ObservableObject {
     }
     reminderOnboardingVersion = currentReminderOnboardingVersion
     UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
+    applyPersistedReminderState()
     return true
   }
 
   func skipInitialReminderSetup() {
+    guard persistReminderSettings(
+      enabled: false,
+      time: reminderDate,
+      weekdays: reminderWeekdays,
+      deliveryCategories: deliveryCategoryIds,
+      useAllCategories: deliveryUsesAllCategories
+    ) else {
+      return
+    }
     reminderOnboardingVersion = currentReminderOnboardingVersion
     UserDefaults.standard.set(reminderOnboardingVersion, forKey: reminderOnboardingVersionKey)
-    setReminder(enabled: false)
+    applyPersistedReminderState()
   }
 
   func refreshReminderIfEnabled() {
@@ -961,12 +982,19 @@ struct SharedQuoteView: View {
 
 struct ReminderOnboardingView: View {
   @EnvironmentObject private var store: AppStore
+  @AccessibilityFocusState private var focusedStep: ReminderOnboardingStep?
+  @State private var step: ReminderOnboardingStep = .categories
   @State private var draftTime = ReminderTimeCodec.date(for: ReminderTimeCodec.defaultMinutes)
   @State private var draftWeekdays = ReminderWeekdays.all
   @State private var draftDeliveryCategories: Set<String> = []
   @State private var draftUseAllCategories = true
 
-  private var canSave: Bool {
+  private var canContinue: Bool {
+    !store.content.categories.isEmpty &&
+      (draftUseAllCategories || !draftDeliveryCategories.isEmpty)
+  }
+
+  private var canSetReminder: Bool {
     !draftWeekdays.isEmpty &&
       (draftUseAllCategories || !draftDeliveryCategories.isEmpty)
   }
@@ -985,73 +1013,14 @@ struct ReminderOnboardingView: View {
         }
         .accessibilityElement(children: .combine)
 
-        VStack(spacing: 22) {
-          VStack(spacing: 10) {
-            Text(store.t("onboardingTitle"))
-              .font(.system(.largeTitle, design: .serif, weight: .regular))
-              .multilineTextAlignment(.center)
-              .foregroundStyle(Premium.ink)
-              .accessibilityAddTraits(.isHeader)
-            Text(store.t("onboardingBody"))
-              .font(.body)
-              .multilineTextAlignment(.center)
-              .foregroundStyle(.secondary)
+        Group {
+          switch step {
+          case .categories:
+            categoriesStep
+          case .schedule:
+            scheduleStep
           }
-
-          Divider()
-
-          VStack(alignment: .leading, spacing: 8) {
-            Text(store.t("hour"))
-              .font(.headline)
-            DatePicker(
-              store.t("hour"),
-              selection: $draftTime,
-              displayedComponents: .hourAndMinute
-            )
-            .labelsHidden()
-            .datePickerStyle(.wheel)
-            .frame(maxHeight: 150)
-            .clipped()
-            .accessibilityLabel(store.t("hour"))
-          }
-
-          Divider()
-
-          WeekdayPicker(
-            selection: $draftWeekdays,
-            helper: store.t("everyDayRecommended")
-          )
-
-          DeliveryCategoryPicker(
-            selection: $draftDeliveryCategories,
-            useAllCategories: $draftUseAllCategories,
-            enabled: true,
-            categories: store.content.categories,
-            showsSelectedCategoriesWhenUsingAll: true
-          )
-
-          Button(store.t("setReminder")) {
-            store.completeInitialReminderSetup(
-              time: draftTime,
-              weekdays: draftWeekdays,
-              deliveryCategories: draftDeliveryCategories,
-              useAllCategories: draftUseAllCategories
-            )
-          }
-          .buttonStyle(PrimaryGoldButtonStyle())
-          .disabled(!canSave)
         }
-        .padding(22)
-        .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
-        .overlay(RoundedRectangle(cornerRadius: 28).stroke(.white.opacity(0.8), lineWidth: 1))
-        .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 12)
-
-        Button(store.t("notNow")) {
-          store.skipInitialReminderSetup()
-        }
-        .font(.headline)
-        .foregroundStyle(Premium.ink)
-        .frame(minHeight: 44)
       }
       .padding(.horizontal, 22)
       .padding(.top, 28)
@@ -1063,7 +1032,143 @@ struct ReminderOnboardingView: View {
       draftWeekdays = store.reminderWeekdays
       draftDeliveryCategories = store.deliveryCategoryIds
       draftUseAllCategories = store.deliveryUsesAllCategories
+      focusedStep = .categories
     }
+  }
+
+  private var categoriesStep: some View {
+    VStack(spacing: 22) {
+      stepPill(store.t("stepOneOfTwo"))
+
+      VStack(spacing: 10) {
+        Text(store.t("interestsOnboardingTitle"))
+          .font(.system(.largeTitle, design: .serif, weight: .regular))
+          .multilineTextAlignment(.center)
+          .foregroundStyle(Premium.ink)
+          .accessibilityAddTraits(.isHeader)
+          .accessibilityFocused($focusedStep, equals: .categories)
+        Text(store.t("interestsOnboardingBody"))
+          .font(.body)
+          .multilineTextAlignment(.center)
+          .foregroundStyle(.secondary)
+      }
+
+      Divider()
+
+      DeliveryCategoryPicker(
+        selection: $draftDeliveryCategories,
+        useAllCategories: $draftUseAllCategories,
+        enabled: true,
+        categories: store.content.categories,
+        showsSelectedCategoriesWhenUsingAll: true,
+        showsContainer: false,
+        allCategoriesHelperKey: "allCategoriesSelectedByDefault"
+      )
+
+      Button(store.t("continue")) {
+        withAnimation(.easeInOut(duration: 0.2)) {
+          step = .schedule
+        }
+        focusedStep = .schedule
+      }
+      .buttonStyle(PrimaryGoldButtonStyle())
+      .disabled(!canContinue)
+
+      Button(store.t("notNow")) {
+        store.skipInitialReminderSetup()
+      }
+      .font(.headline)
+      .foregroundStyle(Premium.ink)
+      .frame(minHeight: 44)
+    }
+    .padding(22)
+    .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
+    .overlay(RoundedRectangle(cornerRadius: 28).stroke(.white.opacity(0.8), lineWidth: 1))
+    .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 12)
+    .accessibilityIdentifier("onboarding-categories-step")
+  }
+
+  private var scheduleStep: some View {
+    VStack(spacing: 22) {
+      stepPill(store.t("stepTwoOfTwo"))
+
+      VStack(spacing: 10) {
+        Text(store.t("onboardingTitle"))
+          .font(.system(.largeTitle, design: .serif, weight: .regular))
+          .multilineTextAlignment(.center)
+          .foregroundStyle(Premium.ink)
+          .accessibilityAddTraits(.isHeader)
+          .accessibilityFocused($focusedStep, equals: .schedule)
+        Text(store.t("onboardingBody"))
+          .font(.body)
+          .multilineTextAlignment(.center)
+          .foregroundStyle(.secondary)
+      }
+
+      Divider()
+
+      VStack(alignment: .leading, spacing: 8) {
+        Text(store.t("hour"))
+          .font(.headline)
+        DatePicker(
+          store.t("hour"),
+          selection: $draftTime,
+          displayedComponents: .hourAndMinute
+        )
+        .labelsHidden()
+        .datePickerStyle(.wheel)
+        .frame(maxHeight: 150)
+        .clipped()
+        .accessibilityLabel(store.t("hour"))
+      }
+
+      Divider()
+
+      WeekdayPicker(
+        selection: $draftWeekdays,
+        helper: store.t("everyDayRecommended")
+      )
+
+      Button(store.t("setReminder")) {
+        store.completeInitialReminderSetup(
+          time: draftTime,
+          weekdays: draftWeekdays,
+          deliveryCategories: draftDeliveryCategories,
+          useAllCategories: draftUseAllCategories
+        )
+      }
+      .buttonStyle(PrimaryGoldButtonStyle())
+      .disabled(!canSetReminder)
+
+      HStack(spacing: 28) {
+        Button(store.t("back")) {
+          withAnimation(.easeInOut(duration: 0.2)) {
+            step = .categories
+          }
+          focusedStep = .categories
+        }
+        Button(store.t("notNow")) {
+          store.skipInitialReminderSetup()
+        }
+      }
+      .font(.headline)
+      .foregroundStyle(Premium.ink)
+      .frame(minHeight: 44)
+    }
+    .padding(22)
+    .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
+    .overlay(RoundedRectangle(cornerRadius: 28).stroke(.white.opacity(0.8), lineWidth: 1))
+    .shadow(color: .black.opacity(0.08), radius: 20, x: 0, y: 12)
+    .accessibilityIdentifier("onboarding-schedule-step")
+  }
+
+  private func stepPill(_ text: String) -> some View {
+    Text(text)
+      .font(.subheadline.weight(.semibold))
+      .foregroundStyle(.secondary)
+      .padding(.horizontal, 18)
+      .padding(.vertical, 8)
+      .background(.white.opacity(0.58), in: Capsule())
   }
 }
 
@@ -1668,6 +1773,8 @@ struct DeliveryCategoryPicker: View {
   let enabled: Bool
   var categories: [Category]? = nil
   var showsSelectedCategoriesWhenUsingAll = false
+  var showsContainer = true
+  var allCategoriesHelperKey = "allCategoriesRecommended"
 
   private var displayedCategories: [Category] {
     categories ?? store.allCategories
@@ -1680,16 +1787,30 @@ struct DeliveryCategoryPicker: View {
   }
 
   var body: some View {
+    Group {
+      if showsContainer {
+        pickerContent
+          .padding(18)
+          .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 22))
+      } else {
+        pickerContent
+      }
+    }
+    .opacity(enabled ? 1 : 0.58)
+    .disabled(!enabled)
+  }
+
+  private var pickerContent: some View {
     VStack(alignment: .leading, spacing: 12) {
       Text(store.t("deliveryTypes"))
         .font(Premium.sectionFont)
         .foregroundStyle(Premium.ink)
 
       Button {
-        if useAllCategories {
+        if useAllCategories && !showsSelectedCategoriesWhenUsingAll {
           useAllCategories = false
           selection = Set(displayedCategories.map(\.id))
-        } else {
+        } else if !useAllCategories {
           useAllCategories = true
           selection = []
         }
@@ -1706,7 +1827,7 @@ struct DeliveryCategoryPicker: View {
       .accessibilityValue(store.t(useAllCategories ? "selected" : "notSelected"))
       .accessibilityAddTraits(useAllCategories ? .isSelected : [])
 
-      Text(store.t("allCategoriesRecommended"))
+      Text(store.t(allCategoriesHelperKey))
         .font(.footnote)
         .foregroundStyle(.secondary)
 
@@ -1716,15 +1837,14 @@ struct DeliveryCategoryPicker: View {
           ForEach(displayedCategories) { category in
             let selected = useAllCategories || selection.contains(category.id)
             Button {
-              if useAllCategories {
-                useAllCategories = false
-                selection = Set(displayedCategories.map(\.id))
-              }
-              if selection.contains(category.id) {
-                selection.remove(category.id)
-              } else {
-                selection.insert(category.id)
-              }
+              let next = ReminderDeliverySelection.toggling(
+                categoryId: category.id,
+                current: selection,
+                allCategoryIds: Set(displayedCategories.map(\.id)),
+                usesAllCategories: useAllCategories
+              )
+              selection = next.categoryIds
+              useAllCategories = next.usesAllCategories
             } label: {
               HStack {
                 Text(store.localizedCategoryName(category))
@@ -1751,10 +1871,6 @@ struct DeliveryCategoryPicker: View {
         }
       }
     }
-    .padding(18)
-    .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 22))
-    .opacity(enabled ? 1 : 0.58)
-    .disabled(!enabled)
   }
 }
 
@@ -1999,8 +2115,12 @@ enum Strings {
     "settings": "Ajustes",
     "closeSettings": "Cerrar ajustes",
     "welcomeToWarmWords": "BIENVENIDO A",
+    "interestsOnboardingTitle": "¿Qué tipo de palabras necesitas?",
+    "interestsOnboardingBody": "Elige las categorías que te interesan. Puedes cambiarlas más tarde en Ajustes.",
+    "stepOneOfTwo": "Paso 1 de 2",
+    "stepTwoOfTwo": "Paso 2 de 2",
     "onboardingTitle": "¿Cuándo quieres recibir tu frase?",
-    "onboardingBody": "Elige una hora, los días y los tipos de palabras que quieres recibir.",
+    "onboardingBody": "Elige una hora y los días en los que quieres recibirla.",
     "everyDayRecommended": "Recomendamos todos los días",
     "setReminder": "Activar recordatorio",
     "notNow": "Ahora no",
@@ -2022,6 +2142,7 @@ enum Strings {
     "deliveryHelp": "Si no eliges ninguna, recibirás frases de todas las categorías.",
     "allCategories": "Todas las categorías",
     "allCategoriesRecommended": "Recomendamos todas las categorías.",
+    "allCategoriesSelectedByDefault": "Todas las categorías están seleccionadas por defecto.",
     "chooseOneCategory": "Elige al menos una categoría.",
     "newManualCard": "Nueva frase personal",
     "personalCategoryDescription": "Una categoría para tus frases personales.",
@@ -2067,6 +2188,7 @@ enum Strings {
     "notificationsAreOffTitle": "Las notificaciones están desactivadas",
     "notificationsAreOffBody": "Puedes activarlas más tarde en Ajustes.",
     "continue": "Continuar",
+    "back": "Atrás",
     "openIOSSettings": "Abrir Ajustes de iOS"
   ]
 
@@ -2083,8 +2205,12 @@ enum Strings {
     "settings": "Settings",
     "closeSettings": "Close settings",
     "welcomeToWarmWords": "WELCOME TO",
+    "interestsOnboardingTitle": "What kind of words do you need?",
+    "interestsOnboardingBody": "Choose the categories that interest you. You can change them later in Settings.",
+    "stepOneOfTwo": "Step 1 of 2",
+    "stepTwoOfTwo": "Step 2 of 2",
     "onboardingTitle": "When should your quote arrive?",
-    "onboardingBody": "Choose a time, days, and the kinds of words you’d like to receive.",
+    "onboardingBody": "Choose a time and the days you’d like to receive it.",
     "everyDayRecommended": "Every day is recommended",
     "setReminder": "Set reminder",
     "notNow": "Not now",
@@ -2106,6 +2232,7 @@ enum Strings {
     "deliveryHelp": "Leave all unselected to receive quotes from every category.",
     "allCategories": "All categories",
     "allCategoriesRecommended": "All categories are recommended.",
+    "allCategoriesSelectedByDefault": "All categories are selected by default.",
     "chooseOneCategory": "Choose at least one category.",
     "newManualCard": "New personal quote",
     "personalCategoryDescription": "A category for your personal quotes.",
@@ -2151,6 +2278,7 @@ enum Strings {
     "notificationsAreOffTitle": "Notifications are off",
     "notificationsAreOffBody": "You can enable them later in Settings.",
     "continue": "Continue",
+    "back": "Back",
     "openIOSSettings": "Open iOS Settings"
   ]
 }

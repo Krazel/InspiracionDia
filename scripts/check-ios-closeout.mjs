@@ -8,6 +8,14 @@ const swift = read("native-ios/Sources/InspiracionDiaApp.swift");
 const sharing = read("native-ios/Sources/QuoteSharing.swift");
 const categoriesView = swift.slice(swift.indexOf("struct CategoriesView"), swift.indexOf("struct FavoritesView"));
 const addCardView = swift.slice(swift.indexOf("struct AddCardView"), swift.indexOf("struct QuoteHero"));
+const onboardingCategoriesStep = swift.slice(
+  swift.indexOf("private var categoriesStep"),
+  swift.indexOf("private var scheduleStep"),
+);
+const onboardingScheduleStep = swift.slice(
+  swift.indexOf("private var scheduleStep"),
+  swift.indexOf("private func stepPill"),
+);
 const logic = read("native-ios/Sources/AppLogic.swift");
 const info = read("native-ios/Resources/Info.plist");
 const privacy = read("native-ios/Resources/PrivacyInfo.xcprivacy");
@@ -89,9 +97,17 @@ assert.match(swift, /TodayView\(\)\s*\.tabItem/);
 assert.doesNotMatch(swift, /TodayView\(showingSettings:/);
 assert.match(swift, /accessibilityIdentifier\("settings-button"\)/);
 assert.match(swift, /accessibilityIdentifier\("settings-screen"\)/);
-assert.match(swift, /ReminderOnboardingView[\s\S]*?DeliveryCategoryPicker\([\s\S]*?categories: store\.content\.categories/);
-assert.match(swift, /completeInitialReminderSetup\([\s\S]{0,260}deliveryCategories: draftDeliveryCategories,[\s\S]{0,120}useAllCategories: draftUseAllCategories/);
+assert.match(swift, /@State private var step: ReminderOnboardingStep = \.categories/);
+assert.match(onboardingCategoriesStep, /DeliveryCategoryPicker\([\s\S]*?categories: store\.content\.categories/);
+assert.match(onboardingCategoriesStep, /accessibilityIdentifier\("onboarding-categories-step"\)/);
+assert.doesNotMatch(onboardingCategoriesStep, /DatePicker|WeekdayPicker|completeInitialReminderSetup/);
+assert.match(onboardingScheduleStep, /DatePicker/);
+assert.match(onboardingScheduleStep, /WeekdayPicker/);
+assert.match(onboardingScheduleStep, /completeInitialReminderSetup\([\s\S]{0,260}deliveryCategories: draftDeliveryCategories,[\s\S]{0,120}useAllCategories: draftUseAllCategories/);
+assert.match(onboardingScheduleStep, /accessibilityIdentifier\("onboarding-schedule-step"\)/);
+assert.doesNotMatch(onboardingScheduleStep, /DeliveryCategoryPicker/);
 assert.match(logic, /enum ReminderDeliveryValidator/);
+assert.match(logic, /struct ReminderDeliverySelection: Equatable/);
 assert.doesNotMatch(swift, /ShareLink\(/);
 assert.match(swift, /QuoteShareButton\(quote: store\.todayQuote\)/);
 assert.match(swift, /QuoteShareButton\(quote: quote\)/);
