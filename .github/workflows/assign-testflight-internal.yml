@@ -1,0 +1,42 @@
+name: Assign TestFlight build to internal group
+
+on:
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Existing processed TestFlight build number"
+        required: true
+        type: string
+      internal_group:
+        description: "Exact internal TestFlight group name"
+        required: true
+        default: "Warm Words Internal"
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: app-store-production
+    steps:
+      - name: Checkout approved branch
+        uses: actions/checkout@v4
+
+      - name: Require approved iOS source branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = "agent/warm-words-ios-ipa"
+
+      - name: Assign processed build to internal TestFlight group
+        env:
+          APP_STORE_CONNECT_API_KEY_ID: ${{ secrets.APP_STORE_CONNECT_API_KEY_ID }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_API_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_API_KEY_BASE64 }}
+          APP_STORE_CONNECT_APP_ID: "6800058458"
+          TESTFLIGHT_BUILD_NUMBER: ${{ inputs.build_number }}
+          TESTFLIGHT_INTERNAL_GROUP: ${{ inputs.internal_group }}
+        run: node scripts/assign-testflight-build.mjs
