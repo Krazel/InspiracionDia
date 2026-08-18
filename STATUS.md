@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-18**
-Estado: **Warm Words 1.0 build 23 firmada, validada y aceptada por TestFlight; pendiente de procesamiento de Apple y QA físico del onboarding de dos pasos**
+Estado: **Warm Words 1.0 build 23 válida y asignada al grupo interno de TestFlight; pendiente de instalación limpia y QA físico del onboarding de dos pasos**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -19,7 +19,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
-- TestFlight conserva builds anteriores en el grupo interno. Build 23 fue aceptada por el transporte de Apple el 2026-08-18 y está pendiente de terminar su procesamiento antes de poder confirmarla como instalable; no se creó grupo externo ni se solicitó Beta App Review.
+- TestFlight conserva builds anteriores en el grupo interno. Apple marcó build 23 como `VALID` y el workflow run `32173244154` verificó su asignación a `Warm Words Internal` el 2026-08-18; no se creó grupo externo ni se solicitó Beta App Review.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -212,7 +212,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El propietario autorizó expresamente publicar el commit y subir Warm Words 1.0 (23) el 2026-08-18.
 - El run `32163428876` pasó 29 tests, Analyze, archive firmado, inspección, exportación y entrega a Apple sin errores.
 - Esta build contiene el onboarding de dos pasos. Para verlo hay que borrar la app y sus datos antes de instalar, porque las actualizaciones conservan correctamente el onboarding ya completado.
-- El procesamiento de Apple puede tardar unos minutos. No se activaron testers externos, Beta App Review, App Review, Universal Links ni publicación.
+- Apple la marcó como `VALID` y el run `32173244154` confirmó que está asignada al grupo interno `Warm Words Internal`. No se activaron testers externos, Beta App Review, App Review, Universal Links ni publicación.
 
 ## Primer bloqueo material de App Store
 
@@ -220,7 +220,7 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Esperar el procesamiento de build 23 e instalarla desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar paso 1 con las 12 categorías, selección específica, Volver y paso 2 con hora/días. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Instalar build 23 desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar paso 1 con las 12 categorías, selección específica, Volver y paso 2 con hora/días. Después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.

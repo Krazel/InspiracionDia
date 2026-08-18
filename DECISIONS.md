@@ -288,6 +288,7 @@ Resuelve la antigua PEND-013:
 
 - El propietario autorizó expresamente el 2026-08-18 publicar el commit `6993c92`, crear Warm Words **1.0 (23)** y subirlo a TestFlight.
 - GitHub Actions run `32163428876`, job `95797362914`, pasó 29 tests sin fallos, Analyze Release, firma, archive, inspección, exportación y upload. Apple aceptó el archivo sin errores de transporte.
+- Ante la comprobación física de que TestFlight seguía entregando build 22, el propietario autorizó publicar y ejecutar el asignador interno. Apple confirmó build 23 como `VALID` y el run `32173244154` verificó su pertenencia a `Warm Words Internal`.
 - La autorización se limita a TestFlight interno de esta build. No incluye testers externos, Beta App Review, App Review, Universal Links, publicación pública ni futuras builds.
 
 ## Primera decisión pendiente del propietario
