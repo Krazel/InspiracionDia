@@ -291,6 +291,13 @@ Resuelve la antigua PEND-013:
 - Ante la comprobación física de que TestFlight seguía entregando build 22, el propietario autorizó publicar y ejecutar el asignador interno. Apple confirmó build 23 como `VALID` y el run `32173244154` verificó su pertenencia a `Warm Words Internal`.
 - La autorización se limita a TestFlight interno de esta build. No incluye testers externos, Beta App Review, App Review, Universal Links, publicación pública ni futuras builds.
 
+### DEC-040 — Onboarding simplificado y TestFlight build 24
+
+- El propietario aprobó el 2026-08-18 retirar de la primera pantalla `Step 1 of 2`, `Quote categories`, la explicación de categorías seleccionadas por defecto y `Not now`; de la segunda, retirar únicamente `Step 2 of 2`, conservando `Back` y `Not now`.
+- La pregunta aprobada es `What would help you today?` / `¿Qué te ayudaría hoy?`, con un texto breve que invita a elegir qué recibir sin hablar de “tipos de palabras”. La selección inicial y toda la lógica permanecen iguales.
+- El propietario autorizó expresamente commit, push, build y TestFlight. Build **1.0 (24)** desde `971c5d0` pasó 29 tests, Analyze, firma, archive, exportación y upload en run `32174725981`; Apple la marcó `VALID` y run `32175849335` verificó su asignación a `Warm Words Internal`.
+- La autorización no incluye testers externos, Beta App Review, App Review, Universal Links ni publicación pública.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-18**
-Estado: **Warm Words 1.0 build 23 válida y asignada al grupo interno de TestFlight; pendiente de instalación limpia y QA físico del onboarding de dos pasos**
+Estado: **Warm Words 1.0 build 24 válida y asignada al grupo interno de TestFlight; pendiente de instalación limpia y QA físico del onboarding simplificado**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight más reciente se compiló desde el commit verificado `6993c92`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight más reciente se compiló desde el commit verificado `971c5d0`.
 - El propietario autorizó expresamente la subida a TestFlight el 2026-08-10. No se creó release, no se envió a App Review y no se publicó en App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -19,7 +19,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
-- TestFlight conserva builds anteriores en el grupo interno. Apple marcó build 23 como `VALID` y el workflow run `32173244154` verificó su asignación a `Warm Words Internal` el 2026-08-18; no se creó grupo externo ni se solicitó Beta App Review.
+- TestFlight conserva builds anteriores en el grupo interno. Apple marcó build 24 como `VALID` y el workflow run `32175849335` verificó su asignación a `Warm Words Internal` el 2026-08-18; no se creó grupo externo ni se solicitó Beta App Review.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -214,13 +214,21 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Esta build contiene el onboarding de dos pasos. Para verlo hay que borrar la app y sus datos antes de instalar, porque las actualizaciones conservan correctamente el onboarding ya completado.
 - Apple la marcó como `VALID` y el run `32173244154` confirmó que está asignada al grupo interno `Warm Words Internal`. No se activaron testers externos, Beta App Review, App Review, Universal Links ni publicación.
 
+## TestFlight build 24 asignada
+
+- El propietario aprobó simplificar las dos pantallas del primer inicio y autorizó expresamente commit, push, firma y subida a TestFlight el 2026-08-18.
+- La primera pantalla ya no muestra indicadores de paso, `Quote categories`, la explicación de selección predeterminada ni `Not now`. Mantiene las 12 categorías activas y usa `What would help you today?` / `¿Qué te ayudaría hoy?`.
+- La segunda pantalla ya no muestra indicador de paso y conserva hora, días, `Back` y `Not now`.
+- El run `32174725981` compiló el commit `971c5d0` como **1.0 (24)**, pasó 29 tests sin fallos, Analyze, firma, archive, inspección, exportación y upload. Apple respondió `UPLOAD SUCCEEDED with no errors`.
+- Apple marcó la build como `VALID` y el run `32175849335` verificó su asignación a `Warm Words Internal`.
+
 ## Primer bloqueo material de App Store
 
 El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la decisión de usar un catálogo editorial propio ya están cerrados localmente. La primera puerta material restante es conservar la trazabilidad editorial del catálogo y confirmar por escrito la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
 
 ## Puertas restantes
 
-1. Instalar build 23 desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar paso 1 con las 12 categorías, selección específica, Volver y paso 2 con hora/días. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Instalar build 24 desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
