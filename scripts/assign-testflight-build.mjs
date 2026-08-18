@@ -97,8 +97,7 @@ if (!group) {
 const assignedPath = () => {
   const params = new URLSearchParams({
     "fields[builds]": "version,processingState",
-    "filter[version]": buildNumber,
-    limit: "10",
+    limit: "200",
   });
   return `/v1/betaGroups/${encodeURIComponent(group.id)}/builds?${params}`;
 };
