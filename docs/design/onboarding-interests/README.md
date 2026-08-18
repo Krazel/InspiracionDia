@@ -3,7 +3,7 @@
 ## Maestra vigente
 
 - `warm-words-onboarding-interests-approved.png`
-- Pantalla: primer inicio, paso 1 de 2, selección de categorías.
+- Pantalla: primer inicio, selección de intereses previa al horario.
 - Lienzo: iPhone, 853 × 1844 px, vertical.
 - Idioma de referencia: inglés; la misma estructura y dirección visual gobiernan español.
 - Fecha: 2026-08-18.
@@ -12,6 +12,8 @@
 
 ## Contrato de implementación
 
-Este es el primer paso de una instalación limpia. Muestra solo las 12 categorías incluidas, todas activas por defecto. `Continue` conserva el borrador y abre el paso de hora/días sin persistir, programar ni solicitar permiso. Una selección específica vacía no puede continuar. `Not now` omite todo el onboarding y deja los recordatorios desactivados.
+Esta es la primera pantalla de una instalación limpia. Muestra las 12 categorías incluidas, todas activas por defecto. `Continue` conserva el borrador y abre la pantalla de hora/días sin persistir, programar ni solicitar permiso. Una selección específica vacía no puede continuar. El propietario aprobó retirar de esta pantalla el indicador de paso, el encabezado interno del selector, la explicación de selección predeterminada y `Not now`; esta última acción permanece en la pantalla de hora/días.
+
+Copy aprobado: `What would help you today?` / `¿Qué te ayudaría hoy?`, seguido de `Choose what you’d like to receive. You can change it later in Settings.` / `Elige qué te gustaría recibir. Puedes cambiarlo más tarde en Ajustes.`
 
 No requiere assets de ejecución nuevos: reutiliza fondo, paleta, tipografía, superficies, botones y símbolos nativos ya presentes.

@@ -1038,8 +1038,6 @@ struct ReminderOnboardingView: View {
 
   private var categoriesStep: some View {
     VStack(spacing: 22) {
-      stepPill(store.t("stepOneOfTwo"))
-
       VStack(spacing: 10) {
         Text(store.t("interestsOnboardingTitle"))
           .font(.system(.largeTitle, design: .serif, weight: .regular))
@@ -1062,7 +1060,8 @@ struct ReminderOnboardingView: View {
         categories: store.content.categories,
         showsSelectedCategoriesWhenUsingAll: true,
         showsContainer: false,
-        allCategoriesHelperKey: "allCategoriesSelectedByDefault"
+        showsTitle: false,
+        showsAllCategoriesHelper: false
       )
 
       Button(store.t("continue")) {
@@ -1074,12 +1073,6 @@ struct ReminderOnboardingView: View {
       .buttonStyle(PrimaryGoldButtonStyle())
       .disabled(!canContinue)
 
-      Button(store.t("notNow")) {
-        store.skipInitialReminderSetup()
-      }
-      .font(.headline)
-      .foregroundStyle(Premium.ink)
-      .frame(minHeight: 44)
     }
     .padding(22)
     .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 28))
@@ -1090,8 +1083,6 @@ struct ReminderOnboardingView: View {
 
   private var scheduleStep: some View {
     VStack(spacing: 22) {
-      stepPill(store.t("stepTwoOfTwo"))
-
       VStack(spacing: 10) {
         Text(store.t("onboardingTitle"))
           .font(.system(.largeTitle, design: .serif, weight: .regular))
@@ -1162,14 +1153,6 @@ struct ReminderOnboardingView: View {
     .accessibilityIdentifier("onboarding-schedule-step")
   }
 
-  private func stepPill(_ text: String) -> some View {
-    Text(text)
-      .font(.subheadline.weight(.semibold))
-      .foregroundStyle(.secondary)
-      .padding(.horizontal, 18)
-      .padding(.vertical, 8)
-      .background(.white.opacity(0.58), in: Capsule())
-  }
 }
 
 struct TodayView: View {
@@ -1775,6 +1758,8 @@ struct DeliveryCategoryPicker: View {
   var showsSelectedCategoriesWhenUsingAll = false
   var showsContainer = true
   var allCategoriesHelperKey = "allCategoriesRecommended"
+  var showsTitle = true
+  var showsAllCategoriesHelper = true
 
   private var displayedCategories: [Category] {
     categories ?? store.allCategories
@@ -1802,9 +1787,11 @@ struct DeliveryCategoryPicker: View {
 
   private var pickerContent: some View {
     VStack(alignment: .leading, spacing: 12) {
-      Text(store.t("deliveryTypes"))
-        .font(Premium.sectionFont)
-        .foregroundStyle(Premium.ink)
+      if showsTitle {
+        Text(store.t("deliveryTypes"))
+          .font(Premium.sectionFont)
+          .foregroundStyle(Premium.ink)
+      }
 
       Button {
         if useAllCategories && !showsSelectedCategoriesWhenUsingAll {
@@ -1827,9 +1814,11 @@ struct DeliveryCategoryPicker: View {
       .accessibilityValue(store.t(useAllCategories ? "selected" : "notSelected"))
       .accessibilityAddTraits(useAllCategories ? .isSelected : [])
 
-      Text(store.t(allCategoriesHelperKey))
-        .font(.footnote)
-        .foregroundStyle(.secondary)
+      if showsAllCategoriesHelper {
+        Text(store.t(allCategoriesHelperKey))
+          .font(.footnote)
+          .foregroundStyle(.secondary)
+      }
 
       if !useAllCategories || showsSelectedCategoriesWhenUsingAll {
         Divider()
@@ -2115,10 +2104,8 @@ enum Strings {
     "settings": "Ajustes",
     "closeSettings": "Cerrar ajustes",
     "welcomeToWarmWords": "BIENVENIDO A",
-    "interestsOnboardingTitle": "¿Qué tipo de palabras necesitas?",
-    "interestsOnboardingBody": "Elige las categorías que te interesan. Puedes cambiarlas más tarde en Ajustes.",
-    "stepOneOfTwo": "Paso 1 de 2",
-    "stepTwoOfTwo": "Paso 2 de 2",
+    "interestsOnboardingTitle": "¿Qué te ayudaría hoy?",
+    "interestsOnboardingBody": "Elige qué te gustaría recibir. Puedes cambiarlo más tarde en Ajustes.",
     "onboardingTitle": "¿Cuándo quieres recibir tu frase?",
     "onboardingBody": "Elige una hora y los días en los que quieres recibirla.",
     "everyDayRecommended": "Recomendamos todos los días",
@@ -2142,7 +2129,6 @@ enum Strings {
     "deliveryHelp": "Si no eliges ninguna, recibirás frases de todas las categorías.",
     "allCategories": "Todas las categorías",
     "allCategoriesRecommended": "Recomendamos todas las categorías.",
-    "allCategoriesSelectedByDefault": "Todas las categorías están seleccionadas por defecto.",
     "chooseOneCategory": "Elige al menos una categoría.",
     "newManualCard": "Nueva frase personal",
     "personalCategoryDescription": "Una categoría para tus frases personales.",
@@ -2205,10 +2191,8 @@ enum Strings {
     "settings": "Settings",
     "closeSettings": "Close settings",
     "welcomeToWarmWords": "WELCOME TO",
-    "interestsOnboardingTitle": "What kind of words do you need?",
-    "interestsOnboardingBody": "Choose the categories that interest you. You can change them later in Settings.",
-    "stepOneOfTwo": "Step 1 of 2",
-    "stepTwoOfTwo": "Step 2 of 2",
+    "interestsOnboardingTitle": "What would help you today?",
+    "interestsOnboardingBody": "Choose what you’d like to receive. You can change it later in Settings.",
     "onboardingTitle": "When should your quote arrive?",
     "onboardingBody": "Choose a time and the days you’d like to receive it.",
     "everyDayRecommended": "Every day is recommended",
@@ -2232,7 +2216,6 @@ enum Strings {
     "deliveryHelp": "Leave all unselected to receive quotes from every category.",
     "allCategories": "All categories",
     "allCategoriesRecommended": "All categories are recommended.",
-    "allCategoriesSelectedByDefault": "All categories are selected by default.",
     "chooseOneCategory": "Choose at least one category.",
     "newManualCard": "New personal quote",
     "personalCategoryDescription": "A category for your personal quotes.",

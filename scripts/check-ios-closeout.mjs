@@ -14,7 +14,7 @@ const onboardingCategoriesStep = swift.slice(
 );
 const onboardingScheduleStep = swift.slice(
   swift.indexOf("private var scheduleStep"),
-  swift.indexOf("private func stepPill"),
+  swift.indexOf("struct TodayView"),
 );
 const logic = read("native-ios/Sources/AppLogic.swift");
 const info = read("native-ios/Resources/Info.plist");
@@ -101,11 +101,20 @@ assert.match(swift, /@State private var step: ReminderOnboardingStep = \.categor
 assert.match(onboardingCategoriesStep, /DeliveryCategoryPicker\([\s\S]*?categories: store\.content\.categories/);
 assert.match(onboardingCategoriesStep, /accessibilityIdentifier\("onboarding-categories-step"\)/);
 assert.doesNotMatch(onboardingCategoriesStep, /DatePicker|WeekdayPicker|completeInitialReminderSetup/);
+assert.doesNotMatch(onboardingCategoriesStep, /stepOneOfTwo|allCategoriesSelectedByDefault|store\.t\("notNow"\)|skipInitialReminderSetup/);
+assert.match(onboardingCategoriesStep, /showsTitle: false/);
+assert.match(onboardingCategoriesStep, /showsAllCategoriesHelper: false/);
 assert.match(onboardingScheduleStep, /DatePicker/);
 assert.match(onboardingScheduleStep, /WeekdayPicker/);
 assert.match(onboardingScheduleStep, /completeInitialReminderSetup\([\s\S]{0,260}deliveryCategories: draftDeliveryCategories,[\s\S]{0,120}useAllCategories: draftUseAllCategories/);
 assert.match(onboardingScheduleStep, /accessibilityIdentifier\("onboarding-schedule-step"\)/);
 assert.doesNotMatch(onboardingScheduleStep, /DeliveryCategoryPicker/);
+assert.doesNotMatch(onboardingScheduleStep, /stepTwoOfTwo/);
+assert.match(onboardingScheduleStep, /store\.t\("back"\)/);
+assert.match(onboardingScheduleStep, /store\.t\("notNow"\)/);
+assert.match(swift, /"interestsOnboardingTitle": "¿Qué te ayudaría hoy\?"/);
+assert.match(swift, /"interestsOnboardingTitle": "What would help you today\?"/);
+assert.doesNotMatch(swift, /Step 1 of 2|Step 2 of 2|Paso 1 de 2|Paso 2 de 2|All categories are selected by default|Todas las categorías están seleccionadas por defecto/);
 assert.match(logic, /enum ReminderDeliveryValidator/);
 assert.match(logic, /struct ReminderDeliverySelection: Equatable/);
 assert.doesNotMatch(swift, /ShareLink\(/);
