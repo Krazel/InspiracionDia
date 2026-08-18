@@ -284,6 +284,12 @@ Resuelve la antigua PEND-013:
 - La maestra combinada queda reemplazada sin borrarse. `WW-SCREEN-002A` gobierna intereses y la antigua pantalla de hora/días vuelve como `WW-SCREEN-002B`.
 - Este cambio no añade datos recopilados, red, permisos, SDKs ni assets de ejecución. Una futura build debe usar el siguiente número libre; subirla a TestFlight sigue requiriendo autorización expresa en ese momento.
 
+### DEC-039 — TestFlight build 23 autorizado y entregado
+
+- El propietario autorizó expresamente el 2026-08-18 publicar el commit `6993c92`, crear Warm Words **1.0 (23)** y subirlo a TestFlight.
+- GitHub Actions run `32163428876`, job `95797362914`, pasó 29 tests sin fallos, Analyze Release, firma, archive, inspección, exportación y upload. Apple aceptó el archivo sin errores de transporte.
+- La autorización se limita a TestFlight interno de esta build. No incluye testers externos, Beta App Review, App Review, Universal Links, publicación pública ni futuras builds.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

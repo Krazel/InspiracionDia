@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-18**
-Estado: **flujo local posterior a build 22 actualizado a onboarding de dos pasos; pendiente de compilación macOS, QA físico y autorización de una nueva subida TestFlight**
+Estado: **Warm Words 1.0 build 23 firmada, validada y aceptada por TestFlight; pendiente de procesamiento de Apple y QA físico del onboarding de dos pasos**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight más reciente se compiló desde el commit verificado `b3de5b0`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight más reciente se compiló desde el commit verificado `6993c92`.
 - El propietario autorizó expresamente la subida a TestFlight el 2026-08-10. No se creó release, no se envió a App Review y no se publicó en App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
@@ -19,7 +19,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - App Privacy tiene guardada la respuesta “no se recopilan datos” y ambas URL de política, pero **no se pulsó Publicar**: queda preparada para el archive final, no publicada.
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
-- TestFlight conserva builds anteriores en el grupo interno. Build 22 fue aceptada por el transporte de Apple el 2026-08-12 y está pendiente de terminar su procesamiento antes de poder confirmarla como instalable; no se creó grupo externo ni se solicitó Beta App Review.
+- TestFlight conserva builds anteriores en el grupo interno. Build 23 fue aceptada por el transporte de Apple el 2026-08-18 y está pendiente de terminar su procesamiento antes de poder confirmarla como instalable; no se creó grupo externo ni se solicitó Beta App Review.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -29,7 +29,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El candidato implementa la generación de tarjeta PNG y URL específico versionado, pero mantiene el feature gate apagado hasta verificar la infraestructura. Las frases incluidas viajan por ID+idioma; las personales incluyen solo el texto normalizado dentro del fragmento `#`, de modo que GitHub Pages no lo recibe.
 - Al abrir un enlace válido, Warm Words muestra una pantalla completa bilingüe basada en `WW-SCREEN-004`. Una frase incluida puede guardarse en Favoritos; una personal se importa, deduplica y marca favorita únicamente tras confirmación explícita.
 - Se rechazan host, ruta, versión, ID, texto, longitud y caracteres de control inválidos. Si el primer onboarding sigue pendiente, la vista recibida se difiere hasta completarlo.
-- El entitlement fuente para `applinks:krazel.github.io` está preparado, pero no se vincula al target ni se exige al perfil de build 22 mientras la landing/AASA no estén publicados. Associated Domains necesitará una build posterior y un perfil regenerado.
+- El entitlement fuente para `applinks:krazel.github.io` está preparado, pero no se vincula al target ni se exige al perfil de build 23 mientras la landing/AASA no estén publicados. Associated Domains necesitará una build posterior y un perfil regenerado.
 - La landing y las dos copias de AASA están preparadas únicamente en el repositorio local canónico `krazel.github.io`; no se han publicado. `ShareLinkRoute.isPublicLinkEnabled` permanece en `false` hasta que respondan 200, el CDN de Apple acepte AASA y la URL de App Store sea pública.
 - Privacidad, soporte, inventario y QA describen el envío voluntario de imagen+enlace, la ausencia de backend y la limitación real: después de instalar desde la landing hay que volver al mensaje original y tocar el enlace otra vez.
 
@@ -42,7 +42,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Se conserva marketing version 1.0 porque es el tren existente anterior al primer lanzamiento público; la nueva combinación autorizada es **1.0 (22)**.
 - GitHub Actions run `31607436785`, job `94149911543`, commit `b3de5b0`, completó **27 tests sin fallos**, Analyze, firma, archive, inspección, exportación y upload. Apple respondió `No errors uploading archive`.
 
-## Cambio local posterior a build 22 — onboarding de dos pasos
+## Cambio incluido en build 23 — onboarding de dos pasos
 
 - El propietario indicó que las categorías no resultaban visibles en el onboarding combinado. El flujo local abre ahora un paso 1 exclusivo para las 12 categorías, todas activas por defecto, y después un paso 2 con la hora y los días existentes.
 - `Continue` solo conserva el borrador; no guarda, no programa y no solicita permiso. `Back` conserva intereses y `Set reminder` confirma conjuntamente categorías, hora y días.
@@ -50,7 +50,8 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - La persistencia se ordenó para que el onboarding se marque completado antes de solicitar/programar notificaciones; `Not now` persiste primero el recordatorio apagado.
 - El onboarding sigue en versión `1`: las actualizaciones no lo repiten. Para probar este cambio hay que borrar datos e instalar limpio.
 - La nueva maestra `WW-SCREEN-002A` y la pantalla horaria reactivada `WW-SCREEN-002B` están registradas en `design/APPROVALS.md`. La pantalla combinada anterior se conserva como reemplazada.
-- No se han añadido red, datos recopilados, permisos, SDKs ni assets de ejecución. El siguiente binario posible es 1.0 (23), pero todavía no se ha compilado, firmado ni subido.
+- No se han añadido red, datos recopilados, permisos, SDKs ni assets de ejecución.
+- GitHub Actions run `32163428876`, job `95797362914`, compiló el commit `6993c92` como **1.0 (23)**. Pasó 29 tests sin fallos, Analyze Release, archive firmado, inspección, exportación y upload. Apple respondió `No errors uploading archive`.
 
 ## Cierre implementado localmente
 
@@ -60,7 +61,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
 - Hora configurada con `DatePicker`, migración estricta de la preferencia antigua y manejo de cambios DST mediante el calendario del sistema.
 - Tarjetas propias: entrada vacía o categoría inválida no cierra la hoja; crear selecciona y persiste “Manual”; borrar exige confirmación y limpia favorito y notificaciones. Edición queda fuera de 1.0.
-- Builds 20, 21 y 22 comparten la tarjeta visual PNG sin enlace. El código contiene la implementación específica bajo un feature gate apagado; no puede activarse hasta que landing, AASA, entitlement y firma compatibles estén publicados y verificados.
+- Builds 20, 21, 22 y 23 comparten la tarjeta visual PNG sin enlace. El código contiene la implementación específica bajo un feature gate apagado; no puede activarse hasta que landing, AASA, entitlement y firma compatibles estén publicados y verificados.
 - Accesibilidad puntual: labels y estados seleccionados, encabezados semánticos, fondos decorativos ocultos, botones táctiles, grid adaptado a tamaños AX, tipografías dinámicas críticas y dorado de texto oscurecido.
 - `PrivacyInfo.xcprivacy` declara `UserDefaults` con `CA92.1`; `Info.plist` usa región inglesa, iPhone portrait y `ITSAppUsesNonExemptEncryption=false` sujeto a inspección del archive final.
 - Target iPhone-only, firma automática sin team embebido y target XCTest explícito.
@@ -206,13 +207,20 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Esta build incluye el onboarding con categorías y la navegación nativa de Ajustes. Para probar el onboarding hay que borrar la app/datos e instalar limpio; una actualización conserva correctamente el onboarding ya completado.
 - No se activaron Universal Links, testers externos, Beta App Review, App Review ni publicación.
 
+## TestFlight build 23 subida
+
+- El propietario autorizó expresamente publicar el commit y subir Warm Words 1.0 (23) el 2026-08-18.
+- El run `32163428876` pasó 29 tests, Analyze, archive firmado, inspección, exportación y entrega a Apple sin errores.
+- Esta build contiene el onboarding de dos pasos. Para verlo hay que borrar la app y sus datos antes de instalar, porque las actualizaciones conservan correctamente el onboarding ya completado.
+- El procesamiento de Apple puede tardar unos minutos. No se activaron testers externos, Beta App Review, App Review, Universal Links ni publicación.
+
 ## Primer bloqueo material de App Store
 
 El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la decisión de usar un catálogo editorial propio ya están cerrados localmente. La primera puerta material restante es conservar la trazabilidad editorial del catálogo y confirmar por escrito la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
 
 ## Puertas restantes
 
-1. Esperar el procesamiento de build 22 e instalarla desde TestFlight. En actualización, comprobar abrir, volver y reabrir Ajustes; en instalación limpia, comprobar las 12 categorías activas por defecto, una selección específica y su agenda. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Esperar el procesamiento de build 23 e instalarla desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar paso 1 con las 12 categorías, selección específica, Volver y paso 2 con hora/días. Después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
