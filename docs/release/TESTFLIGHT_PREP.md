@@ -1,6 +1,6 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: version 1.0 build 25 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-24. It remains the latest TestFlight build. A local 720-quotes-per-language candidate is prepared for prospective build 26 but has not been committed, compiled, signed, or uploaded. App Review and public release remain separate unauthorized actions.
+Status: version 1.0 build 26 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-24. It is the latest TestFlight build and contains 720 quotes per language. App Review and public release remain separate unauthorized actions.
 
 ## Verified release identity
 

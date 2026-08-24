@@ -19,7 +19,7 @@ La conclusión cuantitativa original sobre 360 frases fue sustituida después po
 - Se añadieron 360 pares bilingües originales y se aplicaron a la fuente canónica las 16 reescrituras de la auditoría anterior. La revisión de ampliación mejoró otros 55 pares: tres solapamientos detectados durante la integración y 52 textos señalados por una auditoría final independiente.
 - La revisión estructural exige paridad, orden, longitudes de 32–138 caracteres y ausencia de duplicados exactos, normalizados o de alto solapamiento. La revisión editorial cubre naturalidad, traducción, categoría, especificidad, seguridad y cliché.
 - No se añadieron atribuciones, citas famosas, scraping, diagnósticos ni promesas médicas. No cambian la privacidad ni los permisos.
-- Esta adenda describe un candidato **local no compilado ni subido**. La última build comprobada por Apple sigue siendo 1.0 (25), con 360 frases por idioma.
+- La adenda se entregó como **1.0 (26)** desde `b629bcd`. Run `32765814357` pasó 38 tests, Analyze Release, firma, archive, inspección y exportación, y subió el binario sin errores. Apple lo procesó como `VALID` y run `32766825710` lo asignó al grupo interno `Warm Words Internal`.
 
 ## Fotografía verificable del candidato
 

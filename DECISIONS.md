@@ -329,6 +329,7 @@ Resuelve la antigua PEND-013:
 - El propietario autorizó expresamente el 2026-08-24 hacer commit y push del catálogo ampliado, compilar y firmar Warm Words **1.0 (26)**, subirla a TestFlight y asignarla al grupo interno existente.
 - Se conserva excepcionalmente el tren 1.0 ya creado en App Store Connect y se incrementa el build de 25 a 26; no se abre una versión pública distinta durante este cierre previo al primer lanzamiento.
 - La autorización no incluye testers externos, Beta App Review, App Review, publicación pública, activación de Universal Links, productos StoreKit ni cambios comerciales.
+- Resultado: commit `b629bcd`; run `32765814357` completó tests, análisis, firma, archive, exportación y subida sin errores; Apple marcó build 26 como `VALID` y run `32766825710` la asignó a `Warm Words Internal`.
 
 ## Primera decisión pendiente del propietario
 
