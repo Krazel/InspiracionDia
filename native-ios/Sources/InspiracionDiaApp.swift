@@ -533,7 +533,7 @@ final class AppStore: ObservableObject {
     useAllCategories: Bool
   ) -> Bool {
     guard !enabled || !weekdays.isEmpty else { return false }
-    let validCategoryIds = Set(deliveryCategories.map(\.id))
+    let validCategoryIds = Set(self.deliveryCategories.map(\.id))
     guard let resolvedDeliveryCategories = ReminderDeliveryValidator.resolvedCategories(
       requested: deliveryCategories,
       validCategoryIds: validCategoryIds,
