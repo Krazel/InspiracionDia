@@ -189,6 +189,66 @@ enum DailyQuoteSelector {
   }
 }
 
+struct QuoteCycleStep: Equatable {
+  let quoteID: String
+  let history: [String]
+}
+
+struct ScheduledQuoteAssignment: Codable, Equatable {
+  let quoteID: String
+  let deliveryDate: Date
+}
+
+enum QuoteCyclePlanner {
+  static func next(candidateIDs: [String], history: [String]) -> QuoteCycleStep? {
+    let orderedIDs = orderedUniqueIDs(candidateIDs)
+    guard !orderedIDs.isEmpty else { return nil }
+
+    let eligibleIDs = Set(orderedIDs)
+    var uniqueHistory: [String] = []
+    var knownHistoryIDs = Set<String>()
+    for id in history where knownHistoryIDs.insert(id).inserted {
+      uniqueHistory.append(id)
+    }
+    let nextID = orderedIDs.first(where: { !knownHistoryIDs.contains($0) }) ??
+      uniqueHistory.first(where: { eligibleIDs.contains($0) }) ??
+      orderedIDs[0]
+    uniqueHistory.removeAll { $0 == nextID }
+    uniqueHistory.append(nextID)
+    return QuoteCycleStep(quoteID: nextID, history: uniqueHistory)
+  }
+
+  static func sequence(
+    candidateIDs: [String],
+    history: [String],
+    count: Int
+  ) -> [String] {
+    guard count > 0 else { return [] }
+    var sequence: [String] = []
+    var nextHistory = history
+    for _ in 0..<count {
+      guard let step = next(candidateIDs: candidateIDs, history: nextHistory) else { break }
+      sequence.append(step.quoteID)
+      nextHistory = step.history
+    }
+    return sequence
+  }
+
+  private static func orderedUniqueIDs(_ candidateIDs: [String]) -> [String] {
+    Array(Set(candidateIDs)).sorted { lhs, rhs in
+      let leftRank = stableRank(lhs)
+      let rightRank = stableRank(rhs)
+      return leftRank == rightRank ? lhs < rhs : leftRank < rightRank
+    }
+  }
+
+  private static func stableRank(_ value: String) -> UInt64 {
+    value.utf8.reduce(UInt64(14_695_981_039_346_656_037)) { hash, byte in
+      (hash ^ UInt64(byte)) &* 1_099_511_628_211
+    }
+  }
+}
+
 enum ReminderTimeCodec {
   static let defaultMinutes = 7 * 60 + 30
 

@@ -164,7 +164,7 @@
     {
       "id": "animo-016",
       "category": "animo",
-      "text": "Empieza por una parte de este día que aún crea que merece la pena intentarlo otra vez."
+      "text": "Empieza por la parte de ti que aún cree que hoy merece la pena intentarlo de nuevo."
     },
     {
       "id": "animo-017",
@@ -419,7 +419,7 @@
     {
       "id": "calma-007",
       "category": "calma",
-      "text": "Una pausa breve puede salvarte de una decisión cansada."
+      "text": "Una pausa breve puede protegerte de una decisión tomada desde el cansancio."
     },
     {
       "id": "calma-008",
@@ -529,7 +529,7 @@
     {
       "id": "calma-029",
       "category": "calma",
-      "text": "Quizá tu sistema nervioso necesite señales de seguridad más que otra explicación."
+      "text": "Antes de buscar otra explicación, observa un detalle estable y tranquilizador a tu alrededor."
     },
     {
       "id": "calma-030",
@@ -704,7 +704,7 @@
     {
       "id": "autoestima-004",
       "category": "autoestima",
-      "text": "Tratarte con dureza no te hace mejorar más rápido, solo te hace llegar roto."
+      "text": "Tratarte con dureza no te ayuda a mejorar más rápido; solo te desgasta."
     },
     {
       "id": "autoestima-005",
@@ -1019,7 +1019,7 @@
     {
       "id": "valentia-007",
       "category": "valentia",
-      "text": "El miedo habla fuerte cuando estás cerca de algo importante."
+      "text": "El miedo puede alzar la voz ante una decisión importante; escúchalo y decide después qué es seguro y fiel a ti."
     },
     {
       "id": "valentia-008",
@@ -1049,7 +1049,7 @@
     {
       "id": "valentia-013",
       "category": "valentia",
-      "text": "No todo riesgo es peligro; algunos son puertas."
+      "text": "No toda incertidumbre es una advertencia; a veces solo es el borde de algo nuevo."
     },
     {
       "id": "valentia-014",
@@ -1079,7 +1079,7 @@
     {
       "id": "valentia-019",
       "category": "valentia",
-      "text": "Cada límite que expresas enseña a tu vida dónde quieres permanecer."
+      "text": "Cada límite que expresas deja más claro qué aceptas y qué no."
     },
     {
       "id": "valentia-020",
@@ -1124,7 +1124,7 @@
     {
       "id": "valentia-028",
       "category": "valentia",
-      "text": "El gesto valiente puede ser quedarte lo suficiente para aprender, no huir de la incomodidad."
+      "text": "Cuando la situación es segura, la valentía puede consistir en quedarte lo suficiente para aprender en vez de huir ante la primera incomodidad."
     },
     {
       "id": "valentia-029",
@@ -1284,7 +1284,7 @@
     {
       "id": "habitos-030",
       "category": "habitos",
-      "text": "Elige una rutina que puedas perdonarte, retomar y seguir construyendo."
+      "text": "Elige una rutina que puedas pausar, retomar y seguir ajustando."
     },
     {
       "id": "creatividad-001",
@@ -1464,7 +1464,7 @@
     {
       "id": "resiliencia-006",
       "category": "resiliencia",
-      "text": "Recuperarte no exige volver igual; quizá exige volver más verdadero."
+      "text": "Recuperarte no exige volver igual; quizá signifique volver con una idea más clara de quién eres."
     },
     {
       "id": "resiliencia-007",
@@ -1544,7 +1544,7 @@
     {
       "id": "resiliencia-022",
       "category": "resiliencia",
-      "text": "La recuperación se nota cuando un recuerdo difícil ocupa cada vez menos espacio dentro de ti."
+      "text": "Un recuerdo difícil puede seguir en tu historia sin ocupar todo el espacio."
     },
     {
       "id": "resiliencia-023",
@@ -1604,7 +1604,7 @@
     {
       "id": "relaciones-004",
       "category": "relaciones",
-      "text": "Una conversación honesta a tiempo evita muchas distancias largas."
+      "text": "Una conversación honesta a tiempo puede evitar que crezca una gran distancia."
     },
     {
       "id": "relaciones-005",
@@ -1669,7 +1669,7 @@
     {
       "id": "relaciones-017",
       "category": "relaciones",
-      "text": "El cuidado sin curiosidad puede acabar respondiendo a quien alguien fue en el pasado."
+      "text": "Cuidar bien también exige interesarse por quién es hoy la otra persona, no solo recordar quién fue."
     },
     {
       "id": "relaciones-018",
@@ -1749,7 +1749,7 @@
     {
       "id": "energia-003",
       "category": "energia",
-      "text": "Haz primero lo que requiere tu mejor versión, no tus restos."
+      "text": "Haz primero lo que requiere lo mejor de ti, no lo que puede hacerse con la energía que te sobra."
     },
     {
       "id": "energia-004",
@@ -1794,12 +1794,12 @@
     {
       "id": "energia-012",
       "category": "energia",
-      "text": "Un vaso de agua, una ventana abierta y cinco minutos pueden cambiar el cuerpo del día."
+      "text": "Un vaso de agua, una ventana abierta y cinco minutos pueden cambiar cómo vives el resto del día."
     },
     {
       "id": "energia-013",
       "category": "energia",
-      "text": "Tu atención baja cuando tu cuerpo lleva horas pidiendo cuidado."
+      "text": "Si tu atención decae, observa si tu cuerpo lleva tiempo pidiendo cuidado."
     },
     {
       "id": "energia-014",

@@ -151,6 +151,88 @@ final class AppLogicTests: XCTestCase {
     XCTAssertNil(DailyQuoteSelector.index(for: Date(), count: 0, calendar: calendar))
   }
 
+  func testQuoteCycleUsesEveryEligibleQuoteBeforeRepeating() {
+    let sequence = QuoteCyclePlanner.sequence(
+      candidateIDs: ["animo-001", "foco-001", "calma-001"],
+      history: [],
+      count: 4
+    )
+    XCTAssertEqual(Set(sequence.prefix(3)).count, 3)
+    XCTAssertEqual(sequence[3], sequence[0])
+  }
+
+  func testQuoteCycleContinuesFromPersistedHistory() throws {
+    let first = try XCTUnwrap(
+      QuoteCyclePlanner.next(candidateIDs: ["a", "b", "c"], history: [])
+    )
+    let second = try XCTUnwrap(
+      QuoteCyclePlanner.next(candidateIDs: ["a", "b", "c"], history: first.history)
+    )
+    XCTAssertNotEqual(first.quoteID, second.quoteID)
+    XCTAssertEqual(Array(second.history.suffix(2)), [first.quoteID, second.quoteID])
+  }
+
+  func testQuoteCyclePreservesHistoryAcrossCategoryChanges() throws {
+    let priorHistory = ["animo-001", "foco-001", "animo-002"]
+    let focusOnly = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["foco-001", "foco-002"],
+        history: priorHistory
+      )
+    )
+    XCTAssertEqual(focusOnly.quoteID, "foco-002")
+    XCTAssertTrue(focusOnly.history.contains("animo-001"))
+    XCTAssertTrue(focusOnly.history.contains("animo-002"))
+  }
+
+  func testQuoteCycleReminderSequenceDoesNotRepeatBeforeExhaustion() {
+    let ids = (1...30).map { "foco-\(String(format: "%03d", $0))" }
+    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 60)
+    XCTAssertEqual(sequence.count, 60)
+    XCTAssertEqual(Set(sequence.prefix(30)).count, 30)
+    XCTAssertEqual(Array(sequence.prefix(30)), Array(sequence.suffix(30)))
+  }
+
+  func testQuoteCycleRejectsEmptyCandidates() {
+    XCTAssertNil(QuoteCyclePlanner.next(candidateIDs: [], history: ["old"]))
+    XCTAssertTrue(QuoteCyclePlanner.sequence(candidateIDs: [], history: [], count: 60).isEmpty)
+  }
+
+  func testQuoteCycleChoosesLeastRecentlySeenAfterExhaustion() throws {
+    let next = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["calma-001", "calma-002", "calma-003"],
+        history: ["calma-002", "calma-001", "calma-003"]
+      )
+    )
+    XCTAssertEqual(next.quoteID, "calma-002")
+    XCTAssertEqual(Array(next.history.suffix(3)), ["calma-001", "calma-003", "calma-002"])
+  }
+
+  func testQuoteCycleSanitizesDuplicateCandidatesAndHistory() throws {
+    let next = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["a", "a", "b"],
+        history: ["outside", "a", "a"]
+      )
+    )
+    XCTAssertEqual(next.quoteID, "b")
+    XCTAssertEqual(next.history.filter { $0 == "a" }.count, 1)
+    XCTAssertEqual(next.history.filter { $0 == "b" }.count, 1)
+    XCTAssertTrue(next.history.contains("outside"))
+  }
+
+  func testScheduledQuoteAssignmentRoundTripsThroughPersistenceEncoding() throws {
+    let assignment = ScheduledQuoteAssignment(
+      quoteID: "foco-001",
+      deliveryDate: try XCTUnwrap(
+        calendar.date(from: DateComponents(year: 2026, month: 8, day: 24, hour: 7, minute: 30))
+      )
+    )
+    let data = try JSONEncoder().encode([assignment])
+    XCTAssertEqual(try JSONDecoder().decode([ScheduledQuoteAssignment].self, from: data), [assignment])
+  }
+
   func testReminderTimeMigratesStrictValidValue() {
     XCTAssertEqual(ReminderTimeCodec.migrate(legacyValue: "09:05"), 9 * 60 + 5)
   }
@@ -311,6 +393,17 @@ final class AppLogicTests: XCTestCase {
         reminderEnabled: false
       ),
       []
+    )
+  }
+
+  func testReminderDeliveryRejectsPersonalWhenItHasNoQuotes() {
+    XCTAssertNil(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["custom"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      )
     )
   }
 

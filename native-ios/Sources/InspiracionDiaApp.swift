@@ -75,6 +75,7 @@ final class AppStore: ObservableObject {
   @Published var notificationStatus = ""
   @Published var notificationPermissionAlertPending = false
   @Published private(set) var currentDate = Date()
+  @Published private(set) var presentedTodayQuote: Quote?
 
   private static let languageKey = "language"
   private let favoritesKey = "favoriteIds"
@@ -87,12 +88,20 @@ final class AppStore: ObservableObject {
   private let reminderEnabledKey = "reminderEnabled"
   private let reminderOnboardingVersionKey = "reminderOnboardingVersion"
   private let reminderMinutesKey = "reminderMinutes"
+  private let quoteCycleHistoryKey = "quoteCycleHistory"
+  private let todayQuoteIdKey = "todayQuoteId"
+  private let todayQuoteDayKey = "todayQuoteDay"
+  private let scheduledQuoteAssignmentsKey = "scheduledQuoteAssignments"
   private let legacyReminderTimeKey = "reminderTime"
   private let legacyNotificationId = "daily-inspiration"
   private let notificationIdPrefix = "daily-inspiration-"
   private let scheduledReminderCount = 60
   private let currentReminderOnboardingVersion = 1
   private var reminderSchedulingTask: Task<Void, Never>?
+  private var quoteCycleHistory: [String] = []
+  private var persistedTodayQuoteId: String?
+  private var persistedTodayQuoteDay: String?
+  private var scheduledQuoteAssignments: [ScheduledQuoteAssignment] = []
 
   init() {
     language = AppLanguage.resolved(
@@ -101,6 +110,8 @@ final class AppStore: ObservableObject {
     )
     loadContent()
     loadSettings()
+    loadQuoteCycleState()
+    refreshCurrentDate()
     refreshReminderIfEnabled()
   }
 
@@ -110,6 +121,11 @@ final class AppStore: ObservableObject {
 
   var allCategories: [Category] {
     content.categories + [personalCategory] + customCategories
+  }
+
+  var deliveryCategories: [Category] {
+    let quoteBackedCategoryIds = Set(allQuotes.map(\.category))
+    return allCategories.filter { quoteBackedCategoryIds.contains($0.id) }
   }
 
   var personalCategory: Category {
@@ -131,17 +147,23 @@ final class AppStore: ObservableObject {
   }
 
   var todayQuote: Quote {
-    quote(for: currentDate, candidates: allQuotes)
+    presentedTodayQuote ?? fallbackQuote
   }
 
   var reminderPreviewQuote: Quote {
-    let previewDate = ReminderDatePlanner.dates(
-      count: 1,
-      minutes: reminderMinutes,
-      after: currentDate,
-      weekdays: reminderWeekdays
-    ).first ?? currentDate
-    return quote(for: previewDate, candidates: quotesForDelivery())
+    let candidates = quotesForDelivery()
+    if let nextAssignment = scheduledQuoteAssignments
+      .filter({ $0.deliveryDate > currentDate })
+      .min(by: { $0.deliveryDate < $1.deliveryDate }),
+       let scheduledQuote = candidates.first(where: { $0.id == nextAssignment.quoteID }) {
+      return scheduledQuote
+    }
+    let previewIDs = QuoteCyclePlanner.sequence(
+      candidateIDs: candidates.map(\.id),
+      history: quoteCycleHistory,
+      count: 1
+    )
+    return previewIDs.first.flatMap { id in candidates.first(where: { $0.id == id }) } ?? fallbackQuote
   }
 
   var visibleQuotes: [Quote] {
@@ -163,6 +185,138 @@ final class AppStore: ObservableObject {
     }
     let index = DailyQuoteSelector.index(for: date, count: candidates.count) ?? 0
     return candidates[index]
+  }
+
+  private var fallbackQuote: Quote {
+    Quote(id: "empty", category: "animo", text: t("fallbackQuote"))
+  }
+
+  private func refreshTodayQuoteForCurrentState() {
+    let candidates = quotesForDelivery()
+    let dayKey = quoteCycleDayKey(for: currentDate)
+    if persistedTodayQuoteDay == dayKey,
+       let quoteID = persistedTodayQuoteId,
+       let quote = candidates.first(where: { $0.id == quoteID }) {
+      presentedTodayQuote = quote
+      return
+    }
+
+    let selectedQuote: Quote?
+    if let scheduledQuoteID = scheduledQuoteAssignments.first(where: {
+      quoteCycleDayKey(for: $0.deliveryDate) == dayKey
+    })?.quoteID,
+       let scheduledQuote = candidates.first(where: { $0.id == scheduledQuoteID }) {
+      selectedQuote = scheduledQuote
+    } else if persistedTodayQuoteDay == nil, persistedTodayQuoteId == nil {
+      let legacyQuote = quote(for: currentDate, candidates: candidates)
+      selectedQuote = legacyQuote.id == "empty" ? nil : legacyQuote
+    } else if let step = QuoteCyclePlanner.next(
+      candidateIDs: candidates.map(\.id),
+      history: quoteCycleHistory
+    ) {
+      quoteCycleHistory = step.history
+      selectedQuote = candidates.first(where: { $0.id == step.quoteID })
+    } else {
+      selectedQuote = nil
+    }
+
+    guard let selectedQuote else {
+      presentedTodayQuote = fallbackQuote
+      persistedTodayQuoteId = nil
+      persistedTodayQuoteDay = dayKey
+      persistQuoteCycleState()
+      return
+    }
+    recordQuoteAsSeen(selectedQuote.id)
+    presentedTodayQuote = selectedQuote
+    persistedTodayQuoteId = selectedQuote.id
+    persistedTodayQuoteDay = dayKey
+    persistQuoteCycleState()
+  }
+
+  private func recordQuoteAsSeen(_ quoteID: String) {
+    quoteCycleHistory.removeAll { $0 == quoteID }
+    quoteCycleHistory.append(quoteID)
+  }
+
+  private func reconcileDeliveredQuoteAssignments(now: Date) {
+    let dueAssignments = scheduledQuoteAssignments
+      .filter { $0.deliveryDate <= now }
+      .sorted { $0.deliveryDate < $1.deliveryDate }
+    for assignment in dueAssignments {
+      recordQuoteAsSeen(assignment.quoteID)
+    }
+    if !dueAssignments.isEmpty {
+      let dayKey = quoteCycleDayKey(for: now)
+      if persistedTodayQuoteDay != dayKey,
+         let latestTodayAssignment = dueAssignments.last(where: {
+           quoteCycleDayKey(for: $0.deliveryDate) == dayKey
+         }) {
+        persistedTodayQuoteId = latestTodayAssignment.quoteID
+        persistedTodayQuoteDay = dayKey
+      }
+      scheduledQuoteAssignments.removeAll { $0.deliveryDate <= now }
+      persistQuoteCycleState()
+    }
+  }
+
+  private func quoteCycleDayKey(
+    for date: Date,
+    calendar: Calendar = .autoupdatingCurrent
+  ) -> String {
+    let parts = calendar.dateComponents([.year, .month, .day], from: date)
+    return String(
+      format: "%04d-%02d-%02d",
+      parts.year ?? 0,
+      parts.month ?? 0,
+      parts.day ?? 0
+    )
+  }
+
+  private func loadQuoteCycleState() {
+    let defaults = UserDefaults.standard
+    let validQuoteIDs = Set(allQuotes.map(\.id))
+    var loadedIDs = Set<String>()
+    quoteCycleHistory = (defaults.stringArray(forKey: quoteCycleHistoryKey) ?? []).filter {
+      validQuoteIDs.contains($0) && loadedIDs.insert($0).inserted
+    }
+    persistedTodayQuoteId = defaults.string(forKey: todayQuoteIdKey)
+    persistedTodayQuoteDay = defaults.string(forKey: todayQuoteDayKey)
+    if persistedTodayQuoteId.map({ !validQuoteIDs.contains($0) }) == true {
+      persistedTodayQuoteId = nil
+    }
+    if let data = defaults.data(forKey: scheduledQuoteAssignmentsKey),
+       let decoded = try? JSONDecoder().decode([ScheduledQuoteAssignment].self, from: data) {
+      var loadedDeliveryDates = Set<Date>()
+      scheduledQuoteAssignments = decoded
+        .filter {
+          validQuoteIDs.contains($0.quoteID) && loadedDeliveryDates.insert($0.deliveryDate).inserted
+        }
+        .sorted { $0.deliveryDate < $1.deliveryDate }
+    }
+  }
+
+  private func persistQuoteCycleState() {
+    let defaults = UserDefaults.standard
+    defaults.set(quoteCycleHistory, forKey: quoteCycleHistoryKey)
+    if let persistedTodayQuoteId {
+      defaults.set(persistedTodayQuoteId, forKey: todayQuoteIdKey)
+    } else {
+      defaults.removeObject(forKey: todayQuoteIdKey)
+    }
+    if let persistedTodayQuoteDay {
+      defaults.set(persistedTodayQuoteDay, forKey: todayQuoteDayKey)
+    } else {
+      defaults.removeObject(forKey: todayQuoteDayKey)
+    }
+    if let data = try? JSONEncoder().encode(scheduledQuoteAssignments) {
+      defaults.set(data, forKey: scheduledQuoteAssignmentsKey)
+    }
+  }
+
+  private func clearScheduledQuoteAssignments() {
+    scheduledQuoteAssignments = []
+    persistQuoteCycleState()
   }
 
   func t(_ key: String) -> String {
@@ -200,6 +354,7 @@ final class AppStore: ObservableObject {
       )
     }
     persistCustomCategories()
+    refreshTodayQuoteForCurrentState()
     refreshReminderIfEnabled()
   }
 
@@ -298,6 +453,7 @@ final class AppStore: ObservableObject {
     customQuotes.insert(quote, at: 0)
     selectCategory("custom")
     persistCustomQuotes()
+    refreshTodayQuoteForCurrentState()
     refreshReminderIfEnabled()
     return true
   }
@@ -314,22 +470,30 @@ final class AppStore: ObservableObject {
     guard isCustomQuote(quote) else { return }
     customQuotes.removeAll { $0.id == quote.id }
     favoriteIds.remove(quote.id)
-    if let category = customCategories.first(where: { $0.id == quote.category }),
-       !customQuotes.contains(where: { $0.category == category.id }) {
-      customCategories.removeAll { $0.id == category.id }
-      deliveryCategoryIds.remove(category.id)
+    if !customQuotes.contains(where: { $0.category == quote.category }) {
+      if customCategories.contains(where: { $0.id == quote.category }) {
+        customCategories.removeAll { $0.id == quote.category }
+        if selectedCategory == quote.category {
+          selectCategory("custom")
+        }
+        persistCustomCategories()
+      }
+      deliveryCategoryIds.remove(quote.category)
       if !deliveryUsesAllCategories, deliveryCategoryIds.isEmpty {
         deliveryUsesAllCategories = true
       }
-      if selectedCategory == category.id {
-        selectCategory("custom")
-      }
-      persistCustomCategories()
       UserDefaults.standard.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
       UserDefaults.standard.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
     }
     persistCustomQuotes()
     persistFavorites()
+    let validQuoteIDs = Set(allQuotes.map(\.id))
+    quoteCycleHistory.removeAll { !validQuoteIDs.contains($0) }
+    scheduledQuoteAssignments.removeAll { !validQuoteIDs.contains($0.quoteID) }
+    if persistedTodayQuoteId == quote.id {
+      persistedTodayQuoteId = nil
+    }
+    refreshTodayQuoteForCurrentState()
     refreshReminderIfEnabled()
   }
 
@@ -369,7 +533,7 @@ final class AppStore: ObservableObject {
     useAllCategories: Bool
   ) -> Bool {
     guard !enabled || !weekdays.isEmpty else { return false }
-    let validCategoryIds = Set(allCategories.map(\.id))
+    let validCategoryIds = Set(deliveryCategories.map(\.id))
     guard let resolvedDeliveryCategories = ReminderDeliveryValidator.resolvedCategories(
       requested: deliveryCategories,
       validCategoryIds: validCategoryIds,
@@ -390,6 +554,10 @@ final class AppStore: ObservableObject {
     defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
     defaults.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
     defaults.set(reminderEnabled, forKey: reminderEnabledKey)
+    if !enabled {
+      clearScheduledQuoteAssignments()
+    }
+    refreshTodayQuoteForCurrentState()
     return true
   }
 
@@ -440,7 +608,11 @@ final class AppStore: ObservableObject {
   }
 
   func refreshReminderIfEnabled() {
-    guard !needsReminderOnboarding, reminderEnabled else { return }
+    guard !needsReminderOnboarding else { return }
+    guard reminderEnabled else {
+      removeOwnedPendingReminders()
+      return
+    }
     replaceReminderSchedulingTask {
       let settings = await UNUserNotificationCenter.current().notificationSettings()
       guard !Task.isCancelled else { return }
@@ -451,6 +623,7 @@ final class AppStore: ObservableObject {
         self.reminderEnabled = false
         UserDefaults.standard.set(false, forKey: self.reminderEnabledKey)
         self.notificationStatus = self.t("permissionDenied")
+        await self.removeOwnedPendingRemindersNow()
       case .notDetermined:
         break
       @unknown default:
@@ -460,7 +633,10 @@ final class AppStore: ObservableObject {
   }
 
   func refreshCurrentDate() {
-    currentDate = Date()
+    let now = Date()
+    currentDate = now
+    reconcileDeliveredQuoteAssignments(now: now)
+    refreshTodayQuoteForCurrentState()
   }
 
   func sendTestNotification() {
@@ -514,38 +690,78 @@ final class AppStore: ObservableObject {
       }
     center.removePendingNotificationRequests(withIdentifiers: staleIdentifiers)
 
-    var failed = false
+    var failedIdentifiers = Set<String>()
     for request in requests {
       guard !Task.isCancelled else { return }
       do {
         try await center.add(request)
       } catch {
-        failed = true
+        failedIdentifiers.insert(request.identifier)
       }
     }
     guard !Task.isCancelled else { return }
-    notificationStatus = failed ? t("reminderFailed") : t("reminderSaved")
+    if !failedIdentifiers.isEmpty {
+      center.removePendingNotificationRequests(withIdentifiers: Array(failedIdentifiers))
+      scheduledQuoteAssignments.removeAll { assignment in
+        failedIdentifiers.contains(reminderIdentifier(for: assignment.deliveryDate, calendar: .autoupdatingCurrent))
+      }
+      persistQuoteCycleState()
+    }
+    notificationStatus = failedIdentifiers.isEmpty ? t("reminderSaved") : t("reminderFailed")
   }
 
   private func makeReminderRequests(now: Date = Date()) -> [UNNotificationRequest] {
     let calendar = Calendar.autoupdatingCurrent
+    reconcileDeliveredQuoteAssignments(now: now)
     let deliveryQuotes = quotesForDelivery()
-    return ReminderDatePlanner.dates(
+    let deliveryDates = ReminderDatePlanner.dates(
       count: scheduledReminderCount,
       minutes: reminderMinutes,
       after: now,
       weekdays: reminderWeekdays,
       calendar: calendar
-    ).map { deliveryDate in
+    )
+    var remainingDeliveryDates = deliveryDates
+    var assignments: [ScheduledQuoteAssignment] = []
+    let todayKey = quoteCycleDayKey(for: now, calendar: calendar)
+    if let firstDeliveryDate = remainingDeliveryDates.first,
+       quoteCycleDayKey(for: firstDeliveryDate, calendar: calendar) == todayKey,
+       persistedTodayQuoteDay == todayKey,
+       let todayQuoteID = persistedTodayQuoteId,
+       deliveryQuotes.contains(where: { $0.id == todayQuoteID }) {
+      assignments.append(
+        ScheduledQuoteAssignment(quoteID: todayQuoteID, deliveryDate: firstDeliveryDate)
+      )
+      remainingDeliveryDates.removeFirst()
+    }
+    let remainingQuoteIDs = QuoteCyclePlanner.sequence(
+      candidateIDs: deliveryQuotes.map(\.id),
+      history: quoteCycleHistory,
+      count: remainingDeliveryDates.count
+    )
+    assignments.append(contentsOf: zip(remainingDeliveryDates, remainingQuoteIDs).map { pair in
+      ScheduledQuoteAssignment(quoteID: pair.1, deliveryDate: pair.0)
+    })
+    scheduledQuoteAssignments = assignments
+    if scheduledQuoteAssignments.isEmpty {
+      clearScheduledQuoteAssignments()
+    } else {
+      persistQuoteCycleState()
+    }
+    let quotesByID = Dictionary(uniqueKeysWithValues: deliveryQuotes.map { ($0.id, $0) })
+    return scheduledQuoteAssignments.map { assignment in
       let notification = UNMutableNotificationContent()
       notification.title = t("notificationTitle")
-      notification.body = quote(for: deliveryDate, candidates: deliveryQuotes).text
+      notification.body = quotesByID[assignment.quoteID]?.text ?? fallbackQuote.text
       notification.sound = .default
 
-      let date = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: deliveryDate)
+      let date = calendar.dateComponents(
+        [.year, .month, .day, .hour, .minute],
+        from: assignment.deliveryDate
+      )
       let trigger = UNCalendarNotificationTrigger(dateMatching: date, repeats: false)
       return UNNotificationRequest(
-        identifier: reminderIdentifier(for: deliveryDate, calendar: calendar),
+        identifier: reminderIdentifier(for: assignment.deliveryDate, calendar: calendar),
         content: notification,
         trigger: trigger
       )
@@ -577,6 +793,7 @@ final class AppStore: ObservableObject {
       .map(\.identifier)
       .filter { $0 == legacyNotificationId || $0.hasPrefix(notificationIdPrefix) }
     center.removePendingNotificationRequests(withIdentifiers: identifiers)
+    clearScheduledQuoteAssignments()
   }
 
   private func replaceReminderSchedulingTask(
@@ -601,6 +818,7 @@ final class AppStore: ObservableObject {
         UserDefaults.standard.set(false, forKey: reminderEnabledKey)
         notificationStatus = t("permissionDenied")
         notificationPermissionAlertPending = true
+        await removeOwnedPendingRemindersNow()
       }
       return granted
     } catch {
@@ -608,6 +826,7 @@ final class AppStore: ObservableObject {
       UserDefaults.standard.set(false, forKey: reminderEnabledKey)
       notificationStatus = t("permissionDenied")
       notificationPermissionAlertPending = true
+      await removeOwnedPendingRemindersNow()
       return false
     }
   }
@@ -616,8 +835,7 @@ final class AppStore: ObservableObject {
     if deliveryUsesAllCategories {
       return allQuotes
     }
-    let filtered = allQuotes.filter { deliveryCategoryIds.contains($0.category) }
-    return filtered.isEmpty ? allQuotes : filtered
+    return allQuotes.filter { deliveryCategoryIds.contains($0.category) }
   }
 
   private func persistFavorites() {
@@ -745,9 +963,10 @@ final class AppStore: ObservableObject {
     customCategories.removeAll { !usedCustomCategoryIds.contains($0.id) }
     persistCustomCategories()
 
-    let validCategoryIds = Set(allCategories.map(\.id))
+    let allCategoryIds = Set(allCategories.map(\.id))
+    let validDeliveryCategoryIds = Set(deliveryCategories.map(\.id))
     let storedDelivery = Set(defaults.stringArray(forKey: deliveryCategoriesKey) ?? [])
-    deliveryCategoryIds = storedDelivery.intersection(validCategoryIds)
+    deliveryCategoryIds = storedDelivery.intersection(validDeliveryCategoryIds)
     deliveryUsesAllCategories = defaults.object(forKey: deliveryUsesAllCategoriesKey) != nil
       ? defaults.bool(forKey: deliveryUsesAllCategoriesKey)
       : deliveryCategoryIds.isEmpty
@@ -757,7 +976,7 @@ final class AppStore: ObservableObject {
     defaults.set(Array(deliveryCategoryIds), forKey: deliveryCategoriesKey)
     defaults.set(deliveryUsesAllCategories, forKey: deliveryUsesAllCategoriesKey)
 
-    let allowedSelections = validCategoryIds.union(["all", "favorites", "custom"])
+    let allowedSelections = allCategoryIds.union(["all", "favorites", "custom"])
     let storedSelection = defaults.string(forKey: selectedCategoryKey) ?? "all"
     if storedSelection.hasPrefix("user-category-") {
       selectedCategory = "custom"
@@ -773,11 +992,25 @@ final class AppStore: ObservableObject {
 
   private static let customCategoryStyle = (color: "#76505D", softColor: "#F3E7EB")
 }
+private enum RootModalRoute: Identifiable {
+  case settings
+  case sharedQuote(SharedQuotePayload)
+
+  var id: String {
+    switch self {
+    case .settings:
+      return "settings"
+    case .sharedQuote(let payload):
+      return "shared-\(payload.id)"
+    }
+  }
+}
+
 struct RootView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.scenePhase) private var scenePhase
   @State private var tab = 0
-  @State private var incomingSharedQuote: SharedQuotePayload?
+  @State private var modalRoute: RootModalRoute?
   @State private var pendingSharedQuote: SharedQuotePayload?
   @State private var showingInvalidShareLink = false
 
@@ -787,7 +1020,9 @@ struct RootView: View {
         ReminderOnboardingView()
       } else {
         TabView(selection: $tab) {
-          TodayView()
+          TodayView {
+            modalRoute = .settings
+          }
             .tabItem { Label(store.t("today"), systemImage: "sun.max") }
             .tag(0)
 
@@ -802,9 +1037,15 @@ struct RootView: View {
         .tint(Premium.gold)
       }
     }
-    .fullScreenCover(item: $incomingSharedQuote) { payload in
-      SharedQuoteView(payload: payload)
-        .environmentObject(store)
+    .fullScreenCover(item: $modalRoute, onDismiss: presentPendingSharedQuoteIfPossible) { route in
+      switch route {
+      case .settings:
+        SettingsView()
+          .environmentObject(store)
+      case .sharedQuote(let payload):
+        SharedQuoteView(payload: payload)
+          .environmentObject(store)
+      }
     }
     .onChange(of: scenePhase) { phase in
       if phase == .active {
@@ -855,10 +1096,20 @@ struct RootView: View {
 
   private func presentSharedQuote(_ payload: SharedQuotePayload) {
     tab = 0
+    guard case nil = modalRoute else {
+      pendingSharedQuote = payload
+      return
+    }
     Task { @MainActor in
       await Task.yield()
-      incomingSharedQuote = payload
+      modalRoute = .sharedQuote(payload)
     }
+  }
+
+  private func presentPendingSharedQuoteIfPossible() {
+    guard !store.needsReminderOnboarding, let payload = pendingSharedQuote else { return }
+    pendingSharedQuote = nil
+    presentSharedQuote(payload)
   }
 }
 
@@ -1158,21 +1409,20 @@ struct ReminderOnboardingView: View {
 struct TodayView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+  let onOpenSettings: () -> Void
 
   var body: some View {
-    NavigationStack {
-      Group {
-        if dynamicTypeSize.isAccessibilitySize {
-          ScrollView {
-            todayContent
-          }
-        } else {
+    Group {
+      if dynamicTypeSize.isAccessibilitySize {
+        ScrollView {
           todayContent
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
+      } else {
+        todayContent
+          .frame(maxWidth: .infinity, maxHeight: .infinity)
       }
-      .background(PremiumBackground())
     }
+    .background(PremiumBackground())
   }
 
   private var todayContent: some View {
@@ -1188,17 +1438,15 @@ struct TodayView: View {
             .foregroundStyle(Premium.gold)
         }
         Spacer()
-        NavigationLink {
-          SettingsView()
-            .environmentObject(store)
-        } label: {
+        Button(action: onOpenSettings) {
           Image(systemName: "gearshape")
             .font(.title3)
             .foregroundStyle(Premium.gold)
-            .frame(width: 46, height: 46)
+            .frame(width: 52, height: 52)
             .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 16))
         }
         .buttonStyle(.plain)
+        .contentShape(Rectangle())
         .accessibilityLabel(store.t("settings"))
         .accessibilityIdentifier("settings-button")
       }
@@ -1425,7 +1673,8 @@ struct SettingsView: View {
           DeliveryCategoryPicker(
             selection: $draftDeliveryCategories,
             useAllCategories: $draftUseAllCategories,
-            enabled: draftEnabled
+            enabled: draftEnabled,
+            categories: store.deliveryCategories
           )
 
           Button(store.t("saveReminder")) {
