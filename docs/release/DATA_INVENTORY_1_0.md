@@ -1,8 +1,8 @@
 # Warm Words 1.0 — Data and permission inventory
 
-Audit date: **2026-08-12**
+Audit date: **2026-08-24**
 
-Release baseline: **iOS 1.0 build 20**, signed, inspected, validated by Apple, and available only in internal TestFlight. The gated smart-sharing candidate described below is implemented after build 20; its public-link flag remains off until the landing and association are verified, and the exact signed archive must be re-audited before distribution.
+Release baseline: **iOS 1.0 build 25**, source commit `bdec7a0`, signed and inspected in run `32751996787`, accepted by Apple, processed as `VALID`, and assigned to the internal TestFlight group by run `32753132327`. The smart-link receiver exists in source, but its public-link feature gate is off, Associated Domains is not signed into the target, and this build shares an image only.
 
 Scope: the iPhone target in `native-ios/`; no Android statement is made here.
 
@@ -20,7 +20,8 @@ The app does not collect data for the developer. It handles a small set of app p
 | Selected category and delivery categories | Filter visible quotes and reminder content | `UserDefaults` | None | Persists until changed, reset, or the app is removed |
 | Favorite quote IDs | Restore favorites | `UserDefaults` | None | Removed when unfavorited, cleaned if orphaned, or removed with the app |
 | Reminder enabled state, time, weekdays, and onboarding completion | Create the schedule chosen by the user | `UserDefaults` | None | Persists until changed, disabled, reset, or the app is removed |
-| Personal quotes and legacy personal-category records | Provide user-authored local content without data loss | JSON encoded in `UserDefaults` | Only when the user explicitly shares: the selected quote text is encoded in the URL fragment and handed to the chosen share destination | Individual quotes can be deleted; remaining records persist until deletion or app removal |
+| Personal quotes and legacy personal-category records | Provide user-authored local content without data loss | JSON encoded in `UserDefaults` | Only as pixels inside the quote-card image when the user explicitly chooses a share destination | Individual quotes can be deleted; remaining records persist until deletion or app removal |
+| Quote-cycle history, today's assignment, and future local-notification assignments | Avoid repeating eligible quotes until the selected pool is exhausted and keep Today aligned with local reminders | IDs and dates encoded in `UserDefaults` | None | Cleaned when quotes disappear; otherwise persists until app removal and is updated as the cycle advances |
 | iPhone preferred language | Choose the initial interface language on a clean install | Read from iOS in memory | None | Not copied to a server or separate profile |
 
 The privacy manifest declares `NSPrivacyAccessedAPICategoryUserDefaults` with required reason `CA92.1`, tracking false, and no collected data types.
@@ -30,15 +31,15 @@ The privacy manifest declares `NSPrivacyAccessedAPICategoryUserDefaults` with re
 | Capability | Requested or used | Minimum behavior |
 |---|---|---|
 | Notifications | Yes, local notifications only | Authorization is requested only after the user chooses Set reminder, Save reminder, or a test notification. Denial leaves reminders off and the user can manage access in iOS Settings. |
-| Share sheet | Yes, after tapping Share | Warm Words creates a quote-card image and a versioned HTTPS link, then hands both to the iOS share sheet. Bundled quotes use a stable quote ID. Personal quotes include their text in the URL fragment so a recipient can preview and explicitly save it. The chosen destination receives the shared items under its own privacy terms; Warm Words receives no recipient information. |
-| Universal Link and custom URL scheme | Yes, `https://krazel.github.io/warm-words/share/` and `warmwords://` | Associated Domains lets iOS open a validated share link in the installed app. The static fallback page contains no analytics and does not receive the fragment after `#`. Apple/iOS retrieves the AASA association independently. No automatic import occurs: the recipient must choose Save. |
+| Share sheet | Yes, after tapping Share | Warm Words renders a quote-card image and hands that image to the iOS share sheet. The chosen destination receives it under its own privacy terms; Warm Words receives no destination or recipient information. |
+| Universal Link and custom URL scheme | Not active in this candidate | Receiver and payload-validation code exist, but the public-link flag is off, the public landing is 404, and Associated Domains is not linked into the signed target. No URL is added to the share sheet in build 25. |
 | Location, camera, microphone, photos, contacts, calendars, health, Bluetooth, local network, motion, speech, Face ID | No | No purpose strings, entitlements, or prompts should be added for 1.0. |
 | Remote notifications/background push | No | No APNs token, server, or push entitlement. |
 
 ## App Store privacy answers for this build
 
 - **Data used to track the user:** No.
-- **Data collected by the developer:** No. A third-party destination selected by the user receives the image and link the user deliberately shares; that user-directed transfer is not developer collection and is described in the public policy.
+- **Data collected by the developer:** No. A third-party destination selected by the user receives the image the user deliberately shares; that user-directed transfer is not developer collection and is described in the public policy.
 - **Third-party SDK disclosure:** None present.
 - **Privacy choices URL:** Leave blank; there is no developer-held data or account privacy-control flow.
 - **Account deletion:** Not applicable; the app has no account.
@@ -62,11 +63,11 @@ Do not publish the repository, public issue tracker, owner's personal accounts, 
 
 ## Verified discrepancies and release gates
 
-1. `https://krazel.github.io/warm-words/privacy/`, `/support/`, and `/share/` returned HTTP 404 before the local site work on 2026-08-12. The share landing and AASA are prepared locally but are not a release dependency until deployed and verified; the privacy/support routes still cannot be used as final App Store URLs.
-2. Read-only inspection of App Store Connect on 2026-08-11 confirmed that the English version still uses GitHub Issues as Support URL and a repository file as Privacy Policy URL. Marketing URL, copyright, build selection, and all four private App Review contact fields are empty. Replace the public URLs only after the dedicated pages and alias are live and tested; fill the required private review fields only when preparing an authorized submission.
+1. `https://krazel.github.io/warm-words/privacy/`, `/support/`, and `/share/` still returned HTTP 404 on 2026-08-24. They cannot be used as final App Store URLs or as a smart-link fallback.
+2. Read-only inspection of App Store Connect on 2026-08-24 confirmed that the English and Spanish versions still use GitHub Issues as Support URL and the privacy field uses a repository-file URL. Marketing URL, copyright, build selection, and all four private App Review contact fields are empty. Replace the public URLs only after the dedicated pages and alias are live and tested; fill the required private review fields only when preparing an authorized submission.
 3. A dedicated support email alias does not yet exist in the repository record. Create and test it without exposing a personal address.
-4. App Store Privacy currently shows “No data collected,” no privacy-choices URL, and an available Publish action, confirming it remains unpublished. The answer remains substantively correct for local smart sharing because the developer receives nothing, but it must be rechecked against the signed archive and the user-directed sharing disclosure before publication.
-5. DSA trader status is a material factual/legal declaration. The owner must confirm whether this release is offered in connection with a trade, business, craft, or profession. If trader status applies, provide Apple and EU users the legally required verified contact information; do not avoid or falsify it.
+4. App Store Privacy currently shows “No data collected,” no privacy-choices URL, and an available Publish action, confirming it remains unpublished. The answer is substantively correct for this candidate but must be rechecked against the signed archive before publication.
+5. App Store Connect currently records the developer as a **trader for this app**. If the app is distributed in the EU, Apple requires the verified trader contact information to appear on the product page; confirm that the already supplied facts remain correct rather than changing or omitting the classification.
 6. Re-run this inventory against the exact build selected for App Review whenever code, SDKs, permissions, sharing, monetization, or network behavior changes.
 
 ## Evidence reviewed

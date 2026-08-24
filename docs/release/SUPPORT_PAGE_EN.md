@@ -28,8 +28,6 @@ Open Settings and choose English or Español. The built-in interface, catalog, d
 
 ### How do I share or delete a personal quote?
 
-Open Personal. Share creates a visual card and a link, then opens the iOS share sheet. A recipient with Warm Words sees that quote in the app. A shared personal quote is saved only after the recipient chooses **Save to Personal & Favorites**. Delete removes your local quote after confirmation.
-
-If the recipient does not have Warm Words, the link opens the download page. After installing, they must return to the original message and tap the link again; Warm Words does not use an account or server to import it automatically.
+Open Personal. Share creates a visual card and opens the iOS share sheet. Delete removes your local quote after confirmation. Build 25 does not attach a smart link or import a shared personal quote into another installation.
 
 Release gate: verify this page against the final device-tested build and activate the dedicated support address before using this URL in App Store Connect.

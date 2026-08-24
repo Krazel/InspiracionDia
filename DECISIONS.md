@@ -298,6 +298,24 @@ Resuelve la antigua PEND-013:
 - El propietario autorizó expresamente commit, push, build y TestFlight. Build **1.0 (24)** desde `971c5d0` pasó 29 tests, Analyze, firma, archive, exportación y upload en run `32174725981`; Apple la marcó `VALID` y run `32175849335` verificó su asignación a `Warm Words Internal`.
 - La autorización no incluye testers externos, Beta App Review, App Review, Universal Links ni publicación pública.
 
+### DEC-041 — Ajustes se abre desde la raíz y las frases completan un ciclo antes de repetirse
+
+- El propietario confirmó el 2026-08-24 que el engranaje seguía sin responder en la build instalada. La ruta vigente sustituye `DEC-037` en lo relativo a la presentación: Today usa un botón normal con área táctil de 52 × 52 pt y `RootView` presenta Ajustes mediante una ruta modal única de pantalla completa. Today no conserva un `NavigationStack` ni un `NavigationLink` propios.
+- El propietario pidió que una tarjeta no vuelva a salir hasta haber completado todas las frases correspondientes a las categorías elegidas. La regla aprobada es un historial persistente por ID: primero se eligen las frases elegibles nunca vistas y, al agotarlas, la menos recientemente vista inicia el ciclo siguiente.
+- El conjunto elegible es la unión de las categorías de entrega seleccionadas; `All categories` usa todo el catálogo. Cambiar la selección conserva el historial de las demás categorías, muestra primero cualquier frase nueva elegible y nunca borra favoritos ni contenido Personal.
+- Today y las notificaciones locales usan el mismo ciclo y coordinan la asignación diaria. El historial se comparte entre inglés y español porque ambos catálogos mantienen IDs paralelos, y permanece exclusivamente en `UserDefaults` del iPhone.
+- La migración conserva la selección diaria heredada cuando siguen activas todas las categorías; si existe una selección específica, prioriza desde el primer día una frase que sí pertenezca a ella. En ambos casos aplica la garantía sin repetición hacia adelante. Borrar frases Personal, denegar notificaciones o apagar el recordatorio elimina referencias inválidas o reservas futuras sin reiniciar el resto del historial.
+- Esta decisión autoriza la corrección local y sus pruebas. No constituye autorización nueva para commit, push, firma, upload a TestFlight, testers externos, App Review ni publicación.
+
+### DEC-042 — Catálogo congelado y TestFlight build 25 autorizado
+
+- El propietario autorizó expresamente el 2026-08-24 compilar y subir la nueva versión y pidió una auditoría integral de preparación para publicación.
+- La revisión editorial confirma que 360 pares —30 por cada una de 12 categorías— son suficientes para 1.0. Se reescribieron 16 pares concretos con problemas semánticos, traducciones poco naturales o afirmaciones demasiado rotundas; el catálogo queda congelado y no se añaden frases por cantidad.
+- Antes de compilar se impidió seleccionar `Personal` vacío para entregas y se añadió reconciliación de notificaciones propias cuando los recordatorios están apagados.
+- Los commits de app `6f978a9` y `bdec7a0` se subieron a la rama iOS. Run `32751996787` compiló Warm Words **1.0 (25)** con Xcode 26.6 / SDK 26.5, pasó 38 tests, Analyze, firma, archive, inspección, exportación y upload. Apple respondió `UPLOAD SUCCEEDED with no errors`.
+- Apple procesó build 25 como `VALID` y run `32753132327` confirmó su asignación al grupo interno `Warm Words Internal`.
+- Esta autorización comprende TestFlight interno de build 25. No comprende App Review, publicación pública, testers externos, publicar GitHub Pages ni activar Universal Links.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
@@ -318,4 +336,4 @@ El archive firmado, Validate App, upload y procesamiento TestFlight de build 20 
 
 ### PEND-015 — Estado DSA trader
 
-Antes de mantener distribución en la Unión Europea, el propietario debe confirmar si ofrece Warm Words en relación con una actividad comercial, empresarial, artesanal o profesional. Recomendación actual: declarar **non-trader** para esta 1.0 gratuita, sin anuncios, compras ni suscripciones, únicamente si el propietario confirma que es un proyecto personal ajeno a su actividad profesional; si no puede confirmarlo, declarar **trader** y aportar a Apple la información verificada que exijan la DSA y App Store Connect. No se inventará ni ocultará ningún dato.
+App Store Connect muestra que el desarrollador ya se ha identificado como **trader para esta app**. La clasificación deja de estar pendiente; antes de distribuir en la UE queda únicamente verificar que la información de contacto validada que Apple publicará es correcta. No se cambia, oculta ni duplica en otros campos públicos.

@@ -1,14 +1,14 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-18**
-Estado: **Warm Words 1.0 build 24 válida y asignada al grupo interno de TestFlight; pendiente de instalación limpia y QA físico del onboarding simplificado**
+Actualizado: **2026-08-24**
+Estado: **Warm Words 1.0 build 25 válida y asignada al grupo interno de TestFlight; QA físico y puertas de App Store pendientes**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; el binario TestFlight más reciente se compiló desde el commit verificado `971c5d0`.
-- El propietario autorizó expresamente la subida a TestFlight el 2026-08-10. No se creó release, no se envió a App Review y no se publicó en App Store.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 25 se compiló desde el commit verificado `bdec7a0`.
+- El propietario autorizó expresamente commit, push, compilación, firma y subida de build 25 a TestFlight el 2026-08-24. No se creó release, no se envió a App Review y no se publicó en App Store.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
@@ -20,8 +20,10 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El workflow manual `.github/workflows/build-ios-testflight.yml` ejecutó correctamente tests, Analyze, firma Apple Distribution, archive, inspección, exportación, validación y subida. Los siete secretos viven en el environment `app-store-production`, limitado a la rama iOS.
 - La subida continúa desactivada por defecto y cualquier build futura necesita autorización expresa en el momento de activarla.
 - TestFlight conserva builds anteriores en el grupo interno. Apple marcó build 24 como `VALID` y el workflow run `32175849335` verificó su asignación a `Warm Words Internal` el 2026-08-18; no se creó grupo externo ni se solicitó Beta App Review.
+- Apple procesó build 25 como `VALID`; run `32753132327` confirmó su asignación a `Warm Words Internal` el 2026-08-24. No se creó grupo externo ni se solicitó Beta App Review.
+- Artifact efímero `Warm-Words-TestFlight-v1.0-build-25`: 6.360.186 bytes, SHA-256 de artifact `4cfa215c7b03ef0d7ab5fb37a08ea995d13df8928923838f0d0c7d3c4b8b7eb7`, caducidad 2026-08-27.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
-- La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 20 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos y frases personales permanecen en el iPhone.
+- La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 25 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos, frases personales e historial del ciclo permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
 
 ## Enlace inteligente posterior a build 20
@@ -31,7 +33,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Se rechazan host, ruta, versión, ID, texto, longitud y caracteres de control inválidos. Si el primer onboarding sigue pendiente, la vista recibida se difiere hasta completarlo.
 - El entitlement fuente para `applinks:krazel.github.io` está preparado, pero no se vincula al target ni se exige al perfil de build 23 mientras la landing/AASA no estén publicados. Associated Domains necesitará una build posterior y un perfil regenerado.
 - La landing y las dos copias de AASA están preparadas únicamente en el repositorio local canónico `krazel.github.io`; no se han publicado. `ShareLinkRoute.isPublicLinkEnabled` permanece en `false` hasta que respondan 200, el CDN de Apple acepte AASA y la URL de App Store sea pública.
-- Privacidad, soporte, inventario y QA describen el envío voluntario de imagen+enlace, la ausencia de backend y la limitación real: después de instalar desde la landing hay que volver al mensaje original y tocar el enlace otra vez.
+- Los documentos de privacidad, soporte, inventario y QA describen exactamente build 25: comparte únicamente la imagen. El enlace inteligente sigue siendo una puerta posterior y no se anuncia como activo.
 
 ## Onboarding de intereses y corrección definitiva de Ajustes para build 22
 
@@ -222,17 +224,30 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El run `32174725981` compiló el commit `971c5d0` como **1.0 (24)**, pasó 29 tests sin fallos, Analyze, firma, archive, inspección, exportación y upload. Apple respondió `UPLOAD SUCCEEDED with no errors`.
 - Apple marcó la build como `VALID` y el run `32175849335` verificó su asignación a `Warm Words Internal`.
 
+## Corrección local posterior a build 24 — Ajustes y frases sin repetición
+
+- El engranaje de Today ya no usa un `NavigationLink` anidado dentro de `TabView`. Es un botón táctil de 52 × 52 pt que entrega la acción a `RootView`; la raíz presenta Ajustes mediante una única ruta modal de pantalla completa, compartida de forma segura con la recepción de frases enlazadas.
+- `TodayView` deja de crear su propio `NavigationStack`, eliminando el punto frágil que podía hacer que el toque se perdiera en la jerarquía real del iPhone. Abrir, cerrar y reabrir Ajustes sigue siendo una puerta obligatoria de QA físico.
+- Today ahora usa únicamente las frases pertenecientes a las categorías de entrega seleccionadas. El historial se conserva por ID estable en el dispositivo y sobrevive a cierres, reinicios y cambios entre inglés y español.
+- El selector ofrece primero todas las frases elegibles aún no vistas. Solo cuando se agotan elige la elegible menos recientemente mostrada; por tanto, no empieza un nuevo ciclo hasta completar el conjunto activo.
+- Today y la cola de notificaciones comparten las asignaciones persistentes. Una frase prevista para el día se reutiliza como la tarjeta de ese día y se registra al vencer, evitando que la reprogramación reinicie el ciclo.
+- Añadir o borrar una frase Personal, cambiar categorías o desactivar/denegar notificaciones sanea el historial y las reservas sin borrar favoritos ni frases válidas. No se añade red, SDK, permiso ni recopilación de datos.
+- Validación Windows: `check-ios-closeout`, `check-quotes`, `git diff --check` y ausencia de cambios Android pasan. GitHub Actions run `32751996787` ejecutó **38 tests sin fallos**, Analyze Release, firma, archive, inspección, exportación y upload; Apple respondió `UPLOAD SUCCEEDED with no errors`.
+- `.gitignore` modificado y `store/store-manifest.json` sin seguimiento permanecen preservados y no forman parte de los commits.
+
+La auditoría de publicación vigente está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-08-24.md`: el catálogo y la build son suficientes para TestFlight interno, pero no para App Review hasta cerrar QA físico, privacidad/soporte públicos e internos, capturas, campos obligatorios, derechos y el enlace inteligente aprobado.
+
 ## Primer bloqueo material de App Store
 
 El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la decisión de usar un catálogo editorial propio ya están cerrados localmente. La primera puerta material restante es conservar la trazabilidad editorial del catálogo y confirmar por escrito la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
 
 ## Puertas restantes
 
-1. Instalar build 24 desde TestFlight. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Instalar build 25 desde TestFlight cuando Apple termine de procesarla. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
-5. Confirmar verazmente el estado DSA trader antes de distribuir en la UE; no ocultar una obligación ni publicar datos adicionales si no corresponde.
+5. App Store Connect ya identifica al desarrollador como trader para esta app; comprobar que la información verificada que Apple publicará en la UE sigue siendo correcta.
 6. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
