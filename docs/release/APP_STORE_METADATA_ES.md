@@ -35,7 +35,7 @@ Empieza el día con una frase inspiradora elegida de una colección tranquila y 
 
 Usa Warm Words en inglés o en español y cambia de idioma cuando quieras desde Ajustes.
 
-Explora 360 frases originales sobre motivación, enfoque, calma, disciplina, autoestima, gratitud, valentía, hábitos, creatividad, resiliencia, relaciones y energía.
+Explora 720 frases originales sobre motivación, enfoque, calma, disciplina, autoestima, gratitud, valentía, hábitos, creatividad, resiliencia, relaciones y energía.
 
 Con Warm Words puedes:
 

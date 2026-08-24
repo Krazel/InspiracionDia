@@ -144,7 +144,7 @@
     {
       "id": "animo-012",
       "category": "animo",
-      "text": "No subestimes el poder de volver a empezar con menos drama y más verdad."
+      "text": "Vuelve a empezar con lo aprendido, sin convertir el regreso en un espectáculo."
     },
     {
       "id": "animo-013",
@@ -189,7 +189,7 @@
     {
       "id": "animo-021",
       "category": "animo",
-      "text": "Haz hoy algo que alivie a esa parte desanimada de ti cuando lo encuentre terminado."
+      "text": "Termina hoy una tarea pequeña y date un motivo concreto para recuperar el ánimo."
     },
     {
       "id": "animo-022",
@@ -235,6 +235,156 @@
       "id": "animo-030",
       "category": "animo",
       "text": "Tu esperanza no tiene que hacer ruido; solo necesita espacio para influir en una decisión."
+    },
+    {
+      "id": "animo-031",
+      "category": "animo",
+      "text": "Una mañana difícil no se adueña de la tarde; elige algo útil y empieza por ahí."
+    },
+    {
+      "id": "animo-032",
+      "category": "animo",
+      "text": "Confía en el trabajo mientras sus primeros resultados aún sean demasiado pequeños para verse."
+    },
+    {
+      "id": "animo-033",
+      "category": "animo",
+      "text": "Cuando todo el camino pese, carga únicamente con el siguiente tramo."
+    },
+    {
+      "id": "animo-034",
+      "category": "animo",
+      "text": "El esfuerzo de hoy puede ser discreto y real; no necesita público para contar."
+    },
+    {
+      "id": "animo-035",
+      "category": "animo",
+      "text": "Una oportunidad perdida no es la última puerta; mira bien qué sigue abierto."
+    },
+    {
+      "id": "animo-036",
+      "category": "animo",
+      "text": "Reconoce el esfuerzo que hubo detrás de una decisión difícil, aunque nadie más viera lo que te costó."
+    },
+    {
+      "id": "animo-037",
+      "category": "animo",
+      "text": "Puedes cambiar el tono del día con un gesto amable hacia tu yo de mañana."
+    },
+    {
+      "id": "animo-038",
+      "category": "animo",
+      "text": "Si el plan se deshizo, conserva el propósito y elige una ruta más sencilla."
+    },
+    {
+      "id": "animo-039",
+      "category": "animo",
+      "text": "Lo que puedes ofrecer hoy sigue teniendo valor, aunque sea menos de lo que esperabas."
+    },
+    {
+      "id": "animo-040",
+      "category": "animo",
+      "text": "Cuando falte entusiasmo, pide a alguien de confianza que te acompañe durante la primera parte."
+    },
+    {
+      "id": "animo-041",
+      "category": "animo",
+      "text": "Tu esfuerzo no ha sido en vano solo porque la lección llegó antes que la recompensa."
+    },
+    {
+      "id": "animo-042",
+      "category": "animo",
+      "text": "Toma hoy una decisión que mañana te deje un poco más de espacio para respirar."
+    },
+    {
+      "id": "animo-043",
+      "category": "animo",
+      "text": "Volver a intentarlo puede parecer corriente desde fuera y aun así cambiar tu rumbo."
+    },
+    {
+      "id": "animo-044",
+      "category": "animo",
+      "text": "Ya has atravesado días inciertos; afronta este con los recursos que tienes ahora."
+    },
+    {
+      "id": "animo-045",
+      "category": "animo",
+      "text": "No esperes condiciones perfectas para cuidar de algo que de verdad te importa."
+    },
+    {
+      "id": "animo-046",
+      "category": "animo",
+      "text": "Un capítulo mejor puede empezar con una decisión tan pequeña que solo tú la notes."
+    },
+    {
+      "id": "animo-047",
+      "category": "animo",
+      "text": "Usa lo mucho que te importa como razón para actuar, no como otra razón para preocuparte."
+    },
+    {
+      "id": "animo-048",
+      "category": "animo",
+      "text": "Observa qué se ha vuelto más fácil este año; el esfuerzo de ayer quizá ya te ayude hoy."
+    },
+    {
+      "id": "animo-049",
+      "category": "animo",
+      "text": "Busca la parte del problema que responda a tus manos, tu voz o tu próxima llamada."
+    },
+    {
+      "id": "animo-050",
+      "category": "animo",
+      "text": "Lo que empiezas con dudas aún puede convertirse en algo que te alegre haber terminado."
+    },
+    {
+      "id": "animo-051",
+      "category": "animo",
+      "text": "Toma un resultado decepcionante como información y decide qué merece otro intento."
+    },
+    {
+      "id": "animo-052",
+      "category": "animo",
+      "text": "Empieza de una forma que encaje contigo hoy, no con la energía que esperabas tener."
+    },
+    {
+      "id": "animo-053",
+      "category": "animo",
+      "text": "Elige una tarea que puedas terminar y que tenga sentido suficiente para devolverte algo de confianza."
+    },
+    {
+      "id": "animo-054",
+      "category": "animo",
+      "text": "Un ajuste sincero puede mantener viva una meta mejor que aferrarte al plan original."
+    },
+    {
+      "id": "animo-055",
+      "category": "animo",
+      "text": "Envía la solicitud, haz la pregunta o abre el documento; deja que la realidad responda a la duda."
+    },
+    {
+      "id": "animo-056",
+      "category": "animo",
+      "text": "Una semana de decisiones discretas puede mostrar avances que un solo día no podría revelarte."
+    },
+    {
+      "id": "animo-057",
+      "category": "animo",
+      "text": "Acércate a la persona cuyo apoyo te ayuda a ver la situación con más claridad."
+    },
+    {
+      "id": "animo-058",
+      "category": "animo",
+      "text": "Cuando falte confianza, deja que la preparación sostenga parte del peso."
+    },
+    {
+      "id": "animo-059",
+      "category": "animo",
+      "text": "Ten paciencia con la parte de ti que aún aprende a manejar lo que viene después."
+    },
+    {
+      "id": "animo-060",
+      "category": "animo",
+      "text": "Antes de dar el día por perdido, haz algo que te facilite volver a ti."
     },
     {
       "id": "foco-001",
@@ -344,7 +494,7 @@
     {
       "id": "foco-022",
       "category": "foco",
-      "text": "Pon la tarea importante donde tu energía sea real, no donde el calendario parezca brillante."
+      "text": "Programa la tarea importante cuando tengas más energía, no cuando quede mejor en el calendario."
     },
     {
       "id": "foco-023",
@@ -385,6 +535,156 @@
       "id": "foco-030",
       "category": "foco",
       "text": "Haz sitio para la profundidad rechazando una exigencia que nunca fue realmente tuya."
+    },
+    {
+      "id": "foco-031",
+      "category": "foco",
+      "text": "Anota el único resultado que haría útil esta hora y organiza el trabajo desde ahí."
+    },
+    {
+      "id": "foco-032",
+      "category": "foco",
+      "text": "Deja el teléfono fuera de alcance mientras la tarea necesite toda tu atención."
+    },
+    {
+      "id": "foco-033",
+      "category": "foco",
+      "text": "Elige el verbo de la tarea: escribir, llamar, comparar, decidir o borrar."
+    },
+    {
+      "id": "foco-034",
+      "category": "foco",
+      "text": "Ten una hoja cerca para las ideas sueltas y evita que se apoderen de la tarea presente."
+    },
+    {
+      "id": "foco-035",
+      "category": "foco",
+      "text": "Pon el archivo más relevante en el centro de la mesa y empieza por la evidencia más sólida."
+    },
+    {
+      "id": "foco-036",
+      "category": "foco",
+      "text": "Si no dejas de cambiar de tarea, detente y cierra primero el asunto pendiente más pequeño."
+    },
+    {
+      "id": "foco-037",
+      "category": "foco",
+      "text": "Lee dos veces el párrafo difícil antes de buscar una distracción más cómoda."
+    },
+    {
+      "id": "foco-038",
+      "category": "foco",
+      "text": "Si una idea pertenece a otro proyecto, archívala allí en vez de seguirla ahora."
+    },
+    {
+      "id": "foco-039",
+      "category": "foco",
+      "text": "Empieza por la pregunta que deberá responder el trabajo terminado."
+    },
+    {
+      "id": "foco-040",
+      "category": "foco",
+      "text": "Un temporizador puede marcar el límite mientras entregas toda tu atención al trabajo."
+    },
+    {
+      "id": "foco-041",
+      "category": "foco",
+      "text": "Cuando la tarea sea confusa, conviértela en una acción visible con un objeto concreto."
+    },
+    {
+      "id": "foco-042",
+      "category": "foco",
+      "text": "Comprueba si esa reunión te necesita antes de entregarle la mejor hora del día."
+    },
+    {
+      "id": "foco-043",
+      "category": "foco",
+      "text": "Deja a la vista el material de un solo proyecto y guarda todo lo demás."
+    },
+    {
+      "id": "foco-044",
+      "category": "foco",
+      "text": "Dedica menos tiempo a ordenar la lista y más tiempo a hacerla más corta."
+    },
+    {
+      "id": "foco-045",
+      "category": "foco",
+      "text": "Escribe la pregunta central arriba de la página para que cada detalle nuevo justifique su lugar."
+    },
+    {
+      "id": "foco-046",
+      "category": "foco",
+      "text": "Fija un punto final antes de que la perfección convierta una tarea en todo el día."
+    },
+    {
+      "id": "foco-047",
+      "category": "foco",
+      "text": "Si compiten dos prioridades, pregunta cuál facilita la otra o la vuelve innecesaria."
+    },
+    {
+      "id": "foco-048",
+      "category": "foco",
+      "text": "Concreta la siguiente acción hasta que tus manos sepan por dónde empezar."
+    },
+    {
+      "id": "foco-049",
+      "category": "foco",
+      "text": "Protege la mitad de la tarea; ahí suele acabarse la novedad y empezar el trabajo útil."
+    },
+    {
+      "id": "foco-050",
+      "category": "foco",
+      "text": "Antes de abrir otra fuente, explica qué dice realmente la información que ya tienes."
+    },
+    {
+      "id": "foco-051",
+      "category": "foco",
+      "text": "Reserva un momento breve para responder y evita que los mensajes dividan todas tus horas."
+    },
+    {
+      "id": "foco-052",
+      "category": "foco",
+      "text": "Si pierdes el hilo, relee la última decisión en vez de reiniciar el plan completo."
+    },
+    {
+      "id": "foco-053",
+      "category": "foco",
+      "text": "Una puerta cerrada, una mesa despejada y un objetivo claro pueden bastar para trabajar bien."
+    },
+    {
+      "id": "foco-054",
+      "category": "foco",
+      "text": "Usa tus notas para retomar rápido, no para aplazar la parte difícil de pensar."
+    },
+    {
+      "id": "foco-055",
+      "category": "foco",
+      "text": "Decide qué detalle afecta al resultado y permite que los decorativos queden sin pulir."
+    },
+    {
+      "id": "foco-056",
+      "category": "foco",
+      "text": "Trabaja en el orden que exige el problema, no en el que sugieren las partes fáciles."
+    },
+    {
+      "id": "foco-057",
+      "category": "foco",
+      "text": "Desactiva una alerta y observa cuánto más puede acompañarte un pensamiento completo."
+    },
+    {
+      "id": "foco-058",
+      "category": "foco",
+      "text": "Un borrador útil responde primero a la pregunta principal y después mejora cada frase."
+    },
+    {
+      "id": "foco-059",
+      "category": "foco",
+      "text": "Nombra la interrupción, déjala por escrito y vuelve a la línea exacta donde estabas."
+    },
+    {
+      "id": "foco-060",
+      "category": "foco",
+      "text": "Termina la sesión anotando el siguiente paso, para que mañana empiece con rumbo y no con memoria."
     },
     {
       "id": "calma-001",
@@ -537,6 +837,156 @@
       "text": "Haz este momento más pequeño: esta habitación, este aire y una sola cosa que puedas hacer con calma."
     },
     {
+      "id": "calma-031",
+      "category": "calma",
+      "text": "Nombra tres cosas que hoy sean ciertas antes de dar más espacio a todo lo incierto."
+    },
+    {
+      "id": "calma-032",
+      "category": "calma",
+      "text": "Espera a que tu voz se serene antes de responder una pregunta importante."
+    },
+    {
+      "id": "calma-033",
+      "category": "calma",
+      "text": "Abre la ventana, nota la temperatura y vuelve al día que de verdad estás viviendo."
+    },
+    {
+      "id": "calma-034",
+      "category": "calma",
+      "text": "Escucha un sonido cotidiano hasta que la prisa empiece a aflojar."
+    },
+    {
+      "id": "calma-035",
+      "category": "calma",
+      "text": "Una preocupación escrita ya no necesita dar vueltas en tu mente para ser recordada."
+    },
+    {
+      "id": "calma-036",
+      "category": "calma",
+      "text": "Puedes dejar la respuesta para mañana y devolverle a la noche su silencio."
+    },
+    {
+      "id": "calma-037",
+      "category": "calma",
+      "text": "Afloja las manos; no tienen que cargar con un problema que pertenece a mañana."
+    },
+    {
+      "id": "calma-038",
+      "category": "calma",
+      "text": "Busca un lugar más tranquilo antes de exigirle silencio a tu mente."
+    },
+    {
+      "id": "calma-039",
+      "category": "calma",
+      "text": "El agua caliente, la ropa limpia y una cena sin prisa pueden hacer más amable la noche."
+    },
+    {
+      "id": "calma-040",
+      "category": "calma",
+      "text": "No saberlo todavía resulta incómodo, pero no exige una conclusión apresurada."
+    },
+    {
+      "id": "calma-041",
+      "category": "calma",
+      "text": "Baja la luz y el ritmo; el día no necesita terminar a todo volumen."
+    },
+    {
+      "id": "calma-042",
+      "category": "calma",
+      "text": "Ponle nombre a lo que sientes sin convertirlo en una orden."
+    },
+    {
+      "id": "calma-043",
+      "category": "calma",
+      "text": "Toma el camino largo a casa si esos minutos te ayudan a llegar con la mente más despejada."
+    },
+    {
+      "id": "calma-044",
+      "category": "calma",
+      "text": "La conversación puede esperar hasta que puedas escuchar algo más que tu propia urgencia."
+    },
+    {
+      "id": "calma-045",
+      "category": "calma",
+      "text": "Observa cinco cosas que no te estén pidiendo nada en este momento."
+    },
+    {
+      "id": "calma-046",
+      "category": "calma",
+      "text": "Usa una rutina sencilla para indicarle a tu mente que el trabajo ha terminado por hoy."
+    },
+    {
+      "id": "calma-047",
+      "category": "calma",
+      "text": "Quizá entiendas mejor la situación después de comer, descansar y tomar algo de distancia."
+    },
+    {
+      "id": "calma-048",
+      "category": "calma",
+      "text": "Lee el mensaje una vez y deja el teléfono antes de imaginar todo lo que podría significar."
+    },
+    {
+      "id": "calma-049",
+      "category": "calma",
+      "text": "Deja espacio entre lo ocurrido y la historia que estás a punto de construir a su alrededor."
+    },
+    {
+      "id": "calma-050",
+      "category": "calma",
+      "text": "Espera a que hierva el agua sin llenar ese minuto con otra exigencia."
+    },
+    {
+      "id": "calma-051",
+      "category": "calma",
+      "text": "Unos minutos sin estímulos pueden ayudarte a notar lo que ya estaba dentro del día."
+    },
+    {
+      "id": "calma-052",
+      "category": "calma",
+      "text": "Muévete al ritmo que te permita notar dónde estás colocando la atención."
+    },
+    {
+      "id": "calma-053",
+      "category": "calma",
+      "text": "Dobla una prenda o lava una taza y deja que esa acción sencilla baje el ritmo del momento."
+    },
+    {
+      "id": "calma-054",
+      "category": "calma",
+      "text": "Pregúntate si este pensamiento necesita atención ahora, más tarde o si no la necesita."
+    },
+    {
+      "id": "calma-055",
+      "category": "calma",
+      "text": "Permite que termine la música antes de decidir con qué llenar el próximo silencio."
+    },
+    {
+      "id": "calma-056",
+      "category": "calma",
+      "text": "Sal un minuto y permite que el horizonte ocupe más espacio que la pantalla."
+    },
+    {
+      "id": "calma-057",
+      "category": "calma",
+      "text": "Un horario más amable empieza al admitir cuánto puede contener el día de forma razonable."
+    },
+    {
+      "id": "calma-058",
+      "category": "calma",
+      "text": "Deja el problema a un lado un rato; cargar con él a todas horas no equivale a resolverlo."
+    },
+    {
+      "id": "calma-059",
+      "category": "calma",
+      "text": "La próxima hora no necesita un plan perfecto, sino un ritmo en el que puedas estar."
+    },
+    {
+      "id": "calma-060",
+      "category": "calma",
+      "text": "Termina el sorbo antes de buscar la siguiente tarea; este minuto puede seguir siendo sencillo."
+    },
+    {
       "id": "disciplina-001",
       "category": "disciplina",
       "text": "La disciplina es hacerle caso a tu futuro cuando tu presente negocia."
@@ -559,7 +1009,7 @@
     {
       "id": "disciplina-005",
       "category": "disciplina",
-      "text": "Repetir lo correcto en días normales construye resultados extraordinarios."
+      "text": "Repetir el paso útil en días corrientes da a un proyecto largo una base estable sobre la que avanzar."
     },
     {
       "id": "disciplina-006",
@@ -594,12 +1044,12 @@
     {
       "id": "disciplina-012",
       "category": "disciplina",
-      "text": "La identidad se escribe con repeticiones, no con intenciones."
+      "text": "La repetición convierte una intención en algo que puedes revisar y mejorar."
     },
     {
       "id": "disciplina-013",
       "category": "disciplina",
-      "text": "Haz primero lo prometido; después decide si todavía quieres quejarte."
+      "text": "Completa el primer paso acordado antes de decidir si el plan necesita cambiar."
     },
     {
       "id": "disciplina-014",
@@ -687,6 +1137,156 @@
       "text": "Respeta la estructura que te ayuda a actuar y ajústala cuando la vida cambie de verdad."
     },
     {
+      "id": "disciplina-031",
+      "category": "disciplina",
+      "text": "Pon al trabajo un plazo visible antes de que se extienda por todas las horas disponibles."
+    },
+    {
+      "id": "disciplina-032",
+      "category": "disciplina",
+      "text": "Decide qué días son para practicar y protege ese tiempo de recados opcionales."
+    },
+    {
+      "id": "disciplina-033",
+      "category": "disciplina",
+      "text": "Empieza a la hora acordada, aunque los primeros diez minutos no sean brillantes."
+    },
+    {
+      "id": "disciplina-034",
+      "category": "disciplina",
+      "text": "Cuida la cita con tu propio trabajo igual que cuidarías una cita con otra persona."
+    },
+    {
+      "id": "disciplina-035",
+      "category": "disciplina",
+      "text": "Registra lo que terminaste, no las promesas grandiosas que hiciste al principio."
+    },
+    {
+      "id": "disciplina-036",
+      "category": "disciplina",
+      "text": "Cuando un método falle repetidamente, cambia el método y conserva la cita."
+    },
+    {
+      "id": "disciplina-037",
+      "category": "disciplina",
+      "text": "Decide cuánto durará la sesión y usa ese límite para trabajar con intención."
+    },
+    {
+      "id": "disciplina-038",
+      "category": "disciplina",
+      "text": "Facilita la decisión útil antes de pedirle a la fuerza de voluntad que salve la tarde."
+    },
+    {
+      "id": "disciplina-039",
+      "category": "disciplina",
+      "text": "Termina la cantidad prevista antes de decidir si te sientes productivo."
+    },
+    {
+      "id": "disciplina-040",
+      "category": "disciplina",
+      "text": "Usa una lista para lo rutinario y reserva tu criterio para las decisiones que lo necesitan."
+    },
+    {
+      "id": "disciplina-041",
+      "category": "disciplina",
+      "text": "Elige un ritmo semanal que deje espacio tanto para el esfuerzo como para la recuperación."
+    },
+    {
+      "id": "disciplina-042",
+      "category": "disciplina",
+      "text": "Si pierdes la mañana, aprovecha la tarde en vez de esperar un reinicio más limpio."
+    },
+    {
+      "id": "disciplina-043",
+      "category": "disciplina",
+      "text": "Deja listo el lugar de trabajo para que mañana empezar exija menos persuasión."
+    },
+    {
+      "id": "disciplina-044",
+      "category": "disciplina",
+      "text": "Un registro sincero de tres repeticiones vale más que una racha perfecta que no puedes sostener."
+    },
+    {
+      "id": "disciplina-045",
+      "category": "disciplina",
+      "text": "Define qué significa terminar antes de empezar, para que la dificultad no mueva la meta."
+    },
+    {
+      "id": "disciplina-046",
+      "category": "disciplina",
+      "text": "Reduce la tarea hasta que la resistencia pierda sus argumentos y termina esa versión."
+    },
+    {
+      "id": "disciplina-047",
+      "category": "disciplina",
+      "text": "Practica por separado el paso difícil hasta que deje de frenar toda la rutina."
+    },
+    {
+      "id": "disciplina-048",
+      "category": "disciplina",
+      "text": "Detente en el punto previsto; la disciplina también consiste en no convertir el esfuerzo en exceso."
+    },
+    {
+      "id": "disciplina-049",
+      "category": "disciplina",
+      "text": "Evalúa el proceso al terminar la semana, no después de cada hora incómoda."
+    },
+    {
+      "id": "disciplina-050",
+      "category": "disciplina",
+      "text": "Pon la tarea recurrente en el calendario antes de que el hueco se llene solo."
+    },
+    {
+      "id": "disciplina-051",
+      "category": "disciplina",
+      "text": "Haz la preparación poco vistosa que permitirá el trabajo importante de mañana."
+    },
+    {
+      "id": "disciplina-052",
+      "category": "disciplina",
+      "text": "Completa la tarea de mantenimiento antes de que el descuido la convierta en la urgencia de mañana."
+    },
+    {
+      "id": "disciplina-053",
+      "category": "disciplina",
+      "text": "Elige herramientas que hagan evidente la acción correcta cuando tu atención esté cansada."
+    },
+    {
+      "id": "disciplina-054",
+      "category": "disciplina",
+      "text": "Una meta modesta, cumplida con regularidad, puede sostener una gran ambición sin consumir tu vida."
+    },
+    {
+      "id": "disciplina-055",
+      "category": "disciplina",
+      "text": "Elimina los pasos de más que ofrecen nuevos escondites a la procrastinación."
+    },
+    {
+      "id": "disciplina-056",
+      "category": "disciplina",
+      "text": "Revisa el compromiso si cambian tus circunstancias, no solo cuando el trabajo resulte aburrido."
+    },
+    {
+      "id": "disciplina-057",
+      "category": "disciplina",
+      "text": "Completa la parte de hoy antes de tomar prestada la energía reservada para descansar."
+    },
+    {
+      "id": "disciplina-058",
+      "category": "disciplina",
+      "text": "Si el sistema falla una y otra vez, mejora la preparación en vez de aumentar el castigo."
+    },
+    {
+      "id": "disciplina-059",
+      "category": "disciplina",
+      "text": "Conserva una rutina fiable durante una semana caótica y deja que lo demás sea opcional."
+    },
+    {
+      "id": "disciplina-060",
+      "category": "disciplina",
+      "text": "Cierra el día preparando algo que mañana te permita empezar de forma más directa."
+    },
+    {
       "id": "autoestima-001",
       "category": "autoestima",
       "text": "Háblate como si tuvieras que convivir contigo toda la vida, porque es verdad."
@@ -749,7 +1349,7 @@
     {
       "id": "autoestima-013",
       "category": "autoestima",
-      "text": "Tu sensibilidad no es exceso; es información que merece respeto."
+      "text": "Tu sensibilidad puede ofrecer información útil; escúchala sin dejar que una sola emoción lo decida todo."
     },
     {
       "id": "autoestima-014",
@@ -824,7 +1424,7 @@
     {
       "id": "autoestima-028",
       "category": "autoestima",
-      "text": "El lugar adecuado no te exigirá convertir tu dignidad en una disculpa."
+      "text": "Observa qué lugares te permiten hablar con libertad sin convertir tu dignidad en una disculpa."
     },
     {
       "id": "autoestima-029",
@@ -835,6 +1435,156 @@
       "id": "autoestima-030",
       "category": "autoestima",
       "text": "Puedes superar un juicio antiguo sin demostrar que quien lo hizo estaba equivocado."
+    },
+    {
+      "id": "autoestima-031",
+      "category": "autoestima",
+      "text": "Guarda un pequeño registro de lo que resolviste bien; la duda rara vez conserva un archivo fiel."
+    },
+    {
+      "id": "autoestima-032",
+      "category": "autoestima",
+      "text": "Deja que un cumplido llegue sin explicar enseguida por qué quizá no lo mereces."
+    },
+    {
+      "id": "autoestima-033",
+      "category": "autoestima",
+      "text": "Tus bordes inacabados no anulan las partes de ti que ya se sienten firmes."
+    },
+    {
+      "id": "autoestima-034",
+      "category": "autoestima",
+      "text": "Elige ropa, planes y compañía que te permitan habitar tu vida sin interpretar un papel."
+    },
+    {
+      "id": "autoestima-035",
+      "category": "autoestima",
+      "text": "Detecta cuándo corregirte se convierte en atacarte y detén ahí la conversación."
+    },
+    {
+      "id": "autoestima-036",
+      "category": "autoestima",
+      "text": "Un momento incómodo es muy poca prueba para reescribir toda la opinión que tienes de ti."
+    },
+    {
+      "id": "autoestima-037",
+      "category": "autoestima",
+      "text": "Deja que tus preferencias existan antes de preguntar si los demás las aprueban."
+    },
+    {
+      "id": "autoestima-038",
+      "category": "autoestima",
+      "text": "El cuidado que ofreces a otros también es una habilidad que puedes practicar contigo."
+    },
+    {
+      "id": "autoestima-039",
+      "category": "autoestima",
+      "text": "Discúlpate por el daño que causaste, no por el espacio que ocupa tu presencia honesta."
+    },
+    {
+      "id": "autoestima-040",
+      "category": "autoestima",
+      "text": "Una respuesta más lenta puede respetarte más que un sí inmediato que no deseabas dar."
+    },
+    {
+      "id": "autoestima-041",
+      "category": "autoestima",
+      "text": "Lee tus antiguos planes con cariño; se escribieron con la información que tenías entonces."
+    },
+    {
+      "id": "autoestima-042",
+      "category": "autoestima",
+      "text": "Toma hoy una decisión porque encaja contigo, no porque sea fácil de explicar."
+    },
+    {
+      "id": "autoestima-043",
+      "category": "autoestima",
+      "text": "Puedes ser principiante sin convertir la falta de experiencia en un defecto personal."
+    },
+    {
+      "id": "autoestima-044",
+      "category": "autoestima",
+      "text": "Separa lo que necesita mejorar de lo que simplemente no agrada a una persona concreta."
+    },
+    {
+      "id": "autoestima-045",
+      "category": "autoestima",
+      "text": "Protege tiempo para ti con el mismo cuidado que dedicas al trabajo que depende de ti."
+    },
+    {
+      "id": "autoestima-046",
+      "category": "autoestima",
+      "text": "Permite que una foto tuya sea un recuerdo y no una inspección."
+    },
+    {
+      "id": "autoestima-047",
+      "category": "autoestima",
+      "text": "Cuando cambias de opinión con criterio, respondes a la vida en vez de traicionarte."
+    },
+    {
+      "id": "autoestima-048",
+      "category": "autoestima",
+      "text": "No dejes que la urgencia ajena decida cuánto de ti tienes que entregar."
+    },
+    {
+      "id": "autoestima-049",
+      "category": "autoestima",
+      "text": "No hay premio por ser la última persona en notar que necesitas amabilidad."
+    },
+    {
+      "id": "autoestima-050",
+      "category": "autoestima",
+      "text": "Disfruta de un placer cotidiano sin exigir productividad como precio de entrada."
+    },
+    {
+      "id": "autoestima-051",
+      "category": "autoestima",
+      "text": "Un no sincero puede proteger la parte de ti que un sí automático sigue ignorando."
+    },
+    {
+      "id": "autoestima-052",
+      "category": "autoestima",
+      "text": "Habla de tus fortalezas con la misma precisión con la que enumeras tus defectos."
+    },
+    {
+      "id": "autoestima-053",
+      "category": "autoestima",
+      "text": "Puedes echar de menos quien eras sin tratar como una decepción a quien eres ahora."
+    },
+    {
+      "id": "autoestima-054",
+      "category": "autoestima",
+      "text": "Un día dedicado a conocer tus límites también puede ser un día bien aprovechado."
+    },
+    {
+      "id": "autoestima-055",
+      "category": "autoestima",
+      "text": "Pregúntate si la regla que rompiste era justa antes de usarla como prueba contra ti."
+    },
+    {
+      "id": "autoestima-056",
+      "category": "autoestima",
+      "text": "Deja que tu cuerpo sea un lugar que habitas con atención, no un problema que vigilas todo el día."
+    },
+    {
+      "id": "autoestima-057",
+      "category": "autoestima",
+      "text": "Recibir ayuda no borra el esfuerzo que hiciste antes de que alguien llegara."
+    },
+    {
+      "id": "autoestima-058",
+      "category": "autoestima",
+      "text": "La persona en la que te conviertes necesita ánimo tanto como comentarios sinceros."
+    },
+    {
+      "id": "autoestima-059",
+      "category": "autoestima",
+      "text": "Protege un poco de intimidad; no toda parte valiosa de ti necesita público."
+    },
+    {
+      "id": "autoestima-060",
+      "category": "autoestima",
+      "text": "Termina una crítica hacia ti nombrando en su lugar la siguiente acción útil."
     },
     {
       "id": "gratitud-001",
@@ -884,7 +1634,7 @@
     {
       "id": "gratitud-010",
       "category": "gratitud",
-      "text": "Cuando agradeces lo pequeño, entrenas una mirada menos hambrienta."
+      "text": "Cuando observas los pequeños consuelos, el día gana detalles que la prisa habría pasado por alto."
     },
     {
       "id": "gratitud-011",
@@ -987,6 +1737,156 @@
       "text": "Termina el día encontrando algo que no te pidió nada y aun así te dio consuelo."
     },
     {
+      "id": "gratitud-031",
+      "category": "gratitud",
+      "text": "Fíjate en quien aligera una tarea cotidiana simplemente cumpliendo con su parte."
+    },
+    {
+      "id": "gratitud-032",
+      "category": "gratitud",
+      "text": "Antes de recoger la mesa, recuerda algo que se haya compartido alrededor de ella."
+    },
+    {
+      "id": "gratitud-033",
+      "category": "gratitud",
+      "text": "Una llave que abre, un móvil cargado, una ruta conocida: la utilidad silenciosa merece atención."
+    },
+    {
+      "id": "gratitud-034",
+      "category": "gratitud",
+      "text": "Agradece a alguien un detalle concreto; la precisión puede hacer más real el reconocimiento."
+    },
+    {
+      "id": "gratitud-035",
+      "category": "gratitud",
+      "text": "Deja que el primer sorbo, la cortina abierta o el suelo fresco te recuerden que llegó la mañana."
+    },
+    {
+      "id": "gratitud-036",
+      "category": "gratitud",
+      "text": "Una habilidad cotidiana que usas sin pensar fue antes algo que tuviste que aprender."
+    },
+    {
+      "id": "gratitud-037",
+      "category": "gratitud",
+      "text": "Observa qué carga no apareció hoy; a veces una ausencia puede ser una amabilidad silenciosa."
+    },
+    {
+      "id": "gratitud-038",
+      "category": "gratitud",
+      "text": "Un objeto reparado guarda dos regalos: su utilidad y la decisión de alguien de no rendirse con él."
+    },
+    {
+      "id": "gratitud-039",
+      "category": "gratitud",
+      "text": "Presta atención a un sonido que haga que este lugar te resulte familiar."
+    },
+    {
+      "id": "gratitud-040",
+      "category": "gratitud",
+      "text": "Recuerda a quienes trabajan para que tengas calles limpias, comida segura o luz fiable."
+    },
+    {
+      "id": "gratitud-041",
+      "category": "gratitud",
+      "text": "Un plan que cambió quizá también te haya llevado a un lugar digno de atención."
+    },
+    {
+      "id": "gratitud-042",
+      "category": "gratitud",
+      "text": "Guarda un detalle pequeño de hoy antes de que los grandes hechos ocupen toda la historia."
+    },
+    {
+      "id": "gratitud-043",
+      "category": "gratitud",
+      "text": "Agradece la pregunta que te hizo pensar, aunque la respuesta todavía se esté formando."
+    },
+    {
+      "id": "gratitud-044",
+      "category": "gratitud",
+      "text": "La oportunidad de intentarlo de nuevo puede parecer corriente hasta que recuerdas que no estaba asegurada."
+    },
+    {
+      "id": "gratitud-045",
+      "category": "gratitud",
+      "text": "Observa qué facilitaron hoy tus manos, desde atarte un zapato hasta preparar una comida."
+    },
+    {
+      "id": "gratitud-046",
+      "category": "gratitud",
+      "text": "Una broma compartida puede ser un refugio breve; disfrútala sin pedirle que resuelva nada."
+    },
+    {
+      "id": "gratitud-047",
+      "category": "gratitud",
+      "text": "Puede haber cuidado en un recordatorio, una bolsa preparada o una puerta que alguien mantiene abierta para ti."
+    },
+    {
+      "id": "gratitud-048",
+      "category": "gratitud",
+      "text": "Valora el día corriente que te dio espacio suficiente para respirar, trabajar y volver a casa."
+    },
+    {
+      "id": "gratitud-049",
+      "category": "gratitud",
+      "text": "Algo que antes practicaste con cuidado quizá hoy te ayude sin pedir atención."
+    },
+    {
+      "id": "gratitud-050",
+      "category": "gratitud",
+      "text": "Deja que una canción conocida te devuelva a un buen momento que casi habías extraviado."
+    },
+    {
+      "id": "gratitud-051",
+      "category": "gratitud",
+      "text": "Agradece al amigo que envía ese mensaje cotidiano que mantiene vivo el hilo entre los dos."
+    },
+    {
+      "id": "gratitud-052",
+      "category": "gratitud",
+      "text": "Un error útil puede dejarte mejores preguntas que un éxito fácil."
+    },
+    {
+      "id": "gratitud-053",
+      "category": "gratitud",
+      "text": "Observa la sombra en una calle calurosa, el banco en un paseo largo, la pausa cuando la necesitabas."
+    },
+    {
+      "id": "gratitud-054",
+      "category": "gratitud",
+      "text": "Conserva un objeto que te recuerde hasta dónde te ha llevado un esfuerzo cotidiano."
+    },
+    {
+      "id": "gratitud-055",
+      "category": "gratitud",
+      "text": "Una comida puede contener clima, trabajo, memoria y cuidado antes de llegar al plato."
+    },
+    {
+      "id": "gratitud-056",
+      "category": "gratitud",
+      "text": "Agradece que un problema haya resultado ser más pequeño de lo que temías."
+    },
+    {
+      "id": "gratitud-057",
+      "category": "gratitud",
+      "text": "Cuando alguien recuerde un detalle sobre ti, observa la atención que lo hizo posible."
+    },
+    {
+      "id": "gratitud-058",
+      "category": "gratitud",
+      "text": "La posibilidad de empezar de nuevo esta mañana merece atención antes de que mande el horario."
+    },
+    {
+      "id": "gratitud-059",
+      "category": "gratitud",
+      "text": "Busca el relevo inadvertido que ayudó a que tu día continuara sin tropiezos."
+    },
+    {
+      "id": "gratitud-060",
+      "category": "gratitud",
+      "text": "Antes de dormir, elige un momento que agradecerías reconocer si mañana se pareciera a hoy."
+    },
+    {
       "id": "valentia-001",
       "category": "valentia",
       "text": "La valentía no es no temblar; es avanzar sin entregarle el volante al miedo."
@@ -994,7 +1894,7 @@
     {
       "id": "valentia-002",
       "category": "valentia",
-      "text": "Haz la llamada, envía el mensaje, abre la puerta: el miedo se achica con acción."
+      "text": "Elige una acción segura y preparada que dé al miedo algo real a lo que responder."
     },
     {
       "id": "valentia-003",
@@ -1029,7 +1929,7 @@
     {
       "id": "valentia-009",
       "category": "valentia",
-      "text": "La vida se abre cuando haces una cosa que antes te parecía demasiado."
+      "text": "Prueba una parte manejable de lo que antes parecía demasiado grande y aprende de lo que ocurra."
     },
     {
       "id": "valentia-010",
@@ -1039,7 +1939,7 @@
     {
       "id": "valentia-011",
       "category": "valentia",
-      "text": "Elegirte también puede dar miedo; hazlo de todos modos."
+      "text": "Elegirte puede dar miedo; da el paso cuando también respete tu seguridad y tus valores."
     },
     {
       "id": "valentia-012",
@@ -1054,7 +1954,7 @@
     {
       "id": "valentia-014",
       "category": "valentia",
-      "text": "Hazlo antes de que la mente lo convierta en una montaña."
+      "text": "Antes de que la tarea crezca en tu imaginación, define y prepara un primer paso seguro."
     },
     {
       "id": "valentia-015",
@@ -1069,12 +1969,12 @@
     {
       "id": "valentia-017",
       "category": "valentia",
-      "text": "No necesitas que el miedo desaparezca; basta con dejar de obedecerlo."
+      "text": "Puedes escuchar al miedo sin dejar que tome cada decisión; comprueba los hechos y elige con cuidado."
     },
     {
       "id": "valentia-018",
       "category": "valentia",
-      "text": "El siguiente paso honesto puede incomodarte y seguir siendo el correcto."
+      "text": "Un siguiente paso honesto puede incomodar; examina sus consecuencias y elige con cuidado."
     },
     {
       "id": "valentia-019",
@@ -1119,12 +2019,12 @@
     {
       "id": "valentia-027",
       "category": "valentia",
-      "text": "Puedes dejar lo conocido antes de saber exactamente qué ocupará su lugar."
+      "text": "Puedes explorar lo que viene antes de dejar lo conocido; el valor también permite una transición prudente."
     },
     {
       "id": "valentia-028",
       "category": "valentia",
-      "text": "Cuando la situación es segura, la valentía puede consistir en quedarte lo suficiente para aprender en vez de huir ante la primera incomodidad."
+      "text": "Si la situación es segura, la valentía puede ser quedarte para aprender en vez de huir ante la primera incomodidad."
     },
     {
       "id": "valentia-029",
@@ -1137,6 +2037,156 @@
       "text": "Una verdad difícil se vuelve más habitable cuando por fin encuentra una voz."
     },
     {
+      "id": "valentia-031",
+      "category": "valentia",
+      "text": "La valentía puede empezar leyendo despacio el mensaje difícil en vez de imaginar su contenido."
+    },
+    {
+      "id": "valentia-032",
+      "category": "valentia",
+      "text": "Pide la aclaración que necesitas antes de que la incertidumbre escriba la historia por ti."
+    },
+    {
+      "id": "valentia-033",
+      "category": "valentia",
+      "text": "Prepárate con cuidado y deja que esa preparación sostenga el paso en vez de aplazarlo."
+    },
+    {
+      "id": "valentia-034",
+      "category": "valentia",
+      "text": "Admitir que necesitas tiempo puede ser más valiente que dar una respuesta en la que no confías."
+    },
+    {
+      "id": "valentia-035",
+      "category": "valentia",
+      "text": "Pide la cita que convierta una preocupación privada en algo que puedas examinar con claridad."
+    },
+    {
+      "id": "valentia-036",
+      "category": "valentia",
+      "text": "Una retirada prudente puede proteger lo importante; ser valiente no impide reconsiderar."
+    },
+    {
+      "id": "valentia-037",
+      "category": "valentia",
+      "text": "Nombra la condición que necesitarías para intentarlo y empieza a construirla."
+    },
+    {
+      "id": "valentia-038",
+      "category": "valentia",
+      "text": "Deja que tu primera pregunta sea imperfecta; una conversación real necesita un comienzo."
+    },
+    {
+      "id": "valentia-039",
+      "category": "valentia",
+      "text": "Lleva a alguien de confianza cuando el paso importante resulte demasiado pesado para darlo a solas."
+    },
+    {
+      "id": "valentia-040",
+      "category": "valentia",
+      "text": "Aclara los hechos cuando callar dejaría a alguien con una versión falsa de ti."
+    },
+    {
+      "id": "valentia-041",
+      "category": "valentia",
+      "text": "Un plan valiente incluye una salida, un teléfono y suficiente información para elegir con seguridad."
+    },
+    {
+      "id": "valentia-042",
+      "category": "valentia",
+      "text": "Di primero la verdad más pequeña si eso te ayuda a encontrar palabras para la más grande."
+    },
+    {
+      "id": "valentia-043",
+      "category": "valentia",
+      "text": "Reconsidera la oportunidad ignorada separando los costes comprobados de las preguntas abiertas."
+    },
+    {
+      "id": "valentia-044",
+      "category": "valentia",
+      "text": "Pregunta qué puedes probar a pequeña escala antes de tratar la elección como irreversible."
+    },
+    {
+      "id": "valentia-045",
+      "category": "valentia",
+      "text": "Deja que la pausa antes de hablar reúna tu sinceridad en vez de enterrarla."
+    },
+    {
+      "id": "valentia-046",
+      "category": "valentia",
+      "text": "Cambiar de rumbo ante nuevas pruebas es un acto responsable, no una falta de valor."
+    },
+    {
+      "id": "valentia-047",
+      "category": "valentia",
+      "text": "Entra en la sala sabiendo que puedes escuchar, preguntar y decidir más tarde."
+    },
+    {
+      "id": "valentia-048",
+      "category": "valentia",
+      "text": "Prométete hablar cuando el momento tenga la calma necesaria para que se escuche la verdad."
+    },
+    {
+      "id": "valentia-049",
+      "category": "valentia",
+      "text": "Ser el primero en suavizar el tono no exige renunciar a tu argumento."
+    },
+    {
+      "id": "valentia-050",
+      "category": "valentia",
+      "text": "El riesgo merece estudio; el valor informado deja menos decisiones en manos del pánico."
+    },
+    {
+      "id": "valentia-051",
+      "category": "valentia",
+      "text": "Enseña el primer borrador a una persona sensata en vez de ocultárselo a todo el mundo."
+    },
+    {
+      "id": "valentia-052",
+      "category": "valentia",
+      "text": "El siguiente paso puede ser documentar lo ocurrido antes de decidir cómo responder."
+    },
+    {
+      "id": "valentia-053",
+      "category": "valentia",
+      "text": "Pide directamente lo que necesitas y deja a la otra persona libertad para responder con sinceridad."
+    },
+    {
+      "id": "valentia-054",
+      "category": "valentia",
+      "text": "Empieza la conversación con lo que observaste, no con el veredicto que preparó el miedo."
+    },
+    {
+      "id": "valentia-055",
+      "category": "valentia",
+      "text": "Deja espacio para la sorpresa; no todo encuentro difícil repite el antiguo guion."
+    },
+    {
+      "id": "valentia-056",
+      "category": "valentia",
+      "text": "Si el lugar no parece seguro, elegir distancia puede ser la decisión valiente."
+    },
+    {
+      "id": "valentia-057",
+      "category": "valentia",
+      "text": "Escribe primero la pregunta; las palabras escritas pueden ayudar al valor a tomar forma."
+    },
+    {
+      "id": "valentia-058",
+      "category": "valentia",
+      "text": "Asume tu parte sin ofrecerte a cargar con lo que corresponde a los demás."
+    },
+    {
+      "id": "valentia-059",
+      "category": "valentia",
+      "text": "Empieza antes de sentirte brillante; la sinceridad basta para un primer intento."
+    },
+    {
+      "id": "valentia-060",
+      "category": "valentia",
+      "text": "Después del paso difícil, date tiempo para calmarte antes de juzgar cómo lo afrontaste."
+    },
+    {
       "id": "habitos-001",
       "category": "habitos",
       "text": "Un hábito bueno no necesita impresionar; necesita repetirse."
@@ -1144,12 +2194,12 @@
     {
       "id": "habitos-002",
       "category": "habitos",
-      "text": "Hazlo tan fácil que fallar requiera más esfuerzo que cumplir."
+      "text": "Reduce el esfuerzo de preparación hasta que empezar sea claro y deja que la rutina crezca solo si encaja."
     },
     {
       "id": "habitos-003",
       "category": "habitos",
-      "text": "La rutina correcta protege tus metas de tus cambios de humor."
+      "text": "Una rutina práctica puede mantener disponible una acción útil en los días en que cambie la motivación."
     },
     {
       "id": "habitos-004",
@@ -1174,7 +2224,7 @@
     {
       "id": "habitos-008",
       "category": "habitos",
-      "text": "No rompas la cadena por querer que cada eslabón sea perfecto."
+      "text": "Mantén el material en buen estado; una pequeña reparación puede proteger la rutina de mañana."
     },
     {
       "id": "habitos-009",
@@ -1184,17 +2234,17 @@
     {
       "id": "habitos-010",
       "category": "habitos",
-      "text": "La vida mejora cuando lo bueno deja de depender de un impulso."
+      "text": "Cuando las elecciones útiles exigen menos negociación, queda atención para el resto del día."
     },
     {
       "id": "habitos-011",
       "category": "habitos",
-      "text": "Empieza con dos minutos si eso evita otro día de nada."
+      "text": "Empieza con una acción breve y completa que deje un punto claro para continuar mañana."
     },
     {
       "id": "habitos-012",
       "category": "habitos",
-      "text": "Haz visible lo que quieres repetir y difícil lo que quieres dejar."
+      "text": "Quita un paso innecesario de la rutina y observa si volver resulta más fácil."
     },
     {
       "id": "habitos-013",
@@ -1264,7 +2314,7 @@
     {
       "id": "habitos-026",
       "category": "habitos",
-      "text": "Une la acción nueva a algo que ya ocurre para que sea más fácil recordar el comienzo."
+      "text": "Cuenta a alguien de confianza qué quieres repetir y pide ánimo en vez de vigilancia."
     },
     {
       "id": "habitos-027",
@@ -1287,6 +2337,156 @@
       "text": "Elige una rutina que puedas pausar, retomar y seguir ajustando."
     },
     {
+      "id": "habitos-031",
+      "category": "habitos",
+      "text": "Deja el libro sobre la silla esta noche para que la primera página de mañana ya tenga una invitación."
+    },
+    {
+      "id": "habitos-032",
+      "category": "habitos",
+      "text": "Anota la versión más pequeña de la rutina antes de que un día ocupado la decida por ti."
+    },
+    {
+      "id": "habitos-033",
+      "category": "habitos",
+      "text": "Un punto final claro facilita volver mañana más que trabajar hasta quedarte sin energía."
+    },
+    {
+      "id": "habitos-034",
+      "category": "habitos",
+      "text": "Mantén las herramientas del hábito útil más cerca que las distracciones que compiten con él."
+    },
+    {
+      "id": "habitos-035",
+      "category": "habitos",
+      "text": "Elige una señal que ya notes: la cafetera, el trayecto o el momento de cerrar el portátil."
+    },
+    {
+      "id": "habitos-036",
+      "category": "habitos",
+      "text": "Registra la acción hasta entender su patrón y conserva después solo el control que te ayude."
+    },
+    {
+      "id": "habitos-037",
+      "category": "habitos",
+      "text": "Prepárate para el obstáculo previsible antes de pedir otra vez a la fuerza de voluntad que lo resuelva."
+    },
+    {
+      "id": "habitos-038",
+      "category": "habitos",
+      "text": "Una rutina de quince minutos necesita un lugar real en el calendario, no una intención imprecisa."
+    },
+    {
+      "id": "habitos-039",
+      "category": "habitos",
+      "text": "Acorta la distancia entre decidir y empezar: abre el archivo, llena la botella, prepara los zapatos."
+    },
+    {
+      "id": "habitos-040",
+      "category": "habitos",
+      "text": "Revisa la semana sin puntuar tu carácter; ajustas un sistema, no juzgas a una persona."
+    },
+    {
+      "id": "habitos-041",
+      "category": "habitos",
+      "text": "Si la rutina falla siempre a la misma hora, cambia la hora antes de aumentar el esfuerzo."
+    },
+    {
+      "id": "habitos-042",
+      "category": "habitos",
+      "text": "Une la tarea que aplazas a un comienzo agradable, como música o un lugar que te guste."
+    },
+    {
+      "id": "habitos-043",
+      "category": "habitos",
+      "text": "Cuando pares a mitad, deja los materiales en el orden en que los necesitarás después."
+    },
+    {
+      "id": "habitos-044",
+      "category": "habitos",
+      "text": "Un hábito puede reducirse durante una semana difícil sin desaparecer de tu vida."
+    },
+    {
+      "id": "habitos-045",
+      "category": "habitos",
+      "text": "Cambia el lugar o el formato cuando sea el aburrimiento, y no la dificultad, lo que interrumpe la rutina."
+    },
+    {
+      "id": "habitos-046",
+      "category": "habitos",
+      "text": "Guarda cada objeto donde empieza la acción, no donde la habitación resulte más vistosa."
+    },
+    {
+      "id": "habitos-047",
+      "category": "habitos",
+      "text": "Cuando dos hábitos compitan, protege el que facilite el otro mañana."
+    },
+    {
+      "id": "habitos-048",
+      "category": "habitos",
+      "text": "Usa recordatorios como puente mientras la rutina sea nueva y retira los que se conviertan en ruido."
+    },
+    {
+      "id": "habitos-049",
+      "category": "habitos",
+      "text": "Haz concreto el reinicio: nombra el día, el lugar y la primera acción visible."
+    },
+    {
+      "id": "habitos-050",
+      "category": "habitos",
+      "text": "Un calendario visible puede revelar si el plan respeta la vida que realmente tienes."
+    },
+    {
+      "id": "habitos-051",
+      "category": "habitos",
+      "text": "Coloca un pequeño placer cerca del final para que la rutina termine con una razón para volver."
+    },
+    {
+      "id": "habitos-052",
+      "category": "habitos",
+      "text": "Antes de añadir una rutina, decide qué antigua exigencia le dejará espacio."
+    },
+    {
+      "id": "habitos-053",
+      "category": "habitos",
+      "text": "Un hábito que cabe en un día exigente tiene más opciones de durar durante un mes ajetreado."
+    },
+    {
+      "id": "habitos-054",
+      "category": "habitos",
+      "text": "Usa un día perdido para revisar el sistema, no para repetir un discurso sobre disciplina."
+    },
+    {
+      "id": "habitos-055",
+      "category": "habitos",
+      "text": "Una comida lista, una mesa despejada o un paseo agendado pueden facilitar una elección útil."
+    },
+    {
+      "id": "habitos-056",
+      "category": "habitos",
+      "text": "Deja que la rutina termine pronto alguna vez; acabar con energía puede proteger el próximo regreso."
+    },
+    {
+      "id": "habitos-057",
+      "category": "habitos",
+      "text": "Nombra la fricción con precisión: tiempo, herramientas, lugar, energía o un primer paso confuso."
+    },
+    {
+      "id": "habitos-058",
+      "category": "habitos",
+      "text": "Un reinicio semanal puede ser diez minutos tranquilos devolviendo lo útil a su sitio."
+    },
+    {
+      "id": "habitos-059",
+      "category": "habitos",
+      "text": "Si el plan depende de recordarlo, coloca el aviso donde la decisión ocurre de verdad."
+    },
+    {
+      "id": "habitos-060",
+      "category": "habitos",
+      "text": "Elige la próxima repetición antes de celebrar esta; la continuidad agradece una invitación clara."
+    },
+    {
       "id": "creatividad-001",
       "category": "creatividad",
       "text": "La idea no llega siempre brillante; a veces llega torpe y pide que la cuides."
@@ -1299,7 +2499,7 @@
     {
       "id": "creatividad-003",
       "category": "creatividad",
-      "text": "La inspiración respeta a quien deja la mesa preparada."
+      "text": "Deja sitio para las ideas repentinas, pero concede a las más discretas el tiempo necesario para crecer."
     },
     {
       "id": "creatividad-004",
@@ -1437,6 +2637,156 @@
       "text": "Deja de pulir la frase que el proyecto ya no necesita y escucha lo que pide ahora."
     },
     {
+      "id": "creatividad-031",
+      "category": "creatividad",
+      "text": "Una idea a medio hacer puede volverse útil cuando le das una forma en la que otra persona pueda entrar."
+    },
+    {
+      "id": "creatividad-032",
+      "category": "creatividad",
+      "text": "Guarda ese detalle que te llama la atención; ya descubrirás más adelante para qué sirve."
+    },
+    {
+      "id": "creatividad-033",
+      "category": "creatividad",
+      "text": "Empieza por esa tensión que todavía no sabes explicar; quizá sea la parte más viva de la obra."
+    },
+    {
+      "id": "creatividad-034",
+      "category": "creatividad",
+      "text": "Una rutina creativa sencilla evita que tu atención tenga que negociar con cada estado de ánimo."
+    },
+    {
+      "id": "creatividad-035",
+      "category": "creatividad",
+      "text": "Lee el borrador en voz alta; el oído puede detectar lo que tus ojos ya pasaban por alto."
+    },
+    {
+      "id": "creatividad-036",
+      "category": "creatividad",
+      "text": "Un detalle preciso puede transmitir más emoción que un párrafo lleno de adjetivos brillantes."
+    },
+    {
+      "id": "creatividad-037",
+      "category": "creatividad",
+      "text": "Termina una obra antes de convertirla en un veredicto sobre tu talento."
+    },
+    {
+      "id": "creatividad-038",
+      "category": "creatividad",
+      "text": "Cuestiona la regla que todos dejaron de ver; debajo puede esconderse un camino nuevo."
+    },
+    {
+      "id": "creatividad-039",
+      "category": "creatividad",
+      "text": "Primero reúne sin miedo y después elige con firmeza; descubrir y orientar necesitan momentos distintos."
+    },
+    {
+      "id": "creatividad-040",
+      "category": "creatividad",
+      "text": "Alterna entre hacer y observar; la distancia revela lo que el esfuerzo a veces oculta."
+    },
+    {
+      "id": "creatividad-041",
+      "category": "creatividad",
+      "text": "La parte que se resiste quizá esté señalando una decisión que el proyecto aún necesita."
+    },
+    {
+      "id": "creatividad-042",
+      "category": "creatividad",
+      "text": "Deja una pregunta abierta el tiempo suficiente para que la obra responda en su propio idioma."
+    },
+    {
+      "id": "creatividad-043",
+      "category": "creatividad",
+      "text": "Un experimento que falla con claridad también enseña cómo quiere comportarse el material."
+    },
+    {
+      "id": "creatividad-044",
+      "category": "creatividad",
+      "text": "Cambia una cosa de tu entorno y observa qué pensamientos se vuelven más accesibles."
+    },
+    {
+      "id": "creatividad-045",
+      "category": "creatividad",
+      "text": "Si una parte hermosa debilita el conjunto, guárdala aparte y deja que la obra respire."
+    },
+    {
+      "id": "creatividad-046",
+      "category": "creatividad",
+      "text": "Un título provisional puede servir de brújula sin convertirse en el destino final."
+    },
+    {
+      "id": "creatividad-047",
+      "category": "creatividad",
+      "text": "Una historia cobra vida cuando cada decisión importante cambia lo que puede ocurrir después."
+    },
+    {
+      "id": "creatividad-048",
+      "category": "creatividad",
+      "text": "La precisión es una forma discreta de valentía: permite que la obra se deje ver de verdad."
+    },
+    {
+      "id": "creatividad-049",
+      "category": "creatividad",
+      "text": "Piensa en una persona atenta ante la obra; tener un destinatario claro puede afinar tus decisiones."
+    },
+    {
+      "id": "creatividad-050",
+      "category": "creatividad",
+      "text": "Ponle un límite a la investigación para que aprender termine convirtiéndose en crear."
+    },
+    {
+      "id": "creatividad-051",
+      "category": "creatividad",
+      "text": "Cuando la mente rodea siempre la misma respuesta, un paseo puede cambiar la forma de la pregunta."
+    },
+    {
+      "id": "creatividad-052",
+      "category": "creatividad",
+      "text": "Ten cerca las herramientas para empezar y un impulso pequeño podrá convertirse en un intento real."
+    },
+    {
+      "id": "creatividad-053",
+      "category": "creatividad",
+      "text": "Antes de rechazar lo que te resulta extraño, pregúntate si está mal o si solo es nuevo para ti."
+    },
+    {
+      "id": "creatividad-054",
+      "category": "creatividad",
+      "text": "Una imagen que regresa puede ser el hilo que conecte piezas que parecían separadas."
+    },
+    {
+      "id": "creatividad-055",
+      "category": "creatividad",
+      "text": "Nombra el problema con palabras sencillas; el misterio se explora mejor cuando la confusión tiene límites."
+    },
+    {
+      "id": "creatividad-056",
+      "category": "creatividad",
+      "text": "Elige lo que haga que la obra sea más ella misma, aunque por eso resulte menos familiar."
+    },
+    {
+      "id": "creatividad-057",
+      "category": "creatividad",
+      "text": "La falta de un recurso puede provocar una solución que la abundancia nunca habría sugerido."
+    },
+    {
+      "id": "creatividad-058",
+      "category": "creatividad",
+      "text": "Deja que el borrador sea discreto cuando eso resulte sincero; no toda obra necesita anunciar su importancia."
+    },
+    {
+      "id": "creatividad-059",
+      "category": "creatividad",
+      "text": "Revisar puede aclarar el camino sin eliminar todas las sorpresas del recorrido."
+    },
+    {
+      "id": "creatividad-060",
+      "category": "creatividad",
+      "text": "Termina la sesión dejando visible el siguiente movimiento; mañana tendrás por dónde empezar."
+    },
+    {
       "id": "resiliencia-001",
       "category": "resiliencia",
       "text": "No todo lo que te rompe decide cómo vas a reconstruirte."
@@ -1454,7 +2804,7 @@
     {
       "id": "resiliencia-004",
       "category": "resiliencia",
-      "text": "Puedes estar cansado y aun así estar sanando."
+      "text": "El cansancio puede cambiar lo razonable para hoy sin decidir lo que será posible más adelante."
     },
     {
       "id": "resiliencia-005",
@@ -1514,7 +2864,7 @@
     {
       "id": "resiliencia-016",
       "category": "resiliencia",
-      "text": "Sanar no avanza en línea recta, pero aun así puede conservar una dirección."
+      "text": "Da tiempo a un cambio difícil para volverse familiar antes de decidir todo lo que te ha quitado."
     },
     {
       "id": "resiliencia-017",
@@ -1587,6 +2937,156 @@
       "text": "La vida que reconstruyas no tiene que parecerse a la anterior para seguir siendo tuya."
     },
     {
+      "id": "resiliencia-031",
+      "category": "resiliencia",
+      "text": "Un plan puede doblarse sin fracasar; ajústalo al terreno que de verdad tienes delante."
+    },
+    {
+      "id": "resiliencia-032",
+      "category": "resiliencia",
+      "text": "Cuando todo se haga pesado, protege la parte más pequeña que todavía permita avanzar."
+    },
+    {
+      "id": "resiliencia-033",
+      "category": "resiliencia",
+      "text": "No necesitas recuperar tu antigua manera de ser fuerte para recorrer la siguiente etapa."
+    },
+    {
+      "id": "resiliencia-034",
+      "category": "resiliencia",
+      "text": "Cumple una promesa cotidiana contigo; la estabilidad suele regresar por puertas conocidas."
+    },
+    {
+      "id": "resiliencia-035",
+      "category": "resiliencia",
+      "text": "Una ruta distinta puede llevarte hacia lo importante, aunque el mapa ya no sea el mismo."
+    },
+    {
+      "id": "resiliencia-036",
+      "category": "resiliencia",
+      "text": "Permite que un tropiezo cambie tu método, pero no que decida cuánto vales."
+    },
+    {
+      "id": "resiliencia-037",
+      "category": "resiliencia",
+      "text": "Aceptar una mano firme no borra ninguno de los pasos que has dado por ti."
+    },
+    {
+      "id": "resiliencia-038",
+      "category": "resiliencia",
+      "text": "Cuenta también lo que protegiste durante la etapa difícil, no solo lo que quedó sin terminar."
+    },
+    {
+      "id": "resiliencia-039",
+      "category": "resiliencia",
+      "text": "Reducir la carga de hoy no exige rebajar lo que esperas del futuro."
+    },
+    {
+      "id": "resiliencia-040",
+      "category": "resiliencia",
+      "text": "El siguiente paso útil puede ser menor de lo que quiere tu orgullo y más sensato de lo que imagina."
+    },
+    {
+      "id": "resiliencia-041",
+      "category": "resiliencia",
+      "text": "Fíjate en las opciones que aún conservas; incluso un camino estrecho puede ofrecer más de una dirección."
+    },
+    {
+      "id": "resiliencia-042",
+      "category": "resiliencia",
+      "text": "Haz de la paciencia algo activo: prepárate, observa y avanza cuando el terreno esté listo."
+    },
+    {
+      "id": "resiliencia-043",
+      "category": "resiliencia",
+      "text": "Lo aprendido bajo presión puede seguir siendo útil sin obligarte a vivir siempre bajo tensión."
+    },
+    {
+      "id": "resiliencia-044",
+      "category": "resiliencia",
+      "text": "Haz sitio para una hora buena dentro de una semana difícil; ninguna experiencia anula la otra."
+    },
+    {
+      "id": "resiliencia-045",
+      "category": "resiliencia",
+      "text": "No hay vergüenza en reconstruir con materiales más sencillos de los que imaginabas."
+    },
+    {
+      "id": "resiliencia-046",
+      "category": "resiliencia",
+      "text": "Cuando no haya certezas, elige la acción que te deje más opciones para después."
+    },
+    {
+      "id": "resiliencia-047",
+      "category": "resiliencia",
+      "text": "Un límite puede proteger la parte de ti que todavía está aprendiendo a confiar de nuevo."
+    },
+    {
+      "id": "resiliencia-048",
+      "category": "resiliencia",
+      "text": "No midas una recuperación discreta con el ritmo del éxito visible de otra persona."
+    },
+    {
+      "id": "resiliencia-049",
+      "category": "resiliencia",
+      "text": "Unos días crean impulso y otros mantienen la puerta abierta. Ambos pueden ayudarte a seguir."
+    },
+    {
+      "id": "resiliencia-050",
+      "category": "resiliencia",
+      "text": "Llévate la sabiduría, pero no todas las defensas que un día te ayudaron a resistir."
+    },
+    {
+      "id": "resiliencia-051",
+      "category": "resiliencia",
+      "text": "Puedes resolver el problema de hoy sin tener que resolver al mismo tiempo todas sus versiones futuras."
+    },
+    {
+      "id": "resiliencia-052",
+      "category": "resiliencia",
+      "text": "Una pausa consciente puede evitar que un momento difícil decida tus próximos movimientos."
+    },
+    {
+      "id": "resiliencia-053",
+      "category": "resiliencia",
+      "text": "Observa qué pequeñas decisiones evitaron que el día fuera más difícil; la resiliencia suele actuar en silencio."
+    },
+    {
+      "id": "resiliencia-054",
+      "category": "resiliencia",
+      "text": "Echar de menos lo conocido no impide elegir algo más acorde con el futuro que quieres."
+    },
+    {
+      "id": "resiliencia-055",
+      "category": "resiliencia",
+      "text": "Cuando cueste ver el progreso, compara tus decisiones de ahora con las que podías tomar antes."
+    },
+    {
+      "id": "resiliencia-056",
+      "category": "resiliencia",
+      "text": "Repara un rincón que tengas a tu alcance; el orden no necesita volver a todas partes a la vez."
+    },
+    {
+      "id": "resiliencia-057",
+      "category": "resiliencia",
+      "text": "Tu ritmo puede cambiar con las circunstancias sin apartarte de la dirección que valoras."
+    },
+    {
+      "id": "resiliencia-058",
+      "category": "resiliencia",
+      "text": "Deja en el plan un poco de espacio para ser humano; resistir también exige expectativas honestas."
+    },
+    {
+      "id": "resiliencia-059",
+      "category": "resiliencia",
+      "text": "Un capítulo difícil también merece un final amable antes de que empiece el siguiente."
+    },
+    {
+      "id": "resiliencia-060",
+      "category": "resiliencia",
+      "text": "Reconoce lo que sigue siendo posible hoy; la claridad puede convertir una situación difícil en un punto de partida."
+    },
+    {
       "id": "relaciones-001",
       "category": "relaciones",
       "text": "Escuchar bien es una forma silenciosa de decir: importas."
@@ -1609,12 +3109,12 @@
     {
       "id": "relaciones-005",
       "category": "relaciones",
-      "text": "Quien te cuida de verdad no necesita que te hagas pequeño."
+      "text": "Ofrece a las personas que quieres un poco de atención que no tenga que competir con una pantalla."
     },
     {
       "id": "relaciones-006",
       "category": "relaciones",
-      "text": "Poner límites no cierra el corazón; le pone puertas."
+      "text": "Un límite claro da al vínculo espacio para continuar sin acumular resentimiento en silencio."
     },
     {
       "id": "relaciones-007",
@@ -1639,7 +3139,7 @@
     {
       "id": "relaciones-011",
       "category": "relaciones",
-      "text": "No llames intensidad a lo que en realidad es falta de calma."
+      "text": "La intensidad y la cercanía no son lo mismo; observa si el vínculo también deja espacio para la estabilidad."
     },
     {
       "id": "relaciones-012",
@@ -1737,6 +3237,156 @@
       "text": "Dejar espacio para un «no» hace que cada «sí» dentro del vínculo sea más honesto."
     },
     {
+      "id": "relaciones-031",
+      "category": "relaciones",
+      "text": "Observa cómo reciben el cuidado las personas que quieres; la atención vuelve útiles las buenas intenciones."
+    },
+    {
+      "id": "relaciones-032",
+      "category": "relaciones",
+      "text": "Un mensaje breve enviado hoy evita que el cariño se quede solo en una buena intención."
+    },
+    {
+      "id": "relaciones-033",
+      "category": "relaciones",
+      "text": "Escucha la necesidad detrás de una frase torpe sin fingir que sus palabras no hicieron daño."
+    },
+    {
+      "id": "relaciones-034",
+      "category": "relaciones",
+      "text": "Dile a la gente lo que aprecias mientras el momento cotidiano todavía está ocurriendo."
+    },
+    {
+      "id": "relaciones-035",
+      "category": "relaciones",
+      "text": "La conexión crece cuando ambos pueden compartir ideas incompletas sin sentirse apurados."
+    },
+    {
+      "id": "relaciones-036",
+      "category": "relaciones",
+      "text": "Antes de resolver el problema de alguien, averigua si quiere ideas, ayuda o simplemente compañía."
+    },
+    {
+      "id": "relaciones-037",
+      "category": "relaciones",
+      "text": "Cuando cambien los planes, avisa pronto; cuidar también es respetar el tiempo que alguien reservó."
+    },
+    {
+      "id": "relaciones-038",
+      "category": "relaciones",
+      "text": "Discrepar no exige convertir el carácter de la otra persona en el tema de la discusión."
+    },
+    {
+      "id": "relaciones-039",
+      "category": "relaciones",
+      "text": "Comparte un poco de contexto; nadie puede comprender una historia que nunca le permites conocer."
+    },
+    {
+      "id": "relaciones-040",
+      "category": "relaciones",
+      "text": "Haz que el cariño sea práctico: recuerda la fecha, acerca el agua, haz la llamada."
+    },
+    {
+      "id": "relaciones-041",
+      "category": "relaciones",
+      "text": "Recordar una pequeña preferencia puede hacer que alguien se sienta tenido en cuenta, no dirigido."
+    },
+    {
+      "id": "relaciones-042",
+      "category": "relaciones",
+      "text": "No obligues a la cercanía a demostrarse con acceso constante; la confianza también necesita aire."
+    },
+    {
+      "id": "relaciones-043",
+      "category": "relaciones",
+      "text": "Cuando entiendas algo mal, vuelve primero con curiosidad y no con una defensa preparada."
+    },
+    {
+      "id": "relaciones-044",
+      "category": "relaciones",
+      "text": "Una amistad puede cambiar de forma sin perder sentido; pregunta qué manera de conectar encaja ahora."
+    },
+    {
+      "id": "relaciones-045",
+      "category": "relaciones",
+      "text": "Alguien puede cuidar de otra manera sin cuidar menos; observa sus gestos antes de sacar conclusiones."
+    },
+    {
+      "id": "relaciones-046",
+      "category": "relaciones",
+      "text": "Una verdad difícil puede decirse sin usar la dureza como prueba de sinceridad."
+    },
+    {
+      "id": "relaciones-047",
+      "category": "relaciones",
+      "text": "Fíjate en quien hace una segunda pregunta; la atención suele mostrar el cariño mejor que un consejo."
+    },
+    {
+      "id": "relaciones-048",
+      "category": "relaciones",
+      "text": "Da margen para corregir un error, pero deja que los patrones repetidos orienten tu confianza."
+    },
+    {
+      "id": "relaciones-049",
+      "category": "relaciones",
+      "text": "La cercanía es más segura cuando nadie tiene que adivinar qué reglas valen hoy."
+    },
+    {
+      "id": "relaciones-050",
+      "category": "relaciones",
+      "text": "Si la conversación importa, elige un lugar donde ninguno tenga que competir con el ruido."
+    },
+    {
+      "id": "relaciones-051",
+      "category": "relaciones",
+      "text": "Respeta la respuesta que pediste, sobre todo cuando no es la que esperabas escuchar."
+    },
+    {
+      "id": "relaciones-052",
+      "category": "relaciones",
+      "text": "Preguntar con cuidado puede decir «me acuerdo de ti» sin exigir nada a cambio."
+    },
+    {
+      "id": "relaciones-053",
+      "category": "relaciones",
+      "text": "Deja que una persona nueva te muestre quién es antes de darle un papel de tu pasado."
+    },
+    {
+      "id": "relaciones-054",
+      "category": "relaciones",
+      "text": "En un conflicto, habla con quien tienes delante, no con un público imaginario que te da la razón."
+    },
+    {
+      "id": "relaciones-055",
+      "category": "relaciones",
+      "text": "Hacer algo juntos también crea cercanía; no todo intercambio importante sucede cara a cara."
+    },
+    {
+      "id": "relaciones-056",
+      "category": "relaciones",
+      "text": "Pregunta antes de contar una historia ajena; la confianza también consiste en cuidar lo que te confiaron."
+    },
+    {
+      "id": "relaciones-057",
+      "category": "relaciones",
+      "text": "Los vínculos necesitan actualizarse; lo que ayudaba el año pasado quizá hoy requiera otra conversación."
+    },
+    {
+      "id": "relaciones-058",
+      "category": "relaciones",
+      "text": "En un grupo, fíjate en quien aún no encuentra cómo entrar en la conversación; acoger también es actuar."
+    },
+    {
+      "id": "relaciones-059",
+      "category": "relaciones",
+      "text": "Deja espacio entre la pregunta y tu respuesta; a veces la comprensión llega durante la pausa."
+    },
+    {
+      "id": "relaciones-060",
+      "category": "relaciones",
+      "text": "Un buen vínculo deja sitio para dos vidas completas, no para una girando alrededor de la otra."
+    },
+    {
       "id": "energia-001",
       "category": "energia",
       "text": "No administres tu día como si tu energía fuera infinita."
@@ -1764,7 +3414,7 @@
     {
       "id": "energia-006",
       "category": "energia",
-      "text": "Tu cuerpo te habla más bajo antes de obligarte a escucharlo."
+      "text": "Observa pronto cuándo tu ritmo empieza a ser difícil de sostener y deja margen para ajustarlo."
     },
     {
       "id": "energia-007",
@@ -1789,7 +3439,7 @@
     {
       "id": "energia-011",
       "category": "energia",
-      "text": "No confundas estar ocupado con estar vivo."
+      "text": "Una agenda llena puede ocultar si alguna de sus tareas sigue importándote de verdad."
     },
     {
       "id": "energia-012",
@@ -1824,7 +3474,7 @@
     {
       "id": "energia-018",
       "category": "energia",
-      "text": "Prueba primero con luz, agua y movimiento antes de juzgar cómo estás funcionando."
+      "text": "Antes de juzgar el día entero, cambia una condición pequeña y observa si la hora siguiente se siente distinta."
     },
     {
       "id": "energia-019",
@@ -1885,6 +3535,156 @@
       "id": "energia-030",
       "category": "energia",
       "text": "No gastes la energía de mañana solo para demostrar que hoy podías terminarlo todo."
+    },
+    {
+      "id": "energia-031",
+      "category": "energia",
+      "text": "Reserva en la agenda tiempo para recuperarte junto al esfuerzo; lo que no tiene lugar se aplaza con facilidad."
+    },
+    {
+      "id": "energia-032",
+      "category": "energia",
+      "text": "Una lista más corta puede proteger la atención necesaria para hacer bien lo importante."
+    },
+    {
+      "id": "energia-033",
+      "category": "energia",
+      "text": "Ajusta el entorno a la energía que pide la tarea; algunos trabajos agradecen silencio y otros, movimiento."
+    },
+    {
+      "id": "energia-034",
+      "category": "energia",
+      "text": "Reserva las decisiones fáciles para las horas lentas y guarda la mente clara para lo importante."
+    },
+    {
+      "id": "energia-035",
+      "category": "energia",
+      "text": "Quizá la tarea no necesite más fuerza, sino un punto de partida mejor elegido."
+    },
+    {
+      "id": "energia-036",
+      "category": "energia",
+      "text": "Reduce los asuntos abiertos; las decisiones pendientes reclaman atención aunque no hagan ruido."
+    },
+    {
+      "id": "energia-037",
+      "category": "energia",
+      "text": "Un ritmo que se pueda sostener incluye momentos que no tienen que producir nada."
+    },
+    {
+      "id": "energia-038",
+      "category": "energia",
+      "text": "Si el día empieza tarde, rediseña lo que queda en vez de comprimir el plan original."
+    },
+    {
+      "id": "energia-039",
+      "category": "energia",
+      "text": "Deja una parte de la noche libre del día siguiente; anticipar también puede gastar el descanso."
+    },
+    {
+      "id": "energia-040",
+      "category": "energia",
+      "text": "Agrupa los recados pequeños cuando puedas; cambiar continuamente hace que cada uno cueste más atención."
+    },
+    {
+      "id": "energia-041",
+      "category": "energia",
+      "text": "Antes de buscar motivación, elimina un obstáculo que vuelva innecesariamente costoso empezar."
+    },
+    {
+      "id": "energia-042",
+      "category": "energia",
+      "text": "Un comienzo sereno puede servir más que pedirle urgencia a una fecha que aún queda lejos."
+    },
+    {
+      "id": "energia-043",
+      "category": "energia",
+      "text": "Deja tan clara la siguiente acción que empezar no exija volver a discutirlo contigo."
+    },
+    {
+      "id": "energia-044",
+      "category": "energia",
+      "text": "Cuando un compromiso se repite, cuenta también el tiempo de preparación y recuperación, no solo la hora prevista."
+    },
+    {
+      "id": "energia-045",
+      "category": "energia",
+      "text": "No todas las horas de poca energía necesitan arreglo; algunas solo piden una tarea más amable."
+    },
+    {
+      "id": "energia-046",
+      "category": "energia",
+      "text": "Asigna un lugar fijo a las tareas recurrentes; decidir menos deja más atención disponible."
+    },
+    {
+      "id": "energia-047",
+      "category": "energia",
+      "text": "Observa qué compromisos te reaniman después del esfuerzo y cuáles solo te dejan agotado."
+    },
+    {
+      "id": "energia-048",
+      "category": "energia",
+      "text": "Protege el tiempo anterior a una tarea importante de las decisiones que pueden esperar."
+    },
+    {
+      "id": "energia-049",
+      "category": "energia",
+      "text": "Incluye el momento de parar en el plan; si no, cada tarea intentará decidir por sí sola cuándo termina."
+    },
+    {
+      "id": "energia-050",
+      "category": "energia",
+      "text": "Unos minutos de preparación pueden convertir el primer paso de mañana en una invitación más fácil."
+    },
+    {
+      "id": "energia-051",
+      "category": "energia",
+      "text": "A veces el impulso nace de quitar: una pestaña, una reunión, una promesa innecesaria."
+    },
+    {
+      "id": "energia-052",
+      "category": "energia",
+      "text": "Ajusta el esfuerzo a la importancia del resultado, no al ruido que haya a su alrededor."
+    },
+    {
+      "id": "energia-053",
+      "category": "energia",
+      "text": "Un día con una prioridad clara exige menos atención que otro con diez alarmas igual de urgentes."
+    },
+    {
+      "id": "energia-054",
+      "category": "energia",
+      "text": "Cuando todo parezca urgente, busca lo que seguiría importando si el ruido se apagara."
+    },
+    {
+      "id": "energia-055",
+      "category": "energia",
+      "text": "Protege una comida sin prisas para que no se convierta en otra pausa llena de obligaciones."
+    },
+    {
+      "id": "energia-056",
+      "category": "energia",
+      "text": "Reserva un rato sin mensajes entrantes; la atención sin interrupciones puede resultar más ligera que las prisas."
+    },
+    {
+      "id": "energia-057",
+      "category": "energia",
+      "text": "El espacio que queda al terminar te pertenece antes de pertenecer a la siguiente exigencia."
+    },
+    {
+      "id": "energia-058",
+      "category": "energia",
+      "text": "Construye un día que puedas repetir, no uno que solo parezca admirable visto desde fuera."
+    },
+    {
+      "id": "energia-059",
+      "category": "energia",
+      "text": "Observa cuándo el esfuerzo deja de mejorar el resultado; dedicar más tiempo no siempre significa cuidar más."
+    },
+    {
+      "id": "energia-060",
+      "category": "energia",
+      "text": "Permite que «es suficiente» sea a veces una elección consciente, no una disculpa por lo pendiente."
     }
   ]
 }

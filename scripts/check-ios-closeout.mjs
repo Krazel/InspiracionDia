@@ -48,8 +48,8 @@ for (let offset = 8; offset + 12 <= png.length;) {
 assert.equal(appIconRootContents.info?.author, "xcode");
 assert.equal(appIconRootContents.info?.version, 1);
 
-assert.equal(spanish.quotes.length, 360, "Spanish release catalog must contain 360 quotes");
-assert.equal(english.quotes.length, 360, "English release catalog must contain 360 quotes");
+assert.equal(spanish.quotes.length, 720, "Spanish release catalog must contain 720 quotes");
+assert.equal(english.quotes.length, 720, "English release catalog must contain 720 quotes");
 assert.deepEqual(
   english.quotes.map(({ id }) => id),
   spanish.quotes.map(({ id }) => id),

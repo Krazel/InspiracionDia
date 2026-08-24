@@ -10,7 +10,16 @@ Candidato auditado: **1.0 (25)**, commit de app `bdec7a0`, GitHub Actions run `3
 
 **La build 25 es apta para TestFlight interno, pero todavía no es apta para enviar a App Review ni publicar.** Compila, firma, archiva y se entrega correctamente a Apple; los 38 XCTest pasan y el análisis Release no bloquea. El catálogo también está cerrado. Las puertas restantes son de QA físico, páginas y enlaces públicos, capturas reales y campos obligatorios de App Store Connect.
 
-No conviene añadir funciones, suscripciones, anuncios ni más frases antes de cerrar 1.0. Hacerlo ampliaría el riesgo sin resolver ninguna exigencia de publicación.
+La conclusión cuantitativa original sobre 360 frases fue sustituida después por una decisión explícita del propietario: el candidato local posterior a build 25 se amplía a 720 frases por idioma, 60 por categoría. Esta ampliación editorial no cambia el veredicto de build 25 ni autoriza una nueva subida.
+
+## Adenda de contenido posterior a build 25
+
+- Fuentes canónicas y recursos runtime locales: 720 frases inglesas y 720 españolas, 60 por cada una de las 12 categorías, IDs paralelos `001–060`.
+- Con una sola categoría activa, el ciclo sin repetición pasa de 30 a 60 días; con todas, de 360 a 720 días.
+- Se añadieron 360 pares bilingües originales y se aplicaron a la fuente canónica las 16 reescrituras de la auditoría anterior. La revisión de ampliación mejoró otros 55 pares: tres solapamientos detectados durante la integración y 52 textos señalados por una auditoría final independiente.
+- La revisión estructural exige paridad, orden, longitudes de 32–138 caracteres y ausencia de duplicados exactos, normalizados o de alto solapamiento. La revisión editorial cubre naturalidad, traducción, categoría, especificidad, seguridad y cliché.
+- No se añadieron atribuciones, citas famosas, scraping, diagnósticos ni promesas médicas. No cambian la privacidad ni los permisos.
+- Esta adenda describe un candidato **local no compilado ni subido**. La última build comprobada por Apple sigue siendo 1.0 (25), con 360 frases por idioma.
 
 ## Fotografía verificable del candidato
 

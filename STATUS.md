@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-24**
-Estado: **Warm Words 1.0 build 25 válida y asignada al grupo interno de TestFlight; QA físico y puertas de App Store pendientes**
+Estado: **Warm Words 1.0 build 25 válida en TestFlight; candidato local ampliado a 720 frases por idioma, pendiente de compilación como build 26 y sin subir**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -9,6 +9,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 - Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 25 se compiló desde el commit verificado `bdec7a0`.
 - El propietario autorizó expresamente commit, push, compilación, firma y subida de build 25 a TestFlight el 2026-08-24. No se creó release, no se envió a App Review y no se publicó en App Store.
+- El propietario autorizó expresamente el 2026-08-24 commit, push, compilación, firma y subida interna del candidato ampliado como **1.0 (26)**. Esta autorización no comprende testers externos, App Review ni publicación pública.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
@@ -25,6 +26,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 25 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos, frases personales e historial del ciclo permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
+
+## Candidato local de contenido posterior a build 25
+
+- El propietario pidió ampliar el catálogo para que seleccionar una sola categoría no produzca una repetición al cabo de 30 días. El nuevo objetivo queda en 60 pares por categoría: 720 frases inglesas y 720 españolas.
+- Los 360 pares añadidos están repartidos entre 12 categorías, mantienen IDs paralelos `031–060` y pasaron dos revisiones editoriales por grupo más una revisión integrada del catálogo completo.
+- Las fuentes canónicas `data/quotes.js` y `data/quotes-en.js` y los recursos runtime se regeneraron de forma determinista. El validador exige 720 elementos por idioma, 60 por categoría, longitudes de 32–138 caracteres, paridad exacta y ausencia de duplicados o solapamientos altos.
+- Este cambio no altera pantallas, navegación, persistencia, permisos, privacidad, SDKs ni Android. Build 26 queda autorizada para compilación, firma y TestFlight interno; build 25 seguirá siendo la última disponible hasta que Apple procese la nueva subida.
 
 ## Enlace inteligente posterior a build 20
 
@@ -57,7 +65,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Cierre implementado localmente
 
-- Catálogos propios completos de 360 frases y 12 categorías en inglés y español, con los mismos IDs y orden. Incluyen 180 pares nuevos y 12 reescrituras editoriales que conservan IDs. No contienen citas atribuidas ni dependen de una fuente externa.
+- El candidato local posterior a build 25 contiene 720 frases propias en inglés y 720 en español, 60 por cada una de las 12 categorías y con los mismos IDs y orden. La ampliación añade 360 pares bilingües y lleva a la fuente canónica 16 reescrituras editoriales de IDs existentes. No contiene citas atribuidas ni depende de una fuente externa. Build 25 en TestFlight conserva el catálogo anterior de 360 por idioma.
 - El alcance solo inglés quedó sustituido por una app bilingüe: idioma inicial según el iPhone, selector persistente en Settings y cambio conjunto de interfaz, catálogo, categorías, fechas, días y próximas notificaciones. Favoritos y datos personales se conservan por ID y las frases creadas por el usuario no se traducen.
 - Frase diaria basada en días continuos, sin reinicio por año.
 - Recordatorio local sustituido por una cola de 60 notificaciones no repetitivas con una frase calculada por fecha; se refresca al activar la app y al cambiar hora, categorías o tarjetas. La autorización solo se pide tras una acción explícita.
@@ -77,7 +85,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Verificaciones aprobadas en Windows
 
-- `node scripts/check-quotes.mjs`: 360 frases españolas y 360 inglesas, 30 por categoría, sin duplicados exactos/normalizados/casi idénticos y con paridad exacta de IDs, orden y categorías.
+- `node scripts/check-quotes.mjs`: 720 frases españolas y 720 inglesas, 60 por categoría, sin duplicados exactos/normalizados/casi idénticos y con paridad exacta de IDs, orden y categorías.
 - `node scripts/check-ios-closeout.mjs`: idioma público, cola local, tarjetas, privacy manifest, proyecto y ausencia de release automática verificados estáticamente.
 - `content.json`, `content-en.json`, `Info.plist` y `PrivacyInfo.xcprivacy` parsean correctamente.
 - `project.yml` y el workflow parsean como YAML; el esquema incluye `InspiracionDiaTests`.
@@ -235,7 +243,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Validación Windows: `check-ios-closeout`, `check-quotes`, `git diff --check` y ausencia de cambios Android pasan. GitHub Actions run `32751996787` ejecutó **38 tests sin fallos**, Analyze Release, firma, archive, inspección, exportación y upload; Apple respondió `UPLOAD SUCCEEDED with no errors`.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento permanecen preservados y no forman parte de los commits.
 
-La auditoría de publicación vigente está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-08-24.md`: el catálogo y la build son suficientes para TestFlight interno, pero no para App Review hasta cerrar QA físico, privacidad/soporte públicos e internos, capturas, campos obligatorios, derechos y el enlace inteligente aprobado.
+La auditoría de publicación vigente está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-08-24.md`: build 25 es suficiente para TestFlight interno y el catálogo ampliado queda preparado localmente para build 26. App Review sigue bloqueada por QA físico, privacidad/soporte públicos e internos, capturas, campos obligatorios, derechos y el enlace inteligente aprobado.
 
 ## Primer bloqueo material de App Store
 
@@ -243,12 +251,13 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Instalar build 25 desde TestFlight cuando Apple termine de procesarla. Para el onboarding, borrar la app/datos y hacer una instalación limpia: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
-2. Confirmar derechos comerciales de frases, fondos y AppIcon.
-3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
-4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
-5. App Store Connect ya identifica al desarrollador como trader para esta app; comprobar que la información verificada que Apple publicará en la UE sigue siendo correcta.
-6. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
+1. Tras autorización expresa de commit/push y compilación, generar build 26 con el catálogo de 720 frases por idioma. No subirla hasta recibir autorización expresa de TestFlight en ese momento.
+2. Instalar el candidato final en limpio: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
+3. Confirmar derechos comerciales de frases, fondos y AppIcon.
+4. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
+5. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
+6. App Store Connect ya identifica al desarrollador como trader para esta app; comprobar que la información verificada que Apple publicará en la UE sigue siendo correcta.
+7. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 

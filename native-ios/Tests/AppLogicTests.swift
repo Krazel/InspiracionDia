@@ -186,11 +186,11 @@ final class AppLogicTests: XCTestCase {
   }
 
   func testQuoteCycleReminderSequenceDoesNotRepeatBeforeExhaustion() {
-    let ids = (1...30).map { "foco-\(String(format: "%03d", $0))" }
-    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 60)
-    XCTAssertEqual(sequence.count, 60)
-    XCTAssertEqual(Set(sequence.prefix(30)).count, 30)
-    XCTAssertEqual(Array(sequence.prefix(30)), Array(sequence.suffix(30)))
+    let ids = (1...60).map { "foco-\(String(format: "%03d", $0))" }
+    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 120)
+    XCTAssertEqual(sequence.count, 120)
+    XCTAssertEqual(Set(sequence.prefix(60)).count, 60)
+    XCTAssertEqual(Array(sequence.prefix(60)), Array(sequence.suffix(60)))
   }
 
   func testQuoteCycleRejectsEmptyCandidates() {

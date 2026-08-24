@@ -316,6 +316,20 @@ Resuelve la antigua PEND-013:
 - Apple procesó build 25 como `VALID` y run `32753132327` confirmó su asignación al grupo interno `Warm Words Internal`.
 - Esta autorización comprende TestFlight interno de build 25. No comprende App Review, publicación pública, testers externos, publicar GitHub Pages ni activar Universal Links.
 
+### DEC-043 — Ampliación editorial a 60 frases por categoría
+
+- El propietario reconsideró la suficiencia de 30 frases por categoría y aprobó ampliar el catálogo antes del candidato publicable. Esta decisión sustituye únicamente la congelación cuantitativa de `DEC-042`; no cambia la validez histórica ni la autorización de TestFlight de build 25.
+- El catálogo objetivo pasa a 720 pares originales inglés/español: 60 por cada una de las 12 categorías, con IDs paralelos `001–060`. Así, una persona que seleccione una sola categoría dispone de 60 días antes de repetir; con todas dispone de 720.
+- Se mantienen el tono concreto y sereno, la ausencia de autores o citas famosas, la trazabilidad local y la revisión bilingüe. La cantidad no autoriza contenido de relleno: cada alta debe pasar validación estructural y revisión editorial humana.
+- Las 16 reescrituras detectadas en la auditoría anterior se aplican a las fuentes canónicas, no solo a los recursos generados. La revisión de ampliación mejoró además 55 pares: tres solapamientos detectados durante la integración y 52 textos señalados por la auditoría final independiente por naturalidad, cliché, equivalencia o seguridad.
+- La ampliación no modifica interfaz, lógica, privacidad ni permisos. Queda preparada localmente para la siguiente build, pero esta decisión no autoriza commit, push, firma, TestFlight, App Review ni publicación.
+
+### DEC-044 — Build 26 y TestFlight interno autorizados
+
+- El propietario autorizó expresamente el 2026-08-24 hacer commit y push del catálogo ampliado, compilar y firmar Warm Words **1.0 (26)**, subirla a TestFlight y asignarla al grupo interno existente.
+- Se conserva excepcionalmente el tren 1.0 ya creado en App Store Connect y se incrementa el build de 25 a 26; no se abre una versión pública distinta durante este cierre previo al primer lanzamiento.
+- La autorización no incluye testers externos, Beta App Review, App Review, publicación pública, activación de Universal Links, productos StoreKit ni cambios comerciales.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

@@ -35,7 +35,7 @@ Start the day with a thoughtful quote chosen from a calm, focused collection.
 
 Use Warm Words in English or Spanish and switch languages at any time in Settings.
 
-Explore 360 original lines across motivation, focus, calm, discipline, self-worth, gratitude, courage, habits, creativity, resilience, relationships, and energy.
+Explore 720 original lines across motivation, focus, calm, discipline, self-worth, gratitude, courage, habits, creativity, resilience, relationships, and energy.
 
 Use the app to:
 

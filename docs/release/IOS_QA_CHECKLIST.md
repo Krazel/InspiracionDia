@@ -34,7 +34,7 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] Today shows a valid date, quote, and category in the selected language.
 - [ ] Today shows the complete quote card, favorite/share actions, and tab bar without scrolling at the default text size on the smallest supported iPhone.
 - [ ] Today keeps the same quote for the whole local day; later days exhaust the eligible selected-category pool before reusing the least-recently shown quote, including across relaunch and year end.
-- [ ] All 12 categories open and together expose 360 unique quotes in English and 360 in Spanish.
+- [ ] All 12 categories open and together expose 720 unique quotes in English and 720 in Spanish, 60 per category.
 - [ ] Settings offers `English / Español`; changing it updates the current screen immediately and the choice survives relaunch.
 - [ ] Switching English → Spanish → English preserves the current category, bundled favorites, reminder preferences, and personal quotes.
 - [ ] Personal quotes remain exactly as written instead of being machine-translated.

@@ -1,6 +1,6 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: version 1.0 build 20 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-10. It is available to the account owner in TestFlight. App Review and public release remain separate unauthorized actions.
+Status: version 1.0 build 25 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-24. It remains the latest TestFlight build. A local 720-quotes-per-language candidate is prepared for prospective build 26 but has not been committed, compiled, signed, or uploaded. App Review and public release remain separate unauthorized actions.
 
 ## Verified release identity
 
@@ -65,7 +65,7 @@ Do not put these values in repository secrets, source files, logs, artifacts, is
 
 English beta description:
 
-> Warm Words is a bilingual daily quote app for iPhone. Browse 360 original quotes, save favorites, add personal quotes, share visual cards, and configure gentle local reminders for the days and time you choose.
+> Warm Words is a bilingual daily quote app for iPhone. Browse 720 original quotes, save favorites, add personal quotes, share visual cards, and configure gentle local reminders for the days and time you choose.
 
 English “What to Test”:
 
@@ -73,7 +73,7 @@ English “What to Test”:
 
 Spanish beta description:
 
-> Warm Words es una app bilingüe de frases diarias para iPhone. Explora 360 frases originales, guarda favoritas, añade frases personales, comparte tarjetas visuales y configura recordatorios locales para los días y la hora que elijas.
+> Warm Words es una app bilingüe de frases diarias para iPhone. Explora 720 frases originales, guarda favoritas, añade frases personales, comparte tarjetas visuales y configura recordatorios locales para los días y la hora que elijas.
 
 Spanish “Qué probar”:
 
