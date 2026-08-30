@@ -1,6 +1,6 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: version 1.0 build 26 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-24. It is the latest TestFlight build and contains 720 quotes per language. App Review and public release remain separate unauthorized actions.
+Status: version 1.0 build 27 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-31. It is the latest TestFlight build, contains 720 quotes per language, and includes the performance correction. App Review and public release remain separate unauthorized actions.
 
 ## Verified release identity
 
@@ -29,6 +29,8 @@ Status: version 1.0 build 26 was signed, validated, uploaded, processed by Apple
 8. Uploads only when `upload_to_testflight` is explicitly set to `true` after authorization.
 
 The protected environment and seven credentials are configured. Run `31429710903`, job `93589855913`, completed all tests, Analyze, signed archive inspection, export, validation, and upload from commit `423da40`.
+
+The latest authorized delivery is commit `484ca3d`, run `33341160940`: 40 tests with zero failures, Release analysis, signed archive inspection, export, Apple validation, and upload all passed. Artifact `Warm-Words-TestFlight-v1.0-build-27` is 6,397,420 bytes with SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`. Run `33341523935` confirmed build 27 as `VALID` and assigned it to `Warm Words Internal`.
 
 ## Protected GitHub environment
 

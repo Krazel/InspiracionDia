@@ -336,6 +336,7 @@ Resuelve la antigua PEND-013:
 - El propietario informó el 2026-08-31 de una lentitud clara en build 26 y autorizó corregirla y subir la siguiente versión a TestFlight.
 - La corrección aprobada es técnica y reversible: renderizado perezoso de las tarjetas, planificación del ciclo en una sola ordenación y actualización diferencial de notificaciones pendientes. Debe conservar diseño, contenido, selección, historial y comportamiento visible.
 - Se mantiene excepcionalmente el tren existente 1.0 y se usa build 27. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
+- Resultado: commit `484ca3d`; run `33341160940` pasó 40 tests, Analyze Release, firma, archive, inspección, exportación, validación y subida sin errores. Apple marcó build 27 como `VALID` y run `33341523935` la asignó a `Warm Words Internal`.
 
 ## Primera decisión pendiente del propietario
 

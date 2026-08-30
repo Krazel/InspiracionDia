@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-31**
-Estado: **Corrección de rendimiento preparada para Warm Words 1.0 build 27; commit, firma y TestFlight interno autorizados**
+Estado: **Warm Words 1.0 build 27 corregida, válida y disponible en TestFlight interno**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 26 se compiló desde el commit verificado `b629bcd`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 27 se compiló desde el commit verificado `484ca3d`.
 - El propietario autorizó expresamente commit, push, compilación, firma y subida de build 25 a TestFlight el 2026-08-24. No se creó release, no se envió a App Review y no se publicó en App Store.
 - El propietario autorizó expresamente el 2026-08-24 commit, push, compilación, firma y subida interna del candidato ampliado como **1.0 (26)**. Esta autorización no comprende testers externos, App Review ni publicación pública.
 - El propietario autorizó expresamente el 2026-08-31 corregir la regresión de rendimiento de build 26, hacer commit/push y compilar, firmar, subir y asignar **1.0 (27)** a TestFlight interno. No autorizó App Review ni publicación pública.
@@ -27,6 +27,9 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El commit `b629bcd` amplió el catálogo a 720 pares bilingües. Run `32765814357` compiló y subió **1.0 (26)**: 38 tests sin fallos, Analyze Release, firma, archive, inspección y exportación correctos; App Store Connect respondió `UPLOAD SUCCEEDED with no errors`.
 - Apple procesó build 26 como `VALID`; run `32766825710` confirmó su asignación a `Warm Words Internal` el 2026-08-24. No se creó grupo externo, no se solicitó Beta App Review y no se envió a App Review.
 - Artifact efímero `Warm-Words-TestFlight-v1.0-build-26`: 6.387.788 bytes, SHA-256 `15d24eefb527a3bb718ccaaead007094089290ff085716a396b051f6914b462e`, caducidad 2026-08-27.
+- El commit `484ca3d` corrigió la regresión de rendimiento sin modificar diseño ni contenido. Run `33341160940` compiló y subió **1.0 (27)**: 40 tests sin fallos, Analyze Release, firma, archive, inspección, exportación y validación correctos; App Store Connect respondió `UPLOAD SUCCEEDED with no errors`.
+- Apple procesó build 27 como `VALID`; run `33341523935` confirmó su asignación a `Warm Words Internal` el 2026-08-31. No se creó grupo externo, no se solicitó Beta App Review y no se envió a App Review.
+- Artifact efímero `Warm-Words-TestFlight-v1.0-build-27`: 6.397.420 bytes, SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`, caducidad 2026-09-02.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 25 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos, frases personales e historial del ciclo permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -38,12 +41,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Las fuentes canónicas `data/quotes.js` y `data/quotes-en.js` y los recursos runtime se regeneraron de forma determinista. El validador exige 720 elementos por idioma, 60 por categoría, longitudes de 32–138 caracteres, paridad exacta y ausencia de duplicados o solapamientos altos.
 - Este cambio no altera pantallas, navegación, persistencia, permisos, privacidad, SDKs ni Android. Build 26 está procesada como válida y disponible para el grupo interno de TestFlight.
 
-## Corrección de rendimiento preparada para build 27
+## Corrección de rendimiento entregada en build 27
 
 - La causa principal era que Categorías construía inmediatamente hasta 720 `QuoteCard` cuando estaba seleccionado `All`. La lista conserva idéntico aspecto y pasa a `LazyVStack`, por lo que solo crea las tarjetas cercanas al área visible.
 - `QuoteCyclePlanner.sequence` ordenaba y deduplicaba los 720 IDs en cada una de las 60 iteraciones de la cola. Ahora calcula el orden una vez y conserva exactamente la misma secuencia y regla sin repetición.
 - Al volver la app a primer plano se volvían a registrar hasta 60 notificaciones aunque ya fueran idénticas. Ahora se comparan identificador, título, cuerpo y fecha y solo se añaden solicitudes nuevas o modificadas.
 - Se añadieron pruebas para el planificador con 720 candidatos y para el orden persistido, y el cierre estático exige las tres protecciones. No cambia UI, contenido, permisos, datos, privacidad ni Android.
+- GitHub Actions run `33341160940` pasó 40 tests y el análisis Release, generó y validó el IPA firmado y lo subió sin errores. Apple marcó build 27 como `VALID` y run `33341523935` la asignó al grupo interno.
 
 ## Enlace inteligente posterior a build 20
 
@@ -262,7 +266,7 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Instalar build 26 desde TestFlight en limpio: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Instalar build 27 desde TestFlight en limpio: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Confirmar además que Categorías con `All` se desplaza con fluidez y que volver varias veces a primer plano no provoca pausas. Después completar QA real en iPhone/iOS 16 e iOS 26.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.

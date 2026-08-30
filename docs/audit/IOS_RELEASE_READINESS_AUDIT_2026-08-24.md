@@ -21,6 +21,13 @@ La conclusión cuantitativa original sobre 360 frases fue sustituida después po
 - No se añadieron atribuciones, citas famosas, scraping, diagnósticos ni promesas médicas. No cambian la privacidad ni los permisos.
 - La adenda se entregó como **1.0 (26)** desde `b629bcd`. Run `32765814357` pasó 38 tests, Analyze Release, firma, archive, inspección y exportación, y subió el binario sin errores. Apple lo procesó como `VALID` y run `32766825710` lo asignó al grupo interno `Warm Words Internal`.
 
+## Adenda de rendimiento y entrega build 27
+
+- La lentitud observada en build 26 se trazó a tres costes evitables: construcción inmediata de hasta 720 tarjetas en Categorías, ordenación/deduplicación repetida durante la planificación de 60 recordatorios y reenvío de hasta 60 notificaciones locales idénticas en cada activación.
+- El commit `484ca3d` conserva la experiencia visible y sustituye esos puntos por renderizado perezoso, una sola preparación del ciclo y actualización diferencial de solicitudes pendientes. Añade dos pruebas de regresión específicas.
+- Run `33341160940` pasó 40 tests sin fallos, Analyze Release, firma, archive, inspección, exportación, validación y subida sin errores. Artifact `Warm-Words-TestFlight-v1.0-build-27`: 6.397.420 bytes, SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`.
+- Apple procesó build 27 como `VALID` y run `33341523935` la asignó a `Warm Words Internal` el 2026-08-31. Esta entrega no cambia el veredicto: apta para TestFlight interno; App Review sigue bloqueada por las puertas documentadas.
+
 ## Fotografía verificable del candidato
 
 | Área | Evidencia | Resultado |
