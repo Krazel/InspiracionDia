@@ -193,6 +193,24 @@ final class AppLogicTests: XCTestCase {
     XCTAssertEqual(Array(sequence.prefix(60)), Array(sequence.suffix(60)))
   }
 
+  func testQuoteCycleLargeCatalogPlansReminderWindowWithoutRepeating() {
+    let ids = (1...720).map { "quote-\(String(format: "%03d", $0))" }
+    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 60)
+    XCTAssertEqual(sequence.count, 60)
+    XCTAssertEqual(Set(sequence).count, 60)
+  }
+
+  func testQuoteCycleSequencePreservesLeastRecentlySeenOrder() {
+    XCTAssertEqual(
+      QuoteCyclePlanner.sequence(
+        candidateIDs: ["a", "b", "c"],
+        history: ["outside", "b", "a", "c", "b"],
+        count: 4
+      ),
+      ["b", "a", "c", "b"]
+    )
+  }
+
   func testQuoteCycleRejectsEmptyCandidates() {
     XCTAssertNil(QuoteCyclePlanner.next(candidateIDs: [], history: ["old"]))
     XCTAssertTrue(QuoteCyclePlanner.sequence(candidateIDs: [], history: [], count: 60).isEmpty)

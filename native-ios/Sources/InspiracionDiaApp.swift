@@ -690,8 +690,19 @@ final class AppStore: ObservableObject {
       }
     center.removePendingNotificationRequests(withIdentifiers: staleIdentifiers)
 
+    let pendingByIdentifier = Dictionary(
+      pending.map { ($0.identifier, $0) },
+      uniquingKeysWith: { _, latest in latest }
+    )
+    let requestsToAdd = requests.filter { desiredRequest in
+      guard let pendingRequest = pendingByIdentifier[desiredRequest.identifier] else {
+        return true
+      }
+      return !notificationRequest(pendingRequest, matches: desiredRequest)
+    }
+
     var failedIdentifiers = Set<String>()
-    for request in requests {
+    for request in requestsToAdd {
       guard !Task.isCancelled else { return }
       do {
         try await center.add(request)
@@ -708,6 +719,22 @@ final class AppStore: ObservableObject {
       persistQuoteCycleState()
     }
     notificationStatus = failedIdentifiers.isEmpty ? t("reminderSaved") : t("reminderFailed")
+  }
+
+  private func notificationRequest(
+    _ pending: UNNotificationRequest,
+    matches desired: UNNotificationRequest
+  ) -> Bool {
+    guard
+      pending.content.title == desired.content.title,
+      pending.content.body == desired.content.body,
+      let pendingTrigger = pending.trigger as? UNCalendarNotificationTrigger,
+      let desiredTrigger = desired.trigger as? UNCalendarNotificationTrigger
+    else {
+      return false
+    }
+    return pendingTrigger.repeats == desiredTrigger.repeats &&
+      pendingTrigger.dateComponents == desiredTrigger.dateComponents
   }
 
   private func makeReminderRequests(now: Date = Date()) -> [UNNotificationRequest] {
@@ -1522,7 +1549,7 @@ struct CategoriesView: View {
             }
           }
 
-          VStack(spacing: 12) {
+          LazyVStack(spacing: 12) {
             ForEach(store.visibleQuotes) { quote in
               QuoteCard(quote: quote)
             }

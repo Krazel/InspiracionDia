@@ -331,6 +331,12 @@ Resuelve la antigua PEND-013:
 - La autorización no incluye testers externos, Beta App Review, App Review, publicación pública, activación de Universal Links, productos StoreKit ni cambios comerciales.
 - Resultado: commit `b629bcd`; run `32765814357` completó tests, análisis, firma, archive, exportación y subida sin errores; Apple marcó build 26 como `VALID` y run `32766825710` la asignó a `Warm Words Internal`.
 
+### DEC-045 — Corrección de rendimiento y build 27 autorizadas
+
+- El propietario informó el 2026-08-31 de una lentitud clara en build 26 y autorizó corregirla y subir la siguiente versión a TestFlight.
+- La corrección aprobada es técnica y reversible: renderizado perezoso de las tarjetas, planificación del ciclo en una sola ordenación y actualización diferencial de notificaciones pendientes. Debe conservar diseño, contenido, selección, historial y comportamiento visible.
+- Se mantiene excepcionalmente el tren existente 1.0 y se usa build 27. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

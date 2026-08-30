@@ -224,12 +224,27 @@ enum QuoteCyclePlanner {
     count: Int
   ) -> [String] {
     guard count > 0 else { return [] }
+    let orderedIDs = orderedUniqueIDs(candidateIDs)
+    guard !orderedIDs.isEmpty else { return [] }
+
     var sequence: [String] = []
-    var nextHistory = history
+    sequence.reserveCapacity(count)
+    let eligibleIDs = Set(orderedIDs)
+    var uniqueHistory: [String] = []
+    uniqueHistory.reserveCapacity(history.count + count)
+    var knownHistoryIDs = Set<String>()
+    for id in history where knownHistoryIDs.insert(id).inserted {
+      uniqueHistory.append(id)
+    }
+
     for _ in 0..<count {
-      guard let step = next(candidateIDs: candidateIDs, history: nextHistory) else { break }
-      sequence.append(step.quoteID)
-      nextHistory = step.history
+      let nextID = orderedIDs.first(where: { !knownHistoryIDs.contains($0) }) ??
+        uniqueHistory.first(where: { eligibleIDs.contains($0) }) ??
+        orderedIDs[0]
+      sequence.append(nextID)
+      knownHistoryIDs.insert(nextID)
+      uniqueHistory.removeAll { $0 == nextID }
+      uniqueHistory.append(nextID)
     }
     return sequence
   }

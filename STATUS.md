@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
-Actualizado: **2026-08-24**
-Estado: **Warm Words 1.0 build 26 válida y asignada al grupo interno de TestFlight; 720 frases por idioma verificadas**
+Actualizado: **2026-08-31**
+Estado: **Corrección de rendimiento preparada para Warm Words 1.0 build 27; commit, firma y TestFlight interno autorizados**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -10,6 +10,7 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 26 se compiló desde el commit verificado `b629bcd`.
 - El propietario autorizó expresamente commit, push, compilación, firma y subida de build 25 a TestFlight el 2026-08-24. No se creó release, no se envió a App Review y no se publicó en App Store.
 - El propietario autorizó expresamente el 2026-08-24 commit, push, compilación, firma y subida interna del candidato ampliado como **1.0 (26)**. Esta autorización no comprende testers externos, App Review ni publicación pública.
+- El propietario autorizó expresamente el 2026-08-31 corregir la regresión de rendimiento de build 26, hacer commit/push y compilar, firmar, subir y asignar **1.0 (27)** a TestFlight interno. No autorizó App Review ni publicación pública.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento siguen preservados; el manifest de tienda no se ha editado.
 - Android permanece intacto y fuera de alcance.
 - La app continúa con la navegación y el lenguaje visual existentes; no se añadió pantalla ni se abrió rediseño.
@@ -36,6 +37,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Los 360 pares añadidos están repartidos entre 12 categorías, mantienen IDs paralelos `031–060` y pasaron dos revisiones editoriales por grupo más una revisión integrada del catálogo completo.
 - Las fuentes canónicas `data/quotes.js` y `data/quotes-en.js` y los recursos runtime se regeneraron de forma determinista. El validador exige 720 elementos por idioma, 60 por categoría, longitudes de 32–138 caracteres, paridad exacta y ausencia de duplicados o solapamientos altos.
 - Este cambio no altera pantallas, navegación, persistencia, permisos, privacidad, SDKs ni Android. Build 26 está procesada como válida y disponible para el grupo interno de TestFlight.
+
+## Corrección de rendimiento preparada para build 27
+
+- La causa principal era que Categorías construía inmediatamente hasta 720 `QuoteCard` cuando estaba seleccionado `All`. La lista conserva idéntico aspecto y pasa a `LazyVStack`, por lo que solo crea las tarjetas cercanas al área visible.
+- `QuoteCyclePlanner.sequence` ordenaba y deduplicaba los 720 IDs en cada una de las 60 iteraciones de la cola. Ahora calcula el orden una vez y conserva exactamente la misma secuencia y regla sin repetición.
+- Al volver la app a primer plano se volvían a registrar hasta 60 notificaciones aunque ya fueran idénticas. Ahora se comparan identificador, título, cuerpo y fecha y solo se añaden solicitudes nuevas o modificadas.
+- Se añadieron pruebas para el planificador con 720 candidatos y para el orden persistido, y el cierre estático exige las tres protecciones. No cambia UI, contenido, permisos, datos, privacidad ni Android.
 
 ## Enlace inteligente posterior a build 20
 
