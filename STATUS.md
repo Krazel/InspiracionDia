@@ -281,7 +281,7 @@ La auditoría histórica está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-0
 
 ## Candidato App Store — build 30
 
-- Las páginas bilingües `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` están publicadas, responden HTTP 200 y usan el alias público `coderappskrazel+warmwords@gmail.com`.
+- Las páginas bilingües `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` están publicadas, responden HTTP 200 y usan el correo verificado `coderappskrazel@gmail.com`.
 - Build 30 añade accesos a Privacidad y Soporte dentro de Ajustes sin rediseñar la pantalla existente.
 - El run `33430292504` pasó 41 pruebas unitarias, 2 pruebas UI de Ajustes, Analyze Release, firma, archive, inspección, exportación, validación y upload. La IPA pesa 6.417.481 bytes y tiene SHA-256 `8a5418e81653cf4e6669b7003aa1cd9ddbf38b4ef98568c5211c9d1d701660f5`.
 - App Store Connect muestra build 30 como `Ready to Submit` y asignada a `Warm Words Internal`; el run `33431522703` confirmó la asignación.

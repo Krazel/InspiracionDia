@@ -63,7 +63,7 @@ Do not publish the repository, public issue tracker, owner's personal accounts, 
 
 ## Verified discrepancies and release gates
 
-1. `https://krazel.github.io/warm-words/privacy/` and `/support/` returned HTTP 200 on 2026-08-31 and expose only the product identity plus `coderappskrazel+warmwords@gmail.com`. The app links to both pages from Settings. The smart-share landing remains outside 1.0.
+1. `https://krazel.github.io/warm-words/privacy/` and `/support/` returned HTTP 200 on 2026-08-31 and expose only the product identity plus the verified support address `coderappskrazel@gmail.com`. The app links to both pages from Settings. The smart-share landing remains outside 1.0.
 2. Read-only inspection of App Store Connect on 2026-08-31 confirmed that the English and Spanish versions still use GitHub Issues as Support URL and the privacy field uses a repository-file URL. Marketing URL, copyright, build selection, and all four private App Review contact fields are empty. Replace the provisional URLs and fill the required private review fields only at the authorized submission boundary.
 3. The dedicated support alias is published, but actual inbound delivery has not been tested from an external sender.
 4. App Store Privacy currently shows “No data collected,” no privacy-choices URL, and an available Publish action, confirming it remains unpublished. The answer was rechecked against the build 30 source and signed archive evidence and remains accurate.

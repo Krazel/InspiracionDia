@@ -19,7 +19,7 @@ Estado: la localización Español (España) existe en App Store Connect. La buil
 - **Apple ID:** `6800058458`
 - **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
-- **URL de soporte:** `https://krazel.github.io/warm-words/support/` — activa y bilingüe; alias público `coderappskrazel+warmwords@gmail.com`
+- **URL de soporte:** `https://krazel.github.io/warm-words/support/` — activa y bilingüe; contacto público verificado `coderappskrazel@gmail.com`
 - **URL de privacidad:** `https://krazel.github.io/warm-words/privacy/` — activa y bilingüe
 - **URL de marketing:** dejar vacía en 1.0
 - **URL de opciones de privacidad:** dejar vacía; no hay cuenta, datos recopilados por el desarrollador ni controles de privacidad remotos
