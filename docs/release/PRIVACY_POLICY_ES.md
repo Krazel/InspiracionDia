@@ -1,35 +1,40 @@
 # Política de privacidad
 
-Fecha de entrada en vigor: 10 de agosto de 2026
+Fecha de entrada en vigor: 12 de agosto de 2026
 
-`Warm Words` está diseñada para funcionar sin una cuenta ni un servicio en línea.
+Warm Words funciona sin cuenta ni servicio en línea.
 
-## Recopilación de datos
+## Información tratada por la app
 
-El desarrollador no recopila, recibe, vende ni utiliza datos personales procedentes de la app. La app no contiene publicidad, analítica, seguimiento ni kits de desarrollo de terceros.
+Warm Words guarda la siguiente información localmente en el iPhone del usuario:
 
-## Datos guardados en el dispositivo
+- favoritos;
+- idioma y categorías elegidas;
+- estado, hora, días y categorías de los recordatorios;
+- frases personales creadas por el usuario; y
+- preferencias de primer inicio y de la app; y
+- historial local del ciclo de frases y asignaciones programadas para evitar repeticiones.
 
-Los favoritos, la configuración de recordatorios, los días seleccionados, las categorías elegidas, la preferencia de idioma y las frases personales se guardan localmente en el dispositivo del usuario. El desarrollador no puede acceder a esta información. Al eliminar la app también pueden eliminarse estos datos locales, de acuerdo con el funcionamiento normal de iOS.
+Esta información no se transmite al desarrollador ni a un servidor de Warm Words. La app no contiene publicidad, analítica, seguimiento, sistema de cuentas, sincronización en la nube ni kits de desarrollo de terceros.
+
+Los datos locales permanecen en el dispositivo hasta que el usuario los cambia o elimina, restablece el ajuste correspondiente o desinstala la app. Las copias de seguridad del iPhone dependen de la configuración de Apple y del dispositivo del usuario.
 
 ## Notificaciones
 
-Cuando el usuario confirma un recordatorio, la app solicita a iOS permiso para enviar notificaciones y las programa localmente en los días elegidos. Las preferencias pueden modificarse desde la app o desde Ajustes de iOS.
+Warm Words solo solicita permiso de notificaciones después de que el usuario elija configurar o probar un recordatorio. iOS programa y entrega los recordatorios localmente. El usuario puede cambiar el horario en Warm Words y retirar el permiso desde Ajustes de iOS.
 
 ## Compartir
 
-Cuando el usuario decide compartir una frase, la app abre la hoja estándar de compartir de iOS. El usuario elige el destino. La información compartida mediante otra app se rige por las prácticas de privacidad de ese servicio; el desarrollador no recibe el contenido compartido.
-
-## Menores
-
-La app no está dirigida específicamente a menores y no recopila conscientemente datos personales de ninguna persona.
-
-## Cambios
-
-Si cambian las prácticas de datos de la app, esta política y la información de privacidad de App Store se actualizarán antes de distribuir la versión modificada.
+Cuando el usuario selecciona Compartir, Warm Words crea una imagen de la tarjeta y abre la hoja estándar de compartir de iOS. El usuario decide si quiere enviarla y a qué destino. Warm Words no recibe el destino elegido, los datos del destinatario ni el contenido compartido. El destino seleccionado trata la imagen conforme a sus propias condiciones y política de privacidad.
 
 ## Contacto
 
-Las preguntas sobre esta política pueden enviarse mediante la [página de soporte de Warm Words](https://github.com/Krazel/InspiracionDia/issues). No incluyas información privada o sensible en una solicitud pública de soporte.
+Las consultas sobre privacidad pueden enviarse mediante la [página de soporte de Warm Words](https://krazel.github.io/warm-words/support/).
 
-Esta política debe contrastarse con el archivo firmado final antes de enviar la app a revisión.
+La página de soporte y su dirección de correo exclusiva deben estar activas antes de usar esta política en App Store Connect. No deben sustituirse por un repositorio público, una cuenta personal ni datos personales de contacto.
+
+## Cambios
+
+Si una versión futura cambia estas prácticas, esta política y las respuestas de privacidad de App Store se actualizarán antes de distribuirla.
+
+Puerta de lanzamiento: verificar esta política con el mismo archive firmado que se envíe a Apple.

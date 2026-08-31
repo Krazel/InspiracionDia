@@ -1,46 +1,33 @@
-# Soporte
+# Soporte de Warm Words
 
-## Warm Words
+Para solicitar ayuda, enviar comentarios o comunicar un problema de accesibilidad, escribe a la dirección exclusiva de soporte de Warm Words:
 
-Para solicitar ayuda, enviar comentarios o comunicar un problema de accesibilidad, abre una solicitud en la [página de soporte de Warm Words](https://github.com/Krazel/InspiracionDia/issues).
+`[DIRECCIÓN DE SOPORTE EXCLUSIVA OBLIGATORIA ANTES DE PUBLICAR]`
 
-Al informar de un problema, incluye:
+Incluye solo la información necesaria para entender el problema: versión de la app, versión de iOS y una descripción breve. El modelo de iPhone solo es útil cuando el problema parece depender del dispositivo. No envíes contraseñas, información de pago, frases personales, capturas con información privada ni otros datos sensibles.
 
-- modelo de iPhone;
-- versión de iOS;
-- versión de la app;
-- una descripción breve de lo ocurrido y del resultado esperado.
-
-No incluyas información privada o sensible.
+Esta dirección debe crearse y probarse antes de publicar la página. No debe sustituirse por un repositorio, un sistema público de incidencias, una cuenta personal ni el contacto privado de App Review.
 
 ## Preguntas frecuentes
 
-### ¿Cómo activo el recordatorio diario?
+### ¿Cómo activo los recordatorios?
 
-En el primer inicio, elige una hora y los días que quieras y selecciona Activar recordatorio. Los siete días aparecen seleccionados y recomendados. Después puedes abrir Ajustes para cambiar el recordatorio, la hora, los días o las categorías y guardar los cambios. iOS solo solicita permiso después de una de estas acciones explícitas.
+En el primer inicio, elige una hora y los días y selecciona Activar recordatorio. Después puedes abrir Ajustes para cambiar el horario o las categorías. iOS solo solicita permiso después de que elijas configurar o probar un recordatorio.
 
 ### ¿Por qué han dejado de llegar los recordatorios?
 
-Comprueba el permiso de notificaciones en Ajustes de iOS y abre de nuevo la app para que renueve la programación local.
+Comprueba el acceso a notificaciones en Ajustes de iOS y abre de nuevo Warm Words para renovar la programación local. Warm Words programa recordatorios por adelantado; abrir la app periódicamente renueva esa programación.
 
 ### ¿Dónde se guardan los favoritos y las frases personales?
 
-Permanecen localmente en el dispositivo. La app no utiliza cuentas ni sincronización en la nube.
+Permanecen en el iPhone. Warm Words no utiliza cuentas ni sincronización en la nube.
 
 ### ¿Cómo cambio el idioma?
 
-Abre Ajustes y elige English o Español. La interfaz, el catálogo incluido, las fechas, los días y los próximos recordatorios cambian juntos. Los favoritos y las frases personales no se modifican.
+Abre Ajustes y elige English o Español. La interfaz incluida, el catálogo, las fechas, los días y los próximos recordatorios cambian juntos. Las frases personales se mantienen exactamente como fueron escritas.
 
-### ¿Puedo compartir una frase personal?
+### ¿Cómo comparto o elimino una frase personal?
 
-Sí. Usa Compartir en la frase personal para abrir la hoja estándar de iOS. Warm Words genera una tarjeta visual; no transfiere datos de la app ni crea una cuenta.
+Abre Personal. Compartir crea una tarjeta visual y abre la hoja de compartir de iOS. Eliminar borra tu frase local después de confirmarlo. La build 25 no adjunta un enlace inteligente ni importa una frase personal compartida en otra instalación.
 
-### ¿Cómo elimino una frase personal?
-
-Abre la categoría Personal, selecciona Eliminar en la frase y confirma.
-
-### ¿Por qué pueden detenerse los recordatorios después de mucho tiempo?
-
-Warm Words programa recordatorios locales por adelantado. Abre la app periódicamente para renovar la programación, especialmente después de cambiar de zona horaria o de modificar los permisos.
-
-Esta página debe revisarse después del QA final en dispositivo.
+Puerta de lanzamiento: verificar esta página con la build final probada en dispositivo y activar la dirección exclusiva de soporte antes de usar esta URL en App Store Connect.

@@ -1,35 +1,40 @@
 # Privacy Policy
 
-Effective date: August 10, 2026
+Effective date: August 12, 2026
 
-`Warm Words` is designed to work without an account or online service.
+Warm Words works without an account or online service.
 
-## Data collection
+## Information handled by the app
 
-The developer does not collect, receive, sell, or use personal data from the app. The app contains no advertising, analytics, tracking, or third-party software development kits.
+Warm Words stores the following information locally on the user's iPhone:
 
-## Data stored on the device
+- favorites;
+- language and category choices;
+- reminder status, time, weekdays, and delivery categories;
+- personal quotes created by the user; and
+- first-run and app preference settings; and
+- local quote-cycle history and scheduled quote assignments used to avoid repeats.
 
-Favorites, reminder settings, selected weekdays, category choices, language preference, and personal quotes are stored locally on the user's device. The developer cannot access this information. Removing the app may remove this local data according to normal iOS behavior.
+This information is not transmitted to the developer or to a Warm Words server. The app contains no advertising, analytics, tracking, account system, cloud synchronization, or third-party software development kit.
+
+Local app data remains on the device until the user changes or deletes it, resets the relevant setting, or removes the app. iPhone backups are controlled by the user's Apple and device settings.
 
 ## Notifications
 
-If the user confirms a reminder, the app asks iOS for notification permission and schedules notifications locally on the chosen weekdays. Notification preferences can be changed in the app or in iOS Settings.
+Warm Words asks for notification permission only after the user chooses to set or test a reminder. Reminders are scheduled and delivered locally by iOS. The user can change the schedule in Warm Words and can revoke notification access in iOS Settings.
 
 ## Sharing
 
-When the user chooses to share a quote, the app opens the standard iOS share sheet. The user selects the destination. Any information shared through another app is governed by that service's privacy practices; the developer does not receive the shared content.
-
-## Children
-
-The app is not directed specifically to children and does not knowingly collect personal data from anyone.
-
-## Changes
-
-If the app's data practices change, this policy and the App Store privacy information will be updated before the changed version is distributed.
+When the user selects Share, Warm Words creates a quote-card image and presents the standard iOS share sheet. The user chooses whether and where to send it. Warm Words does not receive the selected destination, recipient details, or shared content. The selected destination handles the image under its own terms and privacy policy.
 
 ## Contact
 
-Questions about this policy can be submitted through the [Warm Words support page](https://github.com/Krazel/InspiracionDia/issues). Do not include private or sensitive information in a public support request.
+Privacy questions can be sent through the [Warm Words support page](https://krazel.github.io/warm-words/support/).
 
-This policy must be reviewed against the final signed archive before App Review.
+The support page and its dedicated support email address must be live before this policy is used in App Store Connect. Do not replace them with a public repository, personal account, or personal contact details.
+
+## Changes
+
+If a future version changes these practices, this policy and the App Store privacy answers will be updated before that version is distributed.
+
+Release gate: verify this policy against the exact signed archive submitted to Apple.

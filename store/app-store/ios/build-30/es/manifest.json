@@ -1,0 +1,62 @@
+[
+  {
+    "attachments" : [
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "1AF1E149-702B-4C42-8CBA-82D1238C96A6.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "06-settings-es_0_C3DB462C-18E9-4062-91DB-0B64314F92A3.png",
+        "timestamp" : 1788207839.544
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "B82591D0-8206-4EF1-BD90-C565614424D2.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "05-personal-es_0_992F3B3B-F3CF-4EFA-9E1A-8ADF0A9964B9.png",
+        "timestamp" : 1788207826.541
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "494B4A0C-B580-4CC5-AF6D-F566CC174965.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "04-favorites-es_0_4C427E4B-1BBF-479C-8744-62BBB71E0DE7.png",
+        "timestamp" : 1788207808.612
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "6A62C6C2-B745-4FAF-94A9-FE5B9B22C5C4.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "03-motivation-es_0_C2CAC20F-5F30-4359-8B2E-C54DB7F38C91.png",
+        "timestamp" : 1788207802.865
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "E4547706-1FD6-4A54-87E9-9B86CC71F5C5.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "02-categories-es_0_E7DEA590-B836-48F6-A3D0-B3756E8A544C.png",
+        "timestamp" : 1788207797.814
+      },
+      {
+        "configurationName" : "Test Scheme Action",
+        "deviceId" : "3930913A-06E9-4C13-BDAC-95464C28C480",
+        "deviceName" : "Warm Words Store Capture",
+        "exportedFileName" : "0D5FA409-9A5C-4AC0-ACE9-0BA7A864F23E.png",
+        "isAssociatedWithFailure" : false,
+        "suggestedHumanReadableName" : "01-today-es_0_741BF9C5-553B-48D5-843B-3505D5A8FD96.png",
+        "timestamp" : 1788207792.644
+      }
+    ],
+    "testIdentifier" : "StoreScreenshotUITests/testCaptureSpanishStoreScreenshots()",
+    "testIdentifierURL" : "test://com.apple.xcode/InspiracionDia/InspiracionDiaUITests/StoreScreenshotUITests/testCaptureSpanishStoreScreenshots"
+  }
+]

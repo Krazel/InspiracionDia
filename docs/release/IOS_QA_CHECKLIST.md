@@ -23,25 +23,29 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 
 - [ ] Clean install on an iPhone whose preferred language is Spanish opens in Spanish; English and other preferred languages open in English.
 - [ ] Clean install in either language opens without a crash, blank state, raw localization key, or mixed-language built-in copy.
-- [ ] Clean install shows one-screen reminder setup with 07:30 and all seven days selected; no notification prompt appears before Set reminder.
+- [ ] Clean install opens the category-interest screen first with only the 12 bundled categories; all are selected and no time/day controls or notification prompt are visible.
+- [ ] Tapping a category while `All categories` is active switches to a specific selection and deselects it; restoring all 12 canonicalizes the draft back to `All categories`.
+- [ ] `Continue` opens the reminder-schedule screen with 07:30 and all seven days selected, without persisting or requesting permission; `Back` preserves the category draft.
+- [ ] A specific selection with zero categories cannot continue, and an enabled first-run reminder cannot be confirmed with zero days.
+- [ ] Updating from build 22 does not repeat the first-install onboarding; validating the two-step flow requires deleting app data and installing clean.
 - [ ] Not now completes onboarding, leaves reminders off, and does not ask for permission.
 - [ ] `Warm Words` and the approved C — Protected thought icon are correct on the Home Screen, Spotlight/Search, notifications, share sheet, and system settings.
 - [ ] The icon remains clear at small sizes and in default, dark, tinted, and clear system presentations on iOS 16 and iOS 26 where each presentation is available.
 - [ ] Today shows a valid date, quote, and category in the selected language.
 - [ ] Today shows the complete quote card, favorite/share actions, and tab bar without scrolling at the default text size on the smallest supported iPhone.
-- [ ] Tomorrow/date override selects the next deterministic quote and the sequence crosses year end without resetting.
-- [ ] All 12 categories open and together expose 360 unique quotes in English and 360 in Spanish.
+- [ ] Today keeps the same quote for the whole local day; later days exhaust the eligible selected-category pool before reusing the least-recently shown quote, including across relaunch and year end.
+- [ ] All 12 categories open and together expose 720 unique quotes in English and 720 in Spanish, 60 per category.
 - [ ] Settings offers `English / Español`; changing it updates the current screen immediately and the choice survives relaunch.
 - [ ] Switching English → Spanish → English preserves the current category, bundled favorites, reminder preferences, and personal quotes.
 - [ ] Personal quotes remain exactly as written instead of being machine-translated.
 - [ ] Dates, day chips, VoiceOver weekday names, onboarding, Settings, Categories, Favorites, dialogs, and validation messages follow the selected language.
 - [ ] Save and unsave work from Today, Categories, and Favorites and survive relaunch.
-- [ ] Sharing from Today and a list opens the iOS share sheet with a complete visual quote card and `Warm Words` branding.
+- [ ] Sharing from Today and a list opens the iOS share sheet with a complete visual quote card and `Warm Words` branding. Build 25 is expected to share the image only.
 - [ ] A whitespace-only personal quote cannot be added.
 - [ ] A personal quote over 240 characters is rejected with a visible counter/error and the sheet remains usable with the keyboard open.
 - [ ] A valid personal quote is trimmed, saved, shown under Personal, and survives relaunch.
 - [ ] New personal quotes go directly to Personal; the form does not expose category creation.
-- [ ] A personal quote shares through the standard iOS share sheet as a visual quote card.
+- [ ] A personal quote shares through the standard iOS share sheet as a visual quote card. Build 25 is expected to share the image only.
 - [ ] Legacy personal categories and their quotes remain readable after an upgrade, without exposing new category creation.
 - [ ] Deleting a personal quote requires confirmation, removes it from favorites, and survives relaunch.
 - [ ] Existing valid legacy favorites and personal quotes survive an upgrade install.
@@ -58,7 +62,8 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 - [ ] All seven days are the default and clearly recommended; an enabled reminder cannot be saved with zero days.
 - [ ] Closing Settings without Save discards toggle, time, day, and category drafts without changing pending requests.
 - [ ] Saving rapid time/day/category changes leaves only the final requested schedule.
-- [ ] Selecting categories changes the scheduled quote pool; selecting none uses all categories.
+- [ ] `All categories` schedules from every bundled category; a specific selection changes the scheduled quote pool and cannot be saved empty while reminders are enabled.
+- [ ] The Settings gear presents the root-owned full-screen Settings route; its back control returns to Today, and open → close → reopen works repeatedly after switching tabs, backgrounding, and changing language.
 - [ ] Changing time zone or returning from inactive refreshes the schedule.
 - [ ] Spring-forward and fall-back behavior matches the unit-test policy.
 - [ ] Disabling reminders removes only this app's daily reminder requests.
@@ -75,11 +80,15 @@ Use at least one device on the minimum supported iOS 16 release and one on the c
 ## Store-material gate
 
 - [ ] Rights to every quote and bundled background are confirmed in writing by the owner.
-- [ ] Public privacy and support pages use the approved name and real contact information.
-- [ ] The public share landing opens the App Store URL `https://apps.apple.com/app/id6800058458` when the app is not installed.
-- [ ] The Universal Link opens Warm Words when installed; the AASA file declares `B2X6D3A9J9.com.dmkr.inspiraciondia.B2X6D3A9J9` and the signed app contains `applinks:krazel.github.io`.
-- [ ] App Privacy answers match the final archive and third-party component scan.
+- [ ] Dedicated public privacy and support pages return 200, use the approved name, and expose only a tested support alias—not a repository, issue tracker, personal account, home address, personal phone, or personal email.
+- [ ] Before activating smart links in a later build, the public share landing returns 200 and opens `https://apps.apple.com/app/id6800058458` when the app is not installed.
+- [ ] Before activating smart links, the Universal Link, AASA, signed Associated Domains entitlement, exact bundled-quote routing, explicit personal-quote import, deduplication, malformed-payload rejection, onboarding deferral, and no-app fallback are all verified end to end.
+- [ ] Notes, Messages, WhatsApp, Mail, and at least one additional share destination are checked on a physical device; build 25 must consistently provide the image and must not be documented as attaching a link.
+- [ ] `docs/release/DATA_INVENTORY_1_0.md`, public policies, and App Privacy answers match the exact final archive and third-party component scan.
 - [ ] Required-reason API report contains only declared uses or is reconciled.
+- [ ] The final target requests only notification permission; any new permission, SDK, network request, StoreKit product, analytics, or advertising has been removed or disclosed exactly.
+- [ ] Marketing URL, privacy-choices URL, and other optional public fields are blank unless the final build has a verified need for them.
+- [ ] The private App Review contact is accurate and is not copied into public support or metadata.
 - [ ] Updated age-rating questionnaire, category, copyright, territories, price, DSA status, and manual release mode are complete.
 - [ ] Five English portrait screenshots are captured from the verified signed build at an accepted 6.9-inch size.
 - [ ] If a Spanish App Store localization is enabled, its metadata and screenshots are prepared from the same verified bilingual build; they are not inferred from the English set.

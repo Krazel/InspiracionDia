@@ -11,7 +11,7 @@ const categoryIds = new Set(CATEGORIES.map((category) => category.id));
 const quoteCategoryIds = CATEGORIES.map((category) => category.id).filter((id) => id !== "hoy");
 const errors = [];
 const expectedSpanishCategoryNames = new Map([
-  ["animo", "Ánimo"],
+  ["animo", "Motivación"],
   ["foco", "Foco"],
   ["calma", "Calma"],
   ["disciplina", "Disciplina"],
@@ -93,22 +93,22 @@ function validateQuotes(label, quotes) {
 }
 
 function validateCatalogShape(label, quotes) {
-  if (quotes.length !== quoteCategoryIds.length * 30) {
-    errors.push(`${label} catalog must contain exactly 360 quotes; found ${quotes.length}`);
+  if (quotes.length !== quoteCategoryIds.length * 60) {
+    errors.push(`${label} catalog must contain exactly 720 quotes; found ${quotes.length}`);
   }
   for (const category of quoteCategoryIds) {
     const categoryQuotes = quotes.filter((quote) => quote.category === category);
-    if (categoryQuotes.length !== 30) {
-      errors.push(`${label} category ${category} must contain 30 quotes; found ${categoryQuotes.length}`);
+    if (categoryQuotes.length !== 60) {
+      errors.push(`${label} category ${category} must contain 60 quotes; found ${categoryQuotes.length}`);
       continue;
     }
     const expectedIds = Array.from(
-      { length: 30 },
+      { length: 60 },
       (_, index) => `${category}-${String(index + 1).padStart(3, "0")}`,
     );
     const actualIds = categoryQuotes.map(({ id }) => id);
     if (actualIds.some((id, index) => id !== expectedIds[index])) {
-      errors.push(`${label} category ${category} IDs must be ordered from 001 to 030`);
+      errors.push(`${label} category ${category} IDs must be ordered from 001 to 060`);
     }
   }
 }

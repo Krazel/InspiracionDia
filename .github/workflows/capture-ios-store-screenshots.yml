@@ -10,17 +10,27 @@ jobs:
   capture:
     if: github.actor == github.repository_owner
     runs-on: macos-26
-    timeout-minutes: 30
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - language: English
+            slug: en
+            test_name: testCaptureEnglishStoreScreenshots
+          - language: Spanish
+            slug: es
+            test_name: testCaptureSpanishStoreScreenshots
 
     steps:
       - name: Checkout approved branch
         uses: actions/checkout@v5
 
-      - name: Require the approved iOS branch
+      - name: Require an approved iOS source branch
         shell: bash
         run: |
           set -euo pipefail
-          test "${GITHUB_REF_NAME}" = "agent/warm-words-ios-ipa"
+          test "${GITHUB_REF_NAME}" = "main" || test "${GITHUB_REF_NAME}" = "agent/warm-words-ios-ipa"
 
       - name: Verify Xcode and install XcodeGen
         shell: bash
@@ -37,10 +47,8 @@ jobs:
           node scripts/check-ios-closeout.mjs
           (cd native-ios && xcodegen generate)
 
-      - name: Capture English and Spanish runtime screenshots
+      - name: Capture localized runtime screenshots
         shell: bash
-        env:
-          CAPTURE_STORE_SCREENSHOTS: "1"
         run: |
           set -euo pipefail
           DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro-Max"
@@ -52,48 +60,35 @@ jobs:
           }
           trap cleanup EXIT
 
-          mkdir -p build/store-screenshots
-          for LANGUAGE in English Spanish; do
-            if [ "${LANGUAGE}" = "English" ]; then
-              TEST_NAME="testCaptureEnglishStoreScreenshots"
-              SLUG="en"
-            else
-              TEST_NAME="testCaptureSpanishStoreScreenshots"
-              SLUG="es"
-            fi
+          xcrun simctl boot "${SIMULATOR_ID}"
+          xcrun simctl bootstatus "${SIMULATOR_ID}" -b
+          RESULT_PATH="build/store-screenshots/${{ matrix.slug }}.xcresult"
+          xcodebuild \
+            -project native-ios/InspiracionDia.xcodeproj \
+            -scheme InspiracionDia \
+            -destination "platform=iOS Simulator,id=${SIMULATOR_ID}" \
+            -derivedDataPath build/store-screenshot-derived \
+            -resultBundlePath "${RESULT_PATH}" \
+            -only-testing:"InspiracionDiaUITests/StoreScreenshotUITests/${{ matrix.test_name }}" \
+            CODE_SIGNING_ALLOWED=NO \
+            test
 
-            xcrun simctl shutdown "${SIMULATOR_ID}" 2>/dev/null || true
-            xcrun simctl erase "${SIMULATOR_ID}"
-            xcrun simctl boot "${SIMULATOR_ID}"
-            xcrun simctl bootstatus "${SIMULATOR_ID}" -b
-            RESULT_PATH="build/store-screenshots/${SLUG}.xcresult"
-            xcodebuild \
-              -project native-ios/InspiracionDia.xcodeproj \
-              -scheme InspiracionDia \
-              -destination "platform=iOS Simulator,id=${SIMULATOR_ID}" \
-              -derivedDataPath build/store-screenshot-derived \
-              -resultBundlePath "${RESULT_PATH}" \
-              -only-testing:"InspiracionDiaUITests/StoreScreenshotUITests/${TEST_NAME}" \
-              CODE_SIGNING_ALLOWED=NO \
-              test
+          OUTPUT_PATH="build/store-screenshots/${{ matrix.slug }}"
+          mkdir -p "${OUTPUT_PATH}"
+          xcrun xcresulttool export attachments \
+            --path "${RESULT_PATH}" \
+            --output-path "${OUTPUT_PATH}"
 
-            OUTPUT_PATH="build/store-screenshots/${SLUG}"
-            mkdir -p "${OUTPUT_PATH}"
-            xcrun xcresulttool export attachments \
-              --path "${RESULT_PATH}" \
-              --output-path "${OUTPUT_PATH}"
-          done
-
-          find build/store-screenshots -type f -name '*.png' -print
+          find "${OUTPUT_PATH}" -type f -name '*.png' -print
+          SCREENSHOT_COUNT="$(find "${OUTPUT_PATH}" -type f -name '*.png' | wc -l | tr -d ' ')"
+          test "${SCREENSHOT_COUNT}" -eq 6
 
       - name: Upload store screenshot evidence
         uses: actions/upload-artifact@v4
         with:
-          name: Warm-Words-App-Store-Screenshots-build-30
+          name: Warm-Words-App-Store-Screenshots-build-30-${{ matrix.slug }}
           path: |
-            build/store-screenshots/en/*.png
-            build/store-screenshots/es/*.png
-            build/store-screenshots/en/manifest.json
-            build/store-screenshots/es/manifest.json
+            build/store-screenshots/${{ matrix.slug }}/*.png
+            build/store-screenshots/${{ matrix.slug }}/manifest.json
           if-no-files-found: error
           retention-days: 7

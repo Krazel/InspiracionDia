@@ -8,10 +8,10 @@ export const CATEGORIES = [
   },
   {
     id: "animo",
-    name: "Ánimo",
+    name: "Motivación",
     color: "#F08A24",
     softColor: "#FFF0D9",
-    description: "Para levantar el paso."
+    description: "Para encontrar impulso y dar el siguiente paso."
   },
   {
     id: "foco",

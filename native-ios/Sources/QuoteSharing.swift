@@ -26,8 +26,12 @@ enum QuoteShareRenderer {
     renderer.scale = 1
     guard let image = renderer.uiImage else { return nil }
     var items: [Any] = [image]
-    if ShareLinkRoute.isPublicLinkEnabled {
-      items.append(ShareLinkRoute.landingPageURL)
+    let payload = quote.id.hasPrefix("custom-")
+      ? SharedQuotePayload.personal(text: quote.text, language: language)
+      : SharedQuotePayload.builtIn(id: quote.id, language: language)
+    if ShareLinkRoute.isPublicLinkEnabled,
+       let shareURL = ShareLinkRoute.shareURL(for: payload) {
+      items.append(shareURL)
     }
     return items
   }

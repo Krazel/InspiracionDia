@@ -34,6 +34,103 @@ final class AppLogicTests: XCTestCase {
     XCTAssertFalse(ShareLinkRoute.handles(URL(string: "https://krazel.github.io/warm-words/share-elsewhere")!))
   }
 
+  func testBuiltInShareLinkRoundTripsStableIDAndLanguage() throws {
+    let payload = SharedQuotePayload.builtIn(id: "animo-001", language: .es)
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(ShareLinkRoute.payload(from: url), payload)
+    XCTAssertEqual(url.host, "krazel.github.io")
+    XCTAssertEqual(url.path, "/warm-words/share")
+    XCTAssertTrue(url.fragment?.hasPrefix("ww=") == true)
+  }
+
+  func testPersonalShareLinkRoundTripsUnicodeWithoutServerQuery() throws {
+    let payload = SharedQuotePayload.personal(
+      text: "Respira: este paso también cuenta.",
+      language: .es
+    )
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(ShareLinkRoute.payload(from: url), payload)
+    XCTAssertNil(url.query)
+    XCTAssertNotNil(url.fragment)
+  }
+
+  func testPersonalShareLinkNormalizesAndRejectsUnsafeText() throws {
+    let decomposed = "Cafe\u{301}"
+    let normalizedURL = try XCTUnwrap(
+      ShareLinkRoute.shareURL(for: .personal(text: decomposed, language: .en))
+    )
+    XCTAssertEqual(
+      ShareLinkRoute.payload(from: normalizedURL)?.text,
+      decomposed.precomposedStringWithCanonicalMapping
+    )
+    XCTAssertNil(ShareLinkRoute.shareURL(for: .personal(text: "Hello\u{0000}", language: .en)))
+    XCTAssertNil(ShareLinkRoute.shareURL(for: .personal(text: "safe\u{202E}txt", language: .en)))
+    XCTAssertNil(
+      ShareLinkRoute.shareURL(
+        for: .personal(
+          text: String(repeating: "a", count: CustomQuoteValidator.maximumLength + 1),
+          language: .en
+        )
+      )
+    )
+  }
+
+  func testPersonalShareLinkPreservesMultipleLines() throws {
+    let payload = SharedQuotePayload.personal(
+      text: "Take one step.\r\nThen take another.",
+      language: .en
+    )
+    let url = try XCTUnwrap(ShareLinkRoute.shareURL(for: payload))
+    XCTAssertEqual(
+      ShareLinkRoute.payload(from: url)?.text,
+      "Take one step.\nThen take another."
+    )
+  }
+
+  func testPersonalShareImportCreatesOnceAndDeduplicatesUnicode() {
+    let created = SharedQuoteImporter.personalQuote(
+      text: "Café",
+      existing: [],
+      makeID: { "custom-test" }
+    )
+    XCTAssertTrue(created.isNew)
+    XCTAssertEqual(created.quote.id, "custom-test")
+    XCTAssertEqual(created.quote.category, "custom")
+
+    let duplicate = SharedQuoteImporter.personalQuote(
+      text: "Cafe\u{301}",
+      existing: [created.quote],
+      makeID: { "custom-should-not-be-used" }
+    )
+    XCTAssertFalse(duplicate.isNew)
+    XCTAssertEqual(duplicate.quote, created.quote)
+  }
+
+  func testShareLinkRejectsMalformedUnknownAndUnversionedPayloads() throws {
+    XCTAssertNil(ShareLinkRoute.payload(from: ShareLinkRoute.landingPageURL))
+    XCTAssertNil(
+      ShareLinkRoute.payload(
+        from: URL(string: "https://krazel.github.io/warm-words/share/#ww=not-base64")!
+      )
+    )
+    let future = SharedQuotePayload(
+      version: SharedQuotePayload.currentVersion + 1,
+      kind: .builtIn,
+      quoteID: "animo-001",
+      text: nil,
+      language: .en
+    )
+    XCTAssertNil(ShareLinkRoute.shareURL(for: future))
+    let validURL = try XCTUnwrap(
+      ShareLinkRoute.shareURL(for: .builtIn(id: "animo-001", language: .en))
+    )
+    let foreignURL = URL(string: validURL.absoluteString.replacingOccurrences(
+      of: "krazel.github.io",
+      with: "example.com"
+    ))!
+    XCTAssertNil(ShareLinkRoute.payload(from: foreignURL))
+  }
+
   func testWeekdayLabelsAreLocalizedWithoutChangingScheduleValues() {
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .en), "M")
     XCTAssertEqual(ReminderWeekday.monday.shortLabel(language: .es), "L")
@@ -52,6 +149,106 @@ final class AppLogicTests: XCTestCase {
 
   func testDailyQuoteRejectsEmptyCatalog() {
     XCTAssertNil(DailyQuoteSelector.index(for: Date(), count: 0, calendar: calendar))
+  }
+
+  func testQuoteCycleUsesEveryEligibleQuoteBeforeRepeating() {
+    let sequence = QuoteCyclePlanner.sequence(
+      candidateIDs: ["animo-001", "foco-001", "calma-001"],
+      history: [],
+      count: 4
+    )
+    XCTAssertEqual(Set(sequence.prefix(3)).count, 3)
+    XCTAssertEqual(sequence[3], sequence[0])
+  }
+
+  func testQuoteCycleContinuesFromPersistedHistory() throws {
+    let first = try XCTUnwrap(
+      QuoteCyclePlanner.next(candidateIDs: ["a", "b", "c"], history: [])
+    )
+    let second = try XCTUnwrap(
+      QuoteCyclePlanner.next(candidateIDs: ["a", "b", "c"], history: first.history)
+    )
+    XCTAssertNotEqual(first.quoteID, second.quoteID)
+    XCTAssertEqual(Array(second.history.suffix(2)), [first.quoteID, second.quoteID])
+  }
+
+  func testQuoteCyclePreservesHistoryAcrossCategoryChanges() throws {
+    let priorHistory = ["animo-001", "foco-001", "animo-002"]
+    let focusOnly = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["foco-001", "foco-002"],
+        history: priorHistory
+      )
+    )
+    XCTAssertEqual(focusOnly.quoteID, "foco-002")
+    XCTAssertTrue(focusOnly.history.contains("animo-001"))
+    XCTAssertTrue(focusOnly.history.contains("animo-002"))
+  }
+
+  func testQuoteCycleReminderSequenceDoesNotRepeatBeforeExhaustion() {
+    let ids = (1...60).map { "foco-\(String(format: "%03d", $0))" }
+    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 120)
+    XCTAssertEqual(sequence.count, 120)
+    XCTAssertEqual(Set(sequence.prefix(60)).count, 60)
+    XCTAssertEqual(Array(sequence.prefix(60)), Array(sequence.suffix(60)))
+  }
+
+  func testQuoteCycleLargeCatalogPlansReminderWindowWithoutRepeating() {
+    let ids = (1...720).map { "quote-\(String(format: "%03d", $0))" }
+    let sequence = QuoteCyclePlanner.sequence(candidateIDs: ids, history: [], count: 60)
+    XCTAssertEqual(sequence.count, 60)
+    XCTAssertEqual(Set(sequence).count, 60)
+  }
+
+  func testQuoteCycleSequencePreservesLeastRecentlySeenOrder() {
+    XCTAssertEqual(
+      QuoteCyclePlanner.sequence(
+        candidateIDs: ["a", "b", "c"],
+        history: ["outside", "b", "a", "c", "b"],
+        count: 4
+      ),
+      ["b", "a", "c", "b"]
+    )
+  }
+
+  func testQuoteCycleRejectsEmptyCandidates() {
+    XCTAssertNil(QuoteCyclePlanner.next(candidateIDs: [], history: ["old"]))
+    XCTAssertTrue(QuoteCyclePlanner.sequence(candidateIDs: [], history: [], count: 60).isEmpty)
+  }
+
+  func testQuoteCycleChoosesLeastRecentlySeenAfterExhaustion() throws {
+    let next = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["calma-001", "calma-002", "calma-003"],
+        history: ["calma-002", "calma-001", "calma-003"]
+      )
+    )
+    XCTAssertEqual(next.quoteID, "calma-002")
+    XCTAssertEqual(Array(next.history.suffix(3)), ["calma-001", "calma-003", "calma-002"])
+  }
+
+  func testQuoteCycleSanitizesDuplicateCandidatesAndHistory() throws {
+    let next = try XCTUnwrap(
+      QuoteCyclePlanner.next(
+        candidateIDs: ["a", "a", "b"],
+        history: ["outside", "a", "a"]
+      )
+    )
+    XCTAssertEqual(next.quoteID, "b")
+    XCTAssertEqual(next.history.filter { $0 == "a" }.count, 1)
+    XCTAssertEqual(next.history.filter { $0 == "b" }.count, 1)
+    XCTAssertTrue(next.history.contains("outside"))
+  }
+
+  func testScheduledQuoteAssignmentRoundTripsThroughPersistenceEncoding() throws {
+    let assignment = ScheduledQuoteAssignment(
+      quoteID: "foco-001",
+      deliveryDate: try XCTUnwrap(
+        calendar.date(from: DateComponents(year: 2026, month: 8, day: 24, hour: 7, minute: 30))
+      )
+    )
+    let data = try JSONEncoder().encode([assignment])
+    XCTAssertEqual(try JSONDecoder().decode([ScheduledQuoteAssignment].self, from: data), [assignment])
   }
 
   func testReminderTimeMigratesStrictValidValue() {
@@ -173,6 +370,83 @@ final class AppLogicTests: XCTestCase {
     XCTAssertEqual(ReminderWeekday(calendarWeekday: 2), .monday)
   }
 
+  func testReminderDeliveryDefaultsToAllCategories() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: [],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: true,
+        reminderEnabled: true
+      ),
+      []
+    )
+  }
+
+  func testReminderDeliveryFiltersSpecificCategoriesAndRejectsEmptyEnabledSelection() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["animo", "removed"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      ),
+      ["animo"]
+    )
+    XCTAssertNil(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["removed"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      )
+    )
+  }
+
+  func testReminderDeliveryAllowsEmptySpecificSelectionWhenReminderIsOff() {
+    XCTAssertEqual(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: [],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: false
+      ),
+      []
+    )
+  }
+
+  func testReminderDeliveryRejectsPersonalWhenItHasNoQuotes() {
+    XCTAssertNil(
+      ReminderDeliveryValidator.resolvedCategories(
+        requested: ["custom"],
+        validCategoryIds: ["animo", "foco"],
+        useAllCategories: false,
+        reminderEnabled: true
+      )
+    )
+  }
+
+  func testReminderInterestSelectionStartsWithAllAndDeselectsOneCategory() {
+    let result = ReminderDeliverySelection.toggling(
+      categoryId: "foco",
+      current: [],
+      allCategoryIds: ["animo", "foco", "calma"],
+      usesAllCategories: true
+    )
+    XCTAssertFalse(result.usesAllCategories)
+    XCTAssertEqual(result.categoryIds, ["animo", "calma"])
+  }
+
+  func testReminderInterestSelectionCanonicalizesAllCategories() {
+    let result = ReminderDeliverySelection.toggling(
+      categoryId: "foco",
+      current: ["animo", "calma"],
+      allCategoryIds: ["animo", "foco", "calma"],
+      usesAllCategories: false
+    )
+    XCTAssertTrue(result.usesAllCategories)
+    XCTAssertEqual(result.categoryIds, [])
+  }
+
   func testCustomQuoteValidation() {
     let categories: Set<String> = ["custom"]
     XCTAssertEqual(
@@ -204,5 +478,19 @@ final class AppLogicTests: XCTestCase {
         existingNames: []
       )
     )
+  }
+
+  func testNotificationPlanUsesUniqueOwnedIdentifiersAndVisibleDelay() {
+    let first = TestNotificationPlan.identifier(
+      uuid: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
+    )
+    let second = TestNotificationPlan.identifier(
+      uuid: UUID(uuidString: "22222222-2222-2222-2222-222222222222")!
+    )
+
+    XCTAssertNotEqual(first, second)
+    XCTAssertTrue(TestNotificationPlan.isTestIdentifier(first))
+    XCTAssertFalse(TestNotificationPlan.isTestIdentifier("daily-inspiration-1"))
+    XCTAssertEqual(TestNotificationPlan.delay, 5)
   }
 }

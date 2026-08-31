@@ -41,6 +41,18 @@ targets:
       base:
         GENERATE_INFOPLIST_FILE: YES
         PRODUCT_BUNDLE_IDENTIFIER: com.dmkr.inspiraciondia.tests
+  InspiracionDiaUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    deploymentTarget: "16.0"
+    sources:
+      - UITests
+    dependencies:
+      - target: InspiracionDia
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.dmkr.inspiraciondia.uitests
 schemes:
   InspiracionDia:
     build:
@@ -49,3 +61,4 @@ schemes:
     test:
       targets:
         - InspiracionDiaTests
+        - InspiracionDiaUITests

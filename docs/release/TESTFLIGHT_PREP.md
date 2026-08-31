@@ -1,6 +1,6 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: version 1.0 build 20 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-10. It is available to the account owner in TestFlight. App Review and public release remain separate unauthorized actions.
+Status: version 1.0 build 30 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-31. It is the latest TestFlight build, contains 720 quotes per language, and adds the live Privacy Policy and Support destinations inside Settings. App Review and public release remain separate actions at the final submission boundary.
 
 ## Verified release identity
 
@@ -30,6 +30,12 @@ Status: version 1.0 build 20 was signed, validated, uploaded, processed by Apple
 
 The protected environment and seven credentials are configured. Run `31429710903`, job `93589855913`, completed all tests, Analyze, signed archive inspection, export, validation, and upload from commit `423da40`.
 
+The latest authorized delivery is commit `484ca3d`, run `33341160940`: 40 tests with zero failures, Release analysis, signed archive inspection, export, Apple validation, and upload all passed. Artifact `Warm-Words-TestFlight-v1.0-build-27` is 6,397,420 bytes with SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`. Run `33341523935` confirmed build 27 as `VALID` and assigned it to `Warm Words Internal`.
+
+Build 28 is commit `87c004a`, run `33347733817`: all 40 logic tests passed and the UI test opened, closed, and reopened Settings successfully. Release analysis, signed archive inspection, export, Apple validation, and upload also passed. Artifact `Warm-Words-TestFlight-v1.0-build-28` is 6,398,764 bytes with SHA-256 `8257a9dffb32633ce1a1c2e56ce5b6ff504beee74bf90a4bb067096dbf8aae3d`. Run `33348245753` confirmed build 28 as `VALID` and assigned it to `Warm Words Internal`.
+
+Build 30 is source commit `77cf219`, run `33430292504`: 41 unit tests and 2 Settings UI tests passed with zero failures, followed by Release analysis, signed archive inspection, export, Apple validation, and upload. Artifact `Warm-Words-TestFlight-v1.0-build-30` is 6,417,481 bytes with SHA-256 `8a5418e81653cf4e6669b7003aa1cd9ddbf38b4ef98568c5211c9d1d701660f5`. App Store Connect showed the upload as `Finished`, build 30 as `Ready to Submit`, and membership in `Warm Words Internal`; assignment run `33431522703` completed successfully.
+
 ## Protected GitHub environment
 
 The environment `app-store-production` exists and is restricted to `agent/warm-words-ios-ipa`. It stores only these values:
@@ -55,17 +61,17 @@ Do not put these values in repository secrets, source files, logs, artifacts, is
 
 ## Remaining release gates
 
-- Dedicated public privacy and support pages under `https://krazel.github.io/warm-words/` do not exist yet; the private store record currently uses provisional GitHub URLs.
+- Dedicated public privacy and support pages under `https://krazel.github.io/warm-words/` are live and linked from build 30 Settings. The private store record still uses provisional GitHub URLs and must be updated before submission.
 - Smart sharing remains disabled until the public landing and AASA file exist, the app has the Associated Domains entitlement, and the signed profile supports it. The landing must fall back to `https://apps.apple.com/app/id6800058458`.
-- English and Spanish App Store screenshots must come from the final signed build.
-- Copyright, App Review contact, DSA confirmation, final privacy publication, build selection, and owner review remain incomplete.
+- English and Spanish App Store screenshots are generated from the final runtime and must pass visual/dimension validation before upload.
+- Copyright, private App Review contact, truthful DSA confirmation, final privacy publication, build selection, and owner review remain incomplete. Optional public fields stay empty unless required.
 - Optional supporter subscriptions remain outside 1.0 until real App Store products, localized prices, restore purchases, terms, privacy, and review configuration are explicitly authorized.
 
 ## Prepared TestFlight copy
 
 English beta description:
 
-> Warm Words is a bilingual daily quote app for iPhone. Browse 360 original quotes, save favorites, add personal quotes, share visual cards, and configure gentle local reminders for the days and time you choose.
+> Warm Words is a bilingual daily quote app for iPhone. Browse 720 original quotes, save favorites, add personal quotes, share visual cards, and configure gentle local reminders for the days and time you choose.
 
 English “What to Test”:
 
@@ -73,12 +79,12 @@ English “What to Test”:
 
 Spanish beta description:
 
-> Warm Words es una app bilingüe de frases diarias para iPhone. Explora 360 frases originales, guarda favoritas, añade frases personales, comparte tarjetas visuales y configura recordatorios locales para los días y la hora que elijas.
+> Warm Words es una app bilingüe de frases diarias para iPhone. Explora 720 frases originales, guarda favoritas, añade frases personales, comparte tarjetas visuales y configura recordatorios locales para los días y la hora que elijas.
 
 Spanish “Qué probar”:
 
 > Prueba la configuración inicial del recordatorio; abrir, cerrar y volver a abrir Ajustes; el cambio y la persistencia de inglés/español; Today sin desplazamiento con texto estándar; todas las tarjetas de categoría y el icono de Hábitos; favoritos; añadir y eliminar una frase Personal; permitir o denegar notificaciones y su programación; y compartir una tarjeta visual por WhatsApp u otra extensión.
 
-The feedback email and Beta App Review contact fields remain empty because they require the owner's real contact details and must not be invented.
+The feedback email and Beta App Review contact fields remain empty because they require accurate contact details and must not be invented. A dedicated support alias belongs on public support material; the minimum real App Review contact belongs only in Apple's private review fields.
 
 References: Apple documents that uploaded builds are associated using bundle ID, version, and a unique build string, and must finish processing before appearing in TestFlight. GitHub environments should gate access to signing and upload secrets.
