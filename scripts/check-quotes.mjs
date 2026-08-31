@@ -11,7 +11,7 @@ const categoryIds = new Set(CATEGORIES.map((category) => category.id));
 const quoteCategoryIds = CATEGORIES.map((category) => category.id).filter((id) => id !== "hoy");
 const errors = [];
 const expectedSpanishCategoryNames = new Map([
-  ["animo", "Ánimo"],
+  ["animo", "Motivación"],
   ["foco", "Foco"],
   ["calma", "Calma"],
   ["disciplina", "Disciplina"],

@@ -514,3 +514,16 @@ enum CustomCategoryValidator {
     )
   }
 }
+
+enum TestNotificationPlan {
+  static let identifierPrefix = "test-inspiration-"
+  static let delay: TimeInterval = 5
+
+  static func identifier(uuid: UUID = UUID()) -> String {
+    identifierPrefix + uuid.uuidString.lowercased()
+  }
+
+  static func isTestIdentifier(_ identifier: String) -> Bool {
+    identifier.hasPrefix(identifierPrefix)
+  }
+}

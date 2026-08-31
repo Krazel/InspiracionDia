@@ -3,6 +3,10 @@ import SwiftUI
 import UIKit
 import UserNotifications
 
+extension Notification.Name {
+  static let testNotificationDelivered = Notification.Name("testNotificationDelivered")
+}
+
 final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCenterDelegate {
   func application(
     _ application: UIApplication,
@@ -16,7 +20,23 @@ final class AppDelegate: NSObject, UIApplicationDelegate, UNUserNotificationCent
     _ center: UNUserNotificationCenter,
     willPresent notification: UNNotification
   ) async -> UNNotificationPresentationOptions {
-    [.banner, .sound]
+    if TestNotificationPlan.isTestIdentifier(notification.request.identifier) {
+      await MainActor.run {
+        NotificationCenter.default.post(name: .testNotificationDelivered, object: nil)
+      }
+    }
+    return [.banner, .sound]
+  }
+
+  func userNotificationCenter(
+    _ center: UNUserNotificationCenter,
+    didReceive response: UNNotificationResponse
+  ) async {
+    if TestNotificationPlan.isTestIdentifier(response.notification.request.identifier) {
+      await MainActor.run {
+        NotificationCenter.default.post(name: .testNotificationDelivered, object: nil)
+      }
+    }
   }
 }
 
@@ -642,19 +662,50 @@ final class AppStore: ObservableObject {
   func sendTestNotification() {
     Task {
       guard await requestNotificationPermission() else { return }
+      let center = UNUserNotificationCenter.current()
+      let settings = await center.notificationSettings()
+      guard settings.authorizationStatus == .authorized ||
+              settings.authorizationStatus == .provisional ||
+              settings.authorizationStatus == .ephemeral else {
+        notificationStatus = t("permissionDenied")
+        notificationPermissionAlertPending = true
+        return
+      }
+      guard settings.alertSetting == .enabled else {
+        notificationStatus = t("notificationAlertsDisabled")
+        return
+      }
+
       let notification = UNMutableNotificationContent()
       notification.title = t("notificationTitle")
       notification.body = todayQuote.text
       notification.sound = .default
-      let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 1, repeats: false)
+      let identifier = TestNotificationPlan.identifier()
+      let trigger = UNTimeIntervalNotificationTrigger(
+        timeInterval: TestNotificationPlan.delay,
+        repeats: false
+      )
       let request = UNNotificationRequest(
-        identifier: "test-inspiration",
+        identifier: identifier,
         content: notification,
         trigger: trigger
       )
       do {
-        try await UNUserNotificationCenter.current().add(request)
-        notificationStatus = t("testSent")
+        let previousTestIdentifiers = await center.pendingNotificationRequests()
+          .map(\.identifier)
+          .filter(TestNotificationPlan.isTestIdentifier)
+        center.removePendingNotificationRequests(withIdentifiers: previousTestIdentifiers)
+        try await center.add(request)
+        let isPending = await center.pendingNotificationRequests().contains {
+          $0.identifier == identifier
+        }
+        guard isPending else {
+          notificationStatus = t("testFailed")
+          return
+        }
+        notificationStatus = settings.scheduledDeliverySetting == .enabled
+          ? t("testScheduledSummary")
+          : t("testScheduled")
       } catch {
         notificationStatus = t("testFailed")
       }
@@ -1070,6 +1121,9 @@ struct RootView: View {
     .onReceive(NotificationCenter.default.publisher(for: .NSCalendarDayChanged)) { _ in
       store.refreshCurrentDate()
       store.refreshReminderIfEnabled()
+    }
+    .onReceive(NotificationCenter.default.publisher(for: .testNotificationDelivered)) { _ in
+      store.notificationStatus = store.t("testDelivered")
     }
     .onOpenURL { url in
       handleIncomingShareURL(url)
@@ -1584,8 +1638,10 @@ struct FavoritesView: View {
               .frame(maxWidth: .infinity, minHeight: 240)
               .background(.white.opacity(0.62), in: RoundedRectangle(cornerRadius: 24))
           } else {
-            ForEach(favoriteQuotes) { quote in
-              QuoteCard(quote: quote)
+            LazyVStack(spacing: 12) {
+              ForEach(favoriteQuotes) { quote in
+                QuoteCard(quote: quote)
+              }
             }
           }
         }
@@ -1700,7 +1756,8 @@ struct SettingsView: View {
             selection: $draftDeliveryCategories,
             useAllCategories: $draftUseAllCategories,
             enabled: draftEnabled,
-            categories: store.deliveryCategories
+            categories: store.deliveryCategories,
+            showsAllCategoriesHelper: false
           )
 
           Button(store.t("saveReminder")) {
@@ -1725,7 +1782,8 @@ struct SettingsView: View {
               Text(store.notificationStatus)
                 .font(.footnote)
                 .foregroundStyle(.secondary)
-              if store.notificationStatus == store.t("permissionDenied") {
+              if store.notificationStatus == store.t("permissionDenied") ||
+                  store.notificationStatus == store.t("notificationAlertsDisabled") {
                 Button(store.t("openIOSSettings")) {
                   guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
                   UIApplication.shared.open(url)
@@ -2339,7 +2397,7 @@ enum Strings {
   ]
 
   static let categoryNamesES = [
-    "animo": "Ánimo",
+    "animo": "Motivación",
     "foco": "Enfoque",
     "calma": "Calma",
     "disciplina": "Disciplina",
@@ -2436,12 +2494,15 @@ enum Strings {
     "savedToFavorites": "Guardada en Favoritos",
     "sharedQuoteUnavailableTitle": "No se puede abrir esta frase",
     "sharedQuoteUnavailableBody": "El enlace está dañado, es demasiado antiguo o la frase ya no está disponible.",
-    "motivation": "Ánimo",
+    "motivation": "Motivación",
     "fallbackCategoryDescription": "Para ayudarte a dar el siguiente paso.",
     "notificationTitle": "Tu frase del día",
     "fallbackQuote": "Hoy empieza con una frase sencilla y un paso posible.",
     "notificationsOff": "Recordatorios desactivados.",
-    "testSent": "Notificación de prueba enviada.",
+    "testScheduled": "Prueba programada. Llegará en 5 segundos; mantén la app abierta.",
+    "testScheduledSummary": "Prueba programada. iOS puede enviarla al resumen de notificaciones.",
+    "testDelivered": "Notificación de prueba recibida correctamente.",
+    "notificationAlertsDisabled": "Las alertas de Warm Words están desactivadas en iOS.",
     "testFailed": "No se pudo enviar la prueba.",
     "reminderSaved": "Recordatorio guardado.",
     "reminderFailed": "No se pudo guardar el recordatorio.",
@@ -2528,7 +2589,10 @@ enum Strings {
     "notificationTitle": "Your daily quote",
     "fallbackQuote": "Today begins with one simple phrase and one possible step.",
     "notificationsOff": "Reminders turned off.",
-    "testSent": "Test notification sent.",
+    "testScheduled": "Test scheduled. It will arrive in 5 seconds; keep the app open.",
+    "testScheduledSummary": "Test scheduled. iOS may deliver it in your notification summary.",
+    "testDelivered": "Test notification received successfully.",
+    "notificationAlertsDisabled": "Warm Words alerts are disabled in iOS Settings.",
     "testFailed": "Could not send the test.",
     "reminderSaved": "Reminder saved.",
     "reminderFailed": "Could not save the reminder.",

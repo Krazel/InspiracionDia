@@ -8,6 +8,8 @@ const swift = read("native-ios/Sources/InspiracionDiaApp.swift");
 const sharing = read("native-ios/Sources/QuoteSharing.swift");
 const todayView = swift.slice(swift.indexOf("struct TodayView"), swift.indexOf("struct CategoriesView"));
 const categoriesView = swift.slice(swift.indexOf("struct CategoriesView"), swift.indexOf("struct FavoritesView"));
+const favoritesView = swift.slice(swift.indexOf("struct FavoritesView"), swift.indexOf("struct SettingsView"));
+const settingsView = swift.slice(swift.indexOf("struct SettingsView"), swift.indexOf("struct AddCardView"));
 const addCardView = swift.slice(swift.indexOf("struct AddCardView"), swift.indexOf("struct QuoteHero"));
 const onboardingCategoriesStep = swift.slice(
   swift.indexOf("private var categoriesStep"),
@@ -117,6 +119,7 @@ assert.doesNotMatch(onboardingCategoriesStep, /DatePicker|WeekdayPicker|complete
 assert.doesNotMatch(onboardingCategoriesStep, /stepOneOfTwo|allCategoriesSelectedByDefault|store\.t\("notNow"\)|skipInitialReminderSetup/);
 assert.match(onboardingCategoriesStep, /showsTitle: false/);
 assert.match(onboardingCategoriesStep, /showsAllCategoriesHelper: false/);
+assert.match(settingsView, /DeliveryCategoryPicker\([\s\S]{0,300}showsAllCategoriesHelper: false/);
 assert.match(onboardingScheduleStep, /DatePicker/);
 assert.match(onboardingScheduleStep, /WeekdayPicker/);
 assert.match(onboardingScheduleStep, /completeInitialReminderSetup\([\s\S]{0,260}deliveryCategories: draftDeliveryCategories,[\s\S]{0,120}useAllCategories: draftUseAllCategories/);
@@ -170,7 +173,12 @@ assert.match(swift, /let minimumHeight: CGFloat = dynamicTypeSize\.isAccessibili
 assert.match(swift, /let maximumHeight: CGFloat\? = dynamicTypeSize\.isAccessibilitySize \? nil : \.infinity/);
 assert.match(swift, /struct QuoteHero[\s\S]*\.frame\(maxWidth: \.infinity, minHeight: minimumHeight, maxHeight: maximumHeight\)\s*\.background \{/);
 assert.doesNotMatch(swift, /BundledImage\(name: "premium-mountains"[\s\S]{0,160}minHeight: minimumHeight/);
-assert.match(swift, /identifier: "test-inspiration"/);
+assert.match(logic, /enum TestNotificationPlan/);
+assert.match(logic, /static let identifierPrefix = "test-inspiration-"/);
+assert.match(logic, /static let delay: TimeInterval = 5/);
+assert.match(swift, /settings\.alertSetting == \.enabled/);
+assert.match(swift, /pendingNotificationRequests\(\)\.contains/);
+assert.match(swift, /testNotificationDelivered/);
 assert.match(swift, /notificationPermissionAlertPending = true/);
 assert.match(swift, /ScrollView \{\s*VStack\(alignment: \.leading, spacing: 18\)/);
 assert.doesNotMatch(swift, /FeatureStrip|Thoughtful quotes|Easy to share|One each day|Explore categories/);
@@ -185,6 +193,7 @@ assert.match(swift, /QuoteCyclePlanner\.sequence\([\s\S]{0,220}count: remainingD
 assert.match(swift, /ScheduledQuoteAssignment\(quoteID: pair\.1, deliveryDate: pair\.0\)/);
 assert.match(logic, /let orderedIDs = orderedUniqueIDs\(candidateIDs\)[\s\S]{0,180}sequence\.reserveCapacity\(count\)/);
 assert.match(categoriesView, /LazyVStack\(spacing: 12\)\s*\{\s*ForEach\(store\.visibleQuotes\)/);
+assert.match(favoritesView, /LazyVStack\(spacing: 12\)\s*\{\s*ForEach\(favoriteQuotes\)/);
 assert.match(swift, /let requestsToAdd = requests\.filter[\s\S]{0,300}notificationRequest\(pendingRequest, matches: desiredRequest\)/);
 assert.match(swift, /for request in requestsToAdd/);
 assert.match(swift, /private func clearScheduledQuoteAssignments\(\)/);

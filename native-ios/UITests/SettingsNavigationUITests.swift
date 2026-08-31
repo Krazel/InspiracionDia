@@ -1,6 +1,23 @@
 import XCTest
 
 final class SettingsNavigationUITests: XCTestCase {
+  func testCategoriesExposeMotivationAndNavigateNormally() {
+    let app = XCUIApplication()
+    app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+    app.launch()
+
+    completeOnboardingIfNeeded(in: app)
+
+    let categoriesTab = app.tabBars.buttons["Categories"]
+    XCTAssertTrue(categoriesTab.waitForExistence(timeout: 10))
+    categoriesTab.tap()
+
+    let motivation = app.buttons["Motivation"]
+    XCTAssertTrue(motivation.waitForExistence(timeout: 5))
+    motivation.tap()
+    XCTAssertEqual(motivation.value as? String, "Selected")
+  }
+
   func testSettingsButtonOpensClosesAndReopensSettings() {
     let app = XCUIApplication()
     app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]

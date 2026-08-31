@@ -11,7 +11,7 @@ Aplicación nativa SwiftUI para iPhone. El nombre interno histórico del reposit
 ## Incluye
 
 - 360 pares de frases originales en inglés y español.
-- 12 categorías: Ánimo, Foco, Calma, Disciplina, Autoestima, Gratitud, Valentía, Hábitos, Creatividad, Resiliencia, Relaciones y Energía.
+- 12 categorías: Motivación, Foco, Calma, Disciplina, Autoestima, Gratitud, Valentía, Hábitos, Creatividad, Resiliencia, Relaciones y Energía.
 - Tarjetas por categoría.
 - Favoritos.
 - Compartir una tarjeta visual con el panel nativo del móvil.

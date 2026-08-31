@@ -479,4 +479,18 @@ final class AppLogicTests: XCTestCase {
       )
     )
   }
+
+  func testNotificationPlanUsesUniqueOwnedIdentifiersAndVisibleDelay() {
+    let first = TestNotificationPlan.identifier(
+      uuid: UUID(uuidString: "11111111-1111-1111-1111-111111111111")!
+    )
+    let second = TestNotificationPlan.identifier(
+      uuid: UUID(uuidString: "22222222-2222-2222-2222-222222222222")!
+    )
+
+    XCTAssertNotEqual(first, second)
+    XCTAssertTrue(TestNotificationPlan.isTestIdentifier(first))
+    XCTAssertFalse(TestNotificationPlan.isTestIdentifier("daily-inspiration-1"))
+    XCTAssertEqual(TestNotificationPlan.delay, 5)
+  }
 }
