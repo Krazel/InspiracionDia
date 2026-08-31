@@ -89,7 +89,7 @@ jobs:
       - name: Upload store screenshot evidence
         uses: actions/upload-artifact@v4
         with:
-          name: Warm-Words-App-Store-Screenshots-build-29
+          name: Warm-Words-App-Store-Screenshots-build-30
           path: |
             build/store-screenshots/en/*.png
             build/store-screenshots/es/*.png
