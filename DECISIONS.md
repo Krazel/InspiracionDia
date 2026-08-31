@@ -345,6 +345,14 @@ Resuelve la antigua PEND-013:
 - Se mantiene el tren existente 1.0 y se usa build 28. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
 - Resultado: commit `87c004a`; run `33347733817` pasó 40 pruebas de lógica, la nueva prueba UI de abrir/cerrar/reabrir Ajustes, Analyze, firma, archive, exportación, validación y subida. Apple marcó build 28 como `VALID` y run `33348245753` la asignó a `Warm Words Internal`.
 
+### DEC-047 — Cierre de sistemas y build 29 autorizados
+
+- El propietario pidió el 2026-08-31 una comprobación final de todos los sistemas, señaló que no identificaba la categoría de motivación y que la notificación de prueba no había aparecido, y autorizó expresamente compilar y subir la corrección a TestFlight.
+- Se conserva el ID estable `animo` para no romper persistencia y se aclara su nombre visible como `Motivation` / `Motivación`; no se añade una decimotercera categoría ni contenido duplicado.
+- La prueba local pasa de afirmar falsamente “enviada” a distinguir solicitud programada y entrega recibida, validar el estado efectivo de alertas y advertir de Resumen programado. Favoritos adopta carga diferida y Ajustes deja de mostrar la recomendación de seleccionar todas las categorías.
+- Se mantiene el tren previo al lanzamiento `1.0` y se usa build 29. La autorización comprende commit, push, firma, subida y asignación al grupo interno; no testers externos, Beta App Review, App Review ni publicación.
+- Resultado: commit `1d2b36c`; run `33399920401` pasó 41 pruebas unitarias y 2 UI, Analyze, firma, archive, exportación, validación y subida sin errores. Apple marcó build 29 como `VALID` y run `33401009451` la asignó a `Warm Words Internal`.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets

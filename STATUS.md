@@ -1,13 +1,13 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-31**
-Estado: **Warm Words 1.0 build 28 válida y disponible en TestFlight interno; prueba UI de Ajustes superada**
+Estado: **Warm Words 1.0 build 29 válida y disponible en TestFlight interno; cierre automatizado superado**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
 ## Fotografía actual
 
-- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 27 se compiló desde el commit verificado `484ca3d`.
+- Repositorio canónico: `https://github.com/Krazel/InspiracionDia`; build 29 se compiló desde el commit verificado `1d2b36c`.
 - El propietario autorizó expresamente commit, push, compilación, firma y subida de build 25 a TestFlight el 2026-08-24. No se creó release, no se envió a App Review y no se publicó en App Store.
 - El propietario autorizó expresamente el 2026-08-24 commit, push, compilación, firma y subida interna del candidato ampliado como **1.0 (26)**. Esta autorización no comprende testers externos, App Review ni publicación pública.
 - El propietario autorizó expresamente el 2026-08-31 corregir la regresión de rendimiento de build 26, hacer commit/push y compilar, firmar, subir y asignar **1.0 (27)** a TestFlight interno. No autorizó App Review ni publicación pública.
@@ -30,6 +30,8 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - El commit `484ca3d` corrigió la regresión de rendimiento sin modificar diseño ni contenido. Run `33341160940` compiló y subió **1.0 (27)**: 40 tests sin fallos, Analyze Release, firma, archive, inspección, exportación y validación correctos; App Store Connect respondió `UPLOAD SUCCEEDED with no errors`.
 - Apple procesó build 27 como `VALID`; run `33341523935` confirmó su asignación a `Warm Words Internal` el 2026-08-31. No se creó grupo externo, no se solicitó Beta App Review y no se envió a App Review.
 - Artifact efímero `Warm-Words-TestFlight-v1.0-build-27`: 6.397.420 bytes, SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`, caducidad 2026-09-02.
+- El commit `1d2b36c` cerró la última revisión para **1.0 (29)**. Run `33399920401` pasó 41 pruebas de lógica y 2 pruebas UI sin fallos, Analyze Release, firma, archive, inspección, exportación y validación; App Store Connect respondió `UPLOAD SUCCEEDED with no errors`.
+- Apple procesó build 29 como `VALID`; run `33401009451` confirmó su asignación a `Warm Words Internal` el 2026-08-31. Artifact `Warm-Words-TestFlight-v1.0-build-29`: 6.407.143 bytes, SHA-256 `1392d2ee7bed433912f7b26699b7c7a216de19c018126c82a6a4b259f25ade7d`.
 - `design/APPROVALS.md` es el manifiesto canónico de las imágenes completas aprobadas. Registra una maestra vigente por pantalla/estado cubierto, lienzo, orientación, idioma, fecha y SHA-256; separa propuestas, referencias retiradas, assets fuente y futuras capturas runtime/App Store.
 - La auditoría canónica de minimización está en `docs/release/DATA_INVENTORY_1_0.md`. Build 25 usa solo frameworks Apple, no hace red, no incluye SDKs de terceros, publicidad, analítica, tracking, cuenta, nube, StoreKit ni compras. Solo pide notificaciones locales tras una acción explícita; preferencias, favoritos, frases personales e historial del ciclo permanecen en el iPhone.
 - Los borradores públicos de privacidad, soporte y metadata ya separan el alias público de soporte del contacto privado de App Review y dejan vacíos los campos opcionales. No se publicará repositorio, incidencias, cuentas personales, domicilio, teléfono ni correo personal salvo obligación legal concreta.
@@ -56,6 +58,15 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Ajustes usa ahora una ruta de navegación propiedad de la raíz. Las frases compartidas conservan una portada independiente y se difieren mientras Ajustes está abierto. El encabezado permanece por encima de la tarjeta sin cambiar su aspecto.
 - Se añadió un target XCUITest que completa el onboarding si hace falta, pulsa el engranaje, exige `settings-screen`, cierra y vuelve a abrir Ajustes. Run `33347733817` pasó 40 tests de lógica y la prueba UI real `testSettingsButtonOpensClosesAndReopensSettings`, además de Analyze, firma, archive, exportación, validación y subida sin errores.
 - Apple procesó build 28 como `VALID`; run `33348245753` la asignó a `Warm Words Internal` el 2026-08-31. Artifact `Warm-Words-TestFlight-v1.0-build-28`: 6.398.764 bytes, SHA-256 `8257a9dffb32633ce1a1c2e56ce5b6ff504beee74bf90a4bb067096dbf8aae3d`, caducidad 2026-09-03.
+
+## Cierre final entregado en build 29
+
+- La categoría estable `animo` conserva IDs, historial, favoritos y preferencias, pero pasa a mostrarse explícitamente como `Motivation` en inglés y `Motivación` en español. Contiene 60 frases en cada idioma; el catálogo completo conserva 720 por idioma y 12 categorías.
+- La prueba de notificación ya no presenta como entrega un simple registro aceptado. Programa un identificador propio y único a cinco segundos, comprueba que la solicitud queda pendiente, detecta permisos/alertas y Resumen programado, y confirma la recepción cuando iOS presenta la notificación en primer plano.
+- Favoritos usa carga diferida igual que Categorías, evitando construir cientos de tarjetas fuera de pantalla. En Ajustes se eliminó el texto auxiliar de recomendación de todas las categorías sin alterar el onboarding.
+- La nueva prueba UI abre Categorías, exige `Motivation`, la selecciona y verifica su estado. Se conserva la prueba que abre, cierra y vuelve a abrir Ajustes.
+- Run `33399920401` completó 41 pruebas unitarias y 2 UI, Analyze, firma, archive, exportación, validación y subida. Apple marcó build 29 como `VALID`; run `33401009451` la asignó al grupo interno.
+- La entrega visual de notificaciones sigue necesitando una comprobación física en iPhone con la app abierta y en segundo plano. Focus, Resumen programado o alertas desactivadas pueden cambiar dónde y cuándo la muestra iOS; la app ahora informa de los estados detectables.
 
 ## Enlace inteligente posterior a build 20
 
@@ -274,7 +285,7 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Instalar build 27 desde TestFlight en limpio: comprobar primero las 12 categorías sin textos redundantes y después hora/días con Volver y Ahora no. Confirmar además que Categorías con `All` se desplaza con fluidez y que volver varias veces a primer plano no provoca pausas. Después completar QA real en iPhone/iOS 16 e iOS 26.
+1. Instalar build 29 desde TestFlight en limpio y completar QA físico: onboarding de categorías → hora/días → Today; abrir/cerrar/reabrir Ajustes; seleccionar Motivation; probar la notificación con la app abierta y en segundo plano; comprobar además alertas, Focus y Resumen programado de iOS.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
 3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
 4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
