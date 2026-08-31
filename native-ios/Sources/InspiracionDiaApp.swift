@@ -1019,60 +1019,47 @@ final class AppStore: ObservableObject {
 
   private static let customCategoryStyle = (color: "#76505D", softColor: "#F3E7EB")
 }
-private enum RootModalRoute: Identifiable {
-  case settings
-  case sharedQuote(SharedQuotePayload)
-
-  var id: String {
-    switch self {
-    case .settings:
-      return "settings"
-    case .sharedQuote(let payload):
-      return "shared-\(payload.id)"
-    }
-  }
-}
-
 struct RootView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.scenePhase) private var scenePhase
   @State private var tab = 0
-  @State private var modalRoute: RootModalRoute?
+  @State private var showingSettings = false
+  @State private var incomingSharedQuote: SharedQuotePayload?
   @State private var pendingSharedQuote: SharedQuotePayload?
   @State private var showingInvalidShareLink = false
 
   var body: some View {
-    ZStack {
-      if store.needsReminderOnboarding {
-        ReminderOnboardingView()
-      } else {
-        TabView(selection: $tab) {
-          TodayView {
-            modalRoute = .settings
+    NavigationStack {
+      ZStack {
+        if store.needsReminderOnboarding {
+          ReminderOnboardingView()
+        } else {
+          TabView(selection: $tab) {
+            TodayView {
+              showingSettings = true
+            }
+              .tabItem { Label(store.t("today"), systemImage: "sun.max") }
+              .tag(0)
+
+            CategoriesView()
+              .tabItem { Label(store.t("categories"), systemImage: "square.grid.2x2") }
+              .tag(1)
+
+            FavoritesView()
+              .tabItem { Label(store.t("favorites"), systemImage: "heart") }
+              .tag(2)
           }
-            .tabItem { Label(store.t("today"), systemImage: "sun.max") }
-            .tag(0)
-
-          CategoriesView()
-            .tabItem { Label(store.t("categories"), systemImage: "square.grid.2x2") }
-            .tag(1)
-
-          FavoritesView()
-            .tabItem { Label(store.t("favorites"), systemImage: "heart") }
-            .tag(2)
+          .tint(Premium.gold)
         }
-        .tint(Premium.gold)
       }
-    }
-    .fullScreenCover(item: $modalRoute, onDismiss: presentPendingSharedQuoteIfPossible) { route in
-      switch route {
-      case .settings:
+      .navigationDestination(isPresented: $showingSettings) {
         SettingsView()
           .environmentObject(store)
-      case .sharedQuote(let payload):
-        SharedQuoteView(payload: payload)
-          .environmentObject(store)
       }
+    }
+    .fullScreenCover(item: $incomingSharedQuote, onDismiss: presentPendingSharedQuoteIfPossible) { payload in
+      SharedQuoteView(payload: payload)
+        .environmentObject(store)
     }
     .onChange(of: scenePhase) { phase in
       if phase == .active {
@@ -1091,6 +1078,11 @@ struct RootView: View {
       guard !needsOnboarding, let payload = pendingSharedQuote else { return }
       pendingSharedQuote = nil
       presentSharedQuote(payload)
+    }
+    .onChange(of: showingSettings) { isPresented in
+      if !isPresented {
+        presentPendingSharedQuoteIfPossible()
+      }
     }
     .alert(
       store.t("notificationsAreOffTitle"),
@@ -1123,13 +1115,18 @@ struct RootView: View {
 
   private func presentSharedQuote(_ payload: SharedQuotePayload) {
     tab = 0
-    guard case nil = modalRoute else {
+    if showingSettings {
+      pendingSharedQuote = payload
+      showingSettings = false
+      return
+    }
+    guard incomingSharedQuote == nil else {
       pendingSharedQuote = payload
       return
     }
     Task { @MainActor in
       await Task.yield()
-      modalRoute = .sharedQuote(payload)
+      incomingSharedQuote = payload
     }
   }
 
@@ -1477,6 +1474,7 @@ struct TodayView: View {
         .accessibilityLabel(store.t("settings"))
         .accessibilityIdentifier("settings-button")
       }
+      .zIndex(1)
 
       Text(store.currentDate.formatted(AppFormatters.day(language: store.language)))
         .font(.system(size: 15))
@@ -1627,6 +1625,7 @@ struct SettingsView: View {
             }
             .foregroundStyle(Premium.gold)
             .accessibilityLabel(store.t("closeSettings"))
+            .accessibilityIdentifier("settings-close-button")
             Spacer()
             Text(store.t("settings"))
               .font(Premium.sectionFont)

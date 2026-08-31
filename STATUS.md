@@ -1,7 +1,7 @@
 # Estado de Inspiración Día
 
 Actualizado: **2026-08-31**
-Estado: **Warm Words 1.0 build 27 corregida, válida y disponible en TestFlight interno**
+Estado: **Build 27 disponible en TestFlight; build 28 con la corrección definitiva de Ajustes autorizada para compilación y subida**
 Propietario único de implementación: **esta tarea cerebro**
 Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 
@@ -48,6 +48,13 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Al volver la app a primer plano se volvían a registrar hasta 60 notificaciones aunque ya fueran idénticas. Ahora se comparan identificador, título, cuerpo y fecha y solo se añaden solicitudes nuevas o modificadas.
 - Se añadieron pruebas para el planificador con 720 candidatos y para el orden persistido, y el cierre estático exige las tres protecciones. No cambia UI, contenido, permisos, datos, privacidad ni Android.
 - GitHub Actions run `33341160940` pasó 40 tests y el análisis Release, generó y validó el IPA firmado y lo subió sin errores. Apple marcó build 27 como `VALID` y run `33341523935` la asignó al grupo interno.
+
+## Corrección de Ajustes preparada para build 28
+
+- La comprobación del código y una auditoría independiente descartan que el engranaje tenga un área táctil pequeña o una vista superpuesta: el fallo estaba en compartir un único estado `fullScreenCover(item:)` entre Ajustes y los enlaces recibidos.
+- Si iOS rechazaba la presentación durante la transición final del onboarding o de la alerta de notificaciones, el estado podía quedar fijado en `settings`; los toques posteriores escribían el mismo valor y SwiftUI no volvía a intentar abrirlo.
+- Ajustes usa ahora una ruta de navegación propiedad de la raíz. Las frases compartidas conservan una portada independiente y se difieren mientras Ajustes está abierto. El encabezado permanece por encima de la tarjeta sin cambiar su aspecto.
+- Se añadió un target XCUITest que completa el onboarding si hace falta, pulsa el engranaje, exige `settings-screen`, cierra y vuelve a abrir Ajustes. Los validadores locales de cierre y de 1.440 frases pasan; la compilación y el UI test en macOS quedan pendientes de una build posterior autorizada.
 
 ## Enlace inteligente posterior a build 20
 

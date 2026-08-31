@@ -338,6 +338,12 @@ Resuelve la antigua PEND-013:
 - Se mantiene excepcionalmente el tren existente 1.0 y se usa build 27. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
 - Resultado: commit `484ca3d`; run `33341160940` pasó 40 tests, Analyze Release, firma, archive, inspección, exportación, validación y subida sin errores. Apple marcó build 27 como `VALID` y run `33341523935` la asignó a `Warm Words Internal`.
 
+### DEC-046 — Corrección definitiva de Ajustes y build 28 autorizadas
+
+- Tras confirmar que build 27 todavía podía dejar el botón de Ajustes sin respuesta, el propietario autorizó el 2026-08-31 hacer la corrección, compilarla y subirla a TestFlight.
+- Ajustes se separa del estado modal de enlaces compartidos y pasa a navegación propiedad de la raíz. La entrega incluye una prueba UI que abre, cierra y vuelve a abrir la pantalla.
+- Se mantiene el tren existente 1.0 y se usa build 28. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
