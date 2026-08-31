@@ -1,6 +1,6 @@
 # Warm Words — manifiesto canónico de aprobaciones visuales
 
-Actualizado: **2026-08-18**
+Actualizado: **2026-08-31**
 
 Este archivo es la fuente de verdad de las imágenes completas aprobadas que gobiernan la app iOS. Una referencia `vigente` define la dirección visual de una pantalla o salida; no implica por sí sola que exista una captura equivalente de la build real. Las propuestas no elegidas, referencias retiradas, assets fuente y capturas runtime se registran por separado.
 
@@ -58,7 +58,27 @@ Estas propuestas se conservan como historial. No pueden usarse como dirección v
 
 ## Capturas de implementación y App Store
 
-Todavía no hay una captura base canónica de la build TestFlight en el repositorio. Durante el QA físico se debe capturar cada pantalla final desde la build real, al mismo dispositivo y estado de su referencia cuando exista, guardar la imagen sin tratamiento como evidencia runtime y añadir aquí su ruta y SHA-256.
+El run `33434927989`, commit de captura `933238e`, generó capturas runtime sin tratamiento desde el mismo código de aplicación que build 30. Todas son PNG RGB opacas, verticales, 1320 × 2868 px, en un simulador iPhone 16 Pro Max de 6,9 pulgadas. La selección de tienda conserva solo los estados visualmente limpios; los recorridos restantes se mantienen como evidencia y no deben subirse.
+
+| ID | Estado | Ruta | Idioma | Fecha | SHA-256 |
+| --- | --- | --- | --- | --- | --- |
+| WW-STORE-EN-001 | Today — vigente para tienda | `store/app-store/ios/build-30/en/01-today-en.png` | Inglés | 2026-08-31 | `5e384b24a2e0c76904645b113edf4653917d8f6e4c45f4c3f13e7ffa7083c846` |
+| WW-STORE-EN-002 | Categories — vigente para tienda | `store/app-store/ios/build-30/en/02-categories-en.png` | Inglés | 2026-08-31 | `d79f64edfea1800e40705833c31724edb056f35791a75f26120c5208e78c6209` |
+| WW-STORE-EN-003 | Favorites — vigente para tienda | `store/app-store/ios/build-30/en/04-favorites-en.png` | Inglés | 2026-08-31 | `8fb669e599a55608d34452616a215510a1928eb9334db60f2532ca51272b01bc` |
+| WW-STORE-EN-004 | Settings con Privacidad y Soporte — vigente para tienda | `store/app-store/ios/build-30/en/06-settings-en.png` | Inglés | 2026-08-31 | `cc3b155f038941a893ff52ff3eaaf00981a7c0ecae28b70f09b5046676695c71` |
+| WW-STORE-ES-001 | Hoy — vigente para tienda | `store/app-store/ios/build-30/es/01-today-es.png` | Español | 2026-08-31 | `4ca6789596c0e48dd6b353740a2df3867c75a60855e70c2126df6d0dca024b19` |
+| WW-STORE-ES-002 | Categorías — vigente para tienda | `store/app-store/ios/build-30/es/02-categories-es.png` | Español | 2026-08-31 | `4308b4bd976ba474e409c35a35d50cb8822ec12d4c8ec30c1a289645659cd828` |
+| WW-STORE-ES-003 | Favoritos — vigente para tienda | `store/app-store/ios/build-30/es/04-favorites-es.png` | Español | 2026-08-31 | `d6a87f1f75f1b46762d04aa3ec1f9f14a8a5fbf8a71974bffd3a9394850e9359` |
+| WW-STORE-ES-004 | Ajustes con Privacidad y Soporte — vigente para tienda | `store/app-store/ios/build-30/es/06-settings-es.png` | Español | 2026-08-31 | `7d14df4a6fd0f10b43d0c136356167798620a54e3f1146318b06daf19911b38c` |
+
+### Evidencia runtime no seleccionada para tienda
+
+| Estado | Ruta | Motivo de no selección | SHA-256 |
+| --- | --- | --- | --- |
+| Motivation | `store/app-store/ios/build-30/en/03-motivation-en.png` | El desplazamiento deja contenido bajo la barra de estado; no es una imagen de tienda pulida. | `30a2a0ee9d3fede7bc18eda826197921fc2df51846ce093bc4fd89a9228e93c9` |
+| Personal | `store/app-store/ios/build-30/en/05-personal-en.png` | El estado comienza a mitad del grid y recorta el encabezado; se conserva solo como evidencia. | `e8463867f3674888d08ba5c7f3c4e7b0bd72a777f462c0af5abeb7c80393afab` |
+| Motivación | `store/app-store/ios/build-30/es/03-motivation-es.png` | El desplazamiento deja contenido bajo la barra de estado; no es una imagen de tienda pulida. | `3ae5b1280a7b8965b7c2fead590b4f4cf95b8265688b0e69d08ff5c817d20627` |
+| Personales | `store/app-store/ios/build-30/es/05-personal-es.png` | El estado comienza a mitad del grid y recorta el encabezado; se conserva solo como evidencia. | `6be9d2b5fdbfe1ff24c05c41a38d944de5d82e173db625656671bba0f69bfe97` |
 
 Las imágenes de App Store pueden usar las maestras vigentes como dirección de arte, pero su captura base debe proceder de la build real. Toda composición o tratamiento de tienda deberá enlazar tanto la captura base como el ID visual correspondiente de este manifiesto.
 
