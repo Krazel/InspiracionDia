@@ -361,24 +361,16 @@ Resuelve la antigua PEND-013:
 - Resultado técnico: commit fuente `77cf219`; run `33430292504` pasó 41 pruebas unitarias, 2 UI, Analyze, firma, archive, inspección, exportación, validación y subida. App Store Connect procesó build 30 y run `33431522703` la asignó a `Warm Words Internal`.
 - La autorización permite preparar la ficha y el envío, pero no permite inventar datos privados, derechos de terceros ni información DSA. Esos valores deben confirmarse de forma veraz justo antes de completar los formularios externos.
 
+### DEC-049 — Ficha final preparada; el propietario conserva el envío
+
+- El propietario confirmó el 2026-08-31 que dispone de derechos comerciales sobre los fondos de montaña y piedras, y que los datos DSA trader registrados son correctos.
+- Autorizó subir las ocho capturas runtime seleccionadas, completar la ficha bilingüe, seleccionar build 30, publicar la declaración exacta `No data collected` y guardar el contacto privado y las notas de App Review.
+- App Store Connect quedó preparado con copyright `2026 Krazel`, Content Rights declarado de forma conservadora como contenido de terceros con derechos, distribución manual y el botón `Añadir a revisión` habilitado.
+- El propietario indicó después que él mismo pulsará `Añadir a revisión`. La tarea no debe ejecutar ese botón ni una confirmación posterior sin una nueva instrucción expresa.
+- El contacto privado de revisión se centraliza fuera del repositorio; futuros trabajos deben reutilizar la fuente privada vigente y pedir confirmación inmediata antes de transmitirla, sin copiar los valores a Git, páginas públicas o logs.
+
 ## Primera decisión pendiente del propietario
 
-### PEND-009 — Trazabilidad editorial y derechos de assets
+### PEND-014 — Envío manual del propietario
 
-La dirección de producto de usar frases propias ya está aprobada. Antes de App Review debe conservarse una nota de procedencia editorial del catálogo y confirmarse la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`.
-
-### PEND-010 — Privacidad y soporte públicos
-
-Resuelto en el producto: las rutas dedicadas `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` están publicadas, son bilingües y se enlazan desde build 30. Pendiente externo: sustituir las URL provisionales en App Store Connect, probar recepción del alias y publicar la respuesta exacta `No data collected`.
-
-### PEND-011 — Configuración comercial de App Store
-
-Categorías, precio gratuito, 175 países, distribución pública, clasificación por edades y publicación manual ya están configurados. Faltan copyright y fecha objetivo.
-
-### PEND-014 — QA Apple y autorización de distribución oficial
-
-El archive firmado, Validate App, upload, procesamiento y asignación interna de build 30 ya pasaron. Faltan QA físico en iPhone, validar/subir las capturas inglesas/españolas, completar datos obligatorios y publicar la declaración de privacidad. La autorización de preparación y envío existe, pero la acción final necesita los datos privados y confirmaciones veraces indicados en `PEND-009` y `PEND-015`.
-
-### PEND-015 — Estado DSA trader
-
-App Store Connect muestra que el desarrollador ya se ha identificado como **trader para esta app**. La clasificación deja de estar pendiente; antes de distribuir en la UE queda únicamente verificar que la información de contacto validada que Apple publicará es correcta. No se cambia, oculta ni duplica en otros campos públicos.
+Toda la preparación obligatoria de App Store Connect está completa y el botón `Añadir a revisión` está habilitado. Por decisión expresa, el propietario ejecutará personalmente ese paso y cualquier confirmación posterior de Apple.

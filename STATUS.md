@@ -285,21 +285,22 @@ La auditoría histórica está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-0
 - Build 30 añade accesos a Privacidad y Soporte dentro de Ajustes sin rediseñar la pantalla existente.
 - El run `33430292504` pasó 41 pruebas unitarias, 2 pruebas UI de Ajustes, Analyze Release, firma, archive, inspección, exportación, validación y upload. La IPA pesa 6.417.481 bytes y tiene SHA-256 `8a5418e81653cf4e6669b7003aa1cd9ddbf38b4ef98568c5211c9d1d701660f5`.
 - App Store Connect muestra build 30 como `Ready to Submit` y asignada a `Warm Words Internal`; el run `33431522703` confirmó la asignación.
-- La ficha mantiene inglés como idioma principal y español localizado. App Privacy `No data collected` sigue siendo exacto para build 30, pero aún no se ha publicado.
+- La ficha mantiene inglés como idioma principal y español localizado. App Privacy `No data collected` sigue siendo exacto para build 30 y fue publicada en App Store Connect el 2026-08-31.
 - El AppIcon C ya estaba aprobado, integrado y visible; no hace falta crear otro.
 
-## Primer bloqueo material de App Store
+## App Store Connect preparado para revisión
 
-El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la decisión de usar un catálogo editorial propio ya están cerrados localmente. La primera puerta material restante es conservar la trazabilidad editorial del catálogo y confirmar por escrito la autoría/licencia comercial de `premium-mountains.png` y `premium-stones.png`. Recomendación: no preparar un envío a App Review hasta disponer de esa confirmación y sustituir cualquier recurso sin derechos claros.
+- El propietario confirmó expresamente los derechos comerciales de `premium-mountains.png` y `premium-stones.png`, y confirmó que la información DSA trader vigente es correcta.
+- Se subieron cuatro capturas runtime inglesas y cuatro españolas de 1320 × 2868 px. En ambos idiomas el orden visible es Today/Hoy, Categories/Categorías, Favorites/Favoritos y Settings/Ajustes.
+- Las URL de soporte y privacidad apuntan a las páginas públicas dedicadas; la descripción española declara correctamente 720 frases y el copyright público mínimo es `2026 Krazel`.
+- Content Rights quedó configurado conservadoramente como contenido de terceros con los derechos necesarios. Build 30 está seleccionada y la publicación tras aprobación continúa en modo manual.
+- El contacto privado de App Review y las notas se guardaron en los campos privados de Apple. Los valores no se copian a este repositorio. El botón `Añadir a revisión` está habilitado.
+- El propietario decidió que él mismo pulsará `Añadir a revisión` y cualquier confirmación posterior. No se envió la versión desde esta tarea.
+- El candidato completo se integró en `main` mediante `21e251a`. El run `33436798920`, intento 2, terminó correctamente; el intento 1 solo falló porque el simulador no pudo terminar el proceso entre dos pruebas UI, no por una aserción del producto.
 
-## Puertas restantes
+## Puerta restante
 
-1. Instalar build 30 desde TestFlight en limpio y completar QA físico: onboarding de categorías → hora/días → Today; abrir/cerrar/reabrir Ajustes; abrir Privacidad/Soporte; seleccionar Motivation; probar la notificación con la app abierta y en segundo plano; comprobar además alertas, Focus y Resumen programado de iOS.
-2. Confirmar derechos comerciales de frases, fondos y AppIcon.
-3. Sustituir en App Store Connect las URL provisionales por las páginas ya publicadas y publicar App Privacy.
-4. Validar/subir las capturas inglesas y españolas; completar copyright mínimo, Content Rights y contacto privado de revisión.
-5. App Store Connect ya identifica al desarrollador como trader para esta app; comprobar que la información verificada que Apple publicará en la UE sigue siendo correcta.
-6. Seleccionar build 30, guardar las notas de revisión y ejecutar `Add for Review` / envío tras la confirmación inmediata del propietario y los datos privados obligatorios.
+El único paso de distribución restante es que el propietario pulse `Añadir a revisión` en App Store Connect y complete cualquier diálogo final que Apple muestre. Como verificación adicional no bloqueante, puede repetir en un iPhone la notificación de prueba con la app abierta y en segundo plano, teniendo en cuenta Focus y Resumen programado de iOS.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 
