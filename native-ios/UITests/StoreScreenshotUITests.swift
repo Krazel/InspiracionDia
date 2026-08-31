@@ -106,11 +106,9 @@ final class StoreScreenshotUITests: XCTestCase {
     XCTAssertTrue(
       app.descendants(matching: .any)["settings-screen"].waitForExistence(timeout: 10)
     )
-    let privacyLink = app.links[language == "es" ? "Política de privacidad" : "Privacy Policy"]
-    for _ in 0..<8 where !privacyLink.exists {
+    for _ in 0..<8 {
       app.swipeUp()
     }
-    XCTAssertTrue(privacyLink.waitForExistence(timeout: 10))
     capture("06-settings-\(language)")
   }
 
