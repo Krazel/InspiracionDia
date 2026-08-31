@@ -28,6 +28,12 @@ La conclusión cuantitativa original sobre 360 frases fue sustituida después po
 - Run `33341160940` pasó 40 tests sin fallos, Analyze Release, firma, archive, inspección, exportación, validación y subida sin errores. Artifact `Warm-Words-TestFlight-v1.0-build-27`: 6.397.420 bytes, SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`.
 - Apple procesó build 27 como `VALID` y run `33341523935` la asignó a `Warm Words Internal` el 2026-08-31. Esta entrega no cambia el veredicto: apta para TestFlight interno; App Review sigue bloqueada por las puertas documentadas.
 
+## Adenda de navegación de Ajustes y entrega build 28
+
+- La presentación de Ajustes se separó del estado modal de enlaces compartidos y pasó a navegación controlada por la raíz, evitando que una transición del onboarding o del permiso de notificaciones deje el destino atascado.
+- Run `33347733817` pasó 40 tests de lógica y un XCUITest que abre, cierra y vuelve a abrir Ajustes en la app real. También completó Analyze, firma, archive, exportación, validación y subida sin errores.
+- Apple procesó build 28 como `VALID`; run `33348245753` la asignó a `Warm Words Internal`. Esta evidencia sustituye las comprobaciones estáticas anteriores del botón, pero todavía requiere confirmación física del propietario en iPhone.
+
 ## Fotografía verificable del candidato
 
 | Área | Evidencia | Resultado |

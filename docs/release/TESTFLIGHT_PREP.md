@@ -1,6 +1,6 @@
 # Warm Words 1.0 — TestFlight preparation
 
-Status: version 1.0 build 27 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-31. It is the latest TestFlight build, contains 720 quotes per language, and includes the performance correction. App Review and public release remain separate unauthorized actions.
+Status: version 1.0 build 28 was signed, validated, uploaded, processed by Apple, and assigned to the internal group `Warm Words Internal` on 2026-08-31. It is the latest TestFlight build, contains 720 quotes per language, and includes the verified Settings navigation correction. App Review and public release remain separate unauthorized actions.
 
 ## Verified release identity
 
@@ -31,6 +31,8 @@ Status: version 1.0 build 27 was signed, validated, uploaded, processed by Apple
 The protected environment and seven credentials are configured. Run `31429710903`, job `93589855913`, completed all tests, Analyze, signed archive inspection, export, validation, and upload from commit `423da40`.
 
 The latest authorized delivery is commit `484ca3d`, run `33341160940`: 40 tests with zero failures, Release analysis, signed archive inspection, export, Apple validation, and upload all passed. Artifact `Warm-Words-TestFlight-v1.0-build-27` is 6,397,420 bytes with SHA-256 `251d8ec54c328acad49f958b0bf963b0ab47aba3737686425278345823c45cb7`. Run `33341523935` confirmed build 27 as `VALID` and assigned it to `Warm Words Internal`.
+
+Build 28 is commit `87c004a`, run `33347733817`: all 40 logic tests passed and the UI test opened, closed, and reopened Settings successfully. Release analysis, signed archive inspection, export, Apple validation, and upload also passed. Artifact `Warm-Words-TestFlight-v1.0-build-28` is 6,398,764 bytes with SHA-256 `8257a9dffb32633ce1a1c2e56ce5b6ff504beee74bf90a4bb067096dbf8aae3d`. Run `33348245753` confirmed build 28 as `VALID` and assigned it to `Warm Words Internal`.
 
 ## Protected GitHub environment
 

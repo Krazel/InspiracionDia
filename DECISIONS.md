@@ -343,6 +343,7 @@ Resuelve la antigua PEND-013:
 - Tras confirmar que build 27 todavía podía dejar el botón de Ajustes sin respuesta, el propietario autorizó el 2026-08-31 hacer la corrección, compilarla y subirla a TestFlight.
 - Ajustes se separa del estado modal de enlaces compartidos y pasa a navegación propiedad de la raíz. La entrega incluye una prueba UI que abre, cierra y vuelve a abrir la pantalla.
 - Se mantiene el tren existente 1.0 y se usa build 28. La autorización comprende commit, push, firma, subida y grupo interno; no testers externos, Beta App Review, App Review ni publicación.
+- Resultado: commit `87c004a`; run `33347733817` pasó 40 pruebas de lógica, la nueva prueba UI de abrir/cerrar/reabrir Ajustes, Analyze, firma, archive, exportación, validación y subida. Apple marcó build 28 como `VALID` y run `33348245753` la asignó a `Warm Words Internal`.
 
 ## Primera decisión pendiente del propietario
 
