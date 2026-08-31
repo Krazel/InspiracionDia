@@ -63,6 +63,11 @@ enum AppBrand {
   static let name = "Warm Words"
 }
 
+enum AppURLs {
+  static let privacy = URL(string: "https://krazel.github.io/warm-words/privacy/")!
+  static let support = URL(string: "https://krazel.github.io/warm-words/support/")!
+}
+
 @main
 @MainActor
 struct InspiracionDiaApp: App {
@@ -1796,6 +1801,22 @@ struct SettingsView: View {
           }
 
           NotificationPreview()
+
+          VStack(spacing: 0) {
+            SettingsExternalLink(
+              title: store.t("privacyPolicy"),
+              systemImage: "hand.raised",
+              destination: AppURLs.privacy
+            )
+            Divider()
+            SettingsExternalLink(
+              title: store.t("support"),
+              systemImage: "questionmark.circle",
+              destination: AppURLs.support
+            )
+          }
+          .padding(.horizontal, 18)
+          .background(.white.opacity(0.72), in: RoundedRectangle(cornerRadius: 24))
       }
       .padding(22)
       .padding(.bottom, 36)
@@ -1816,6 +1837,32 @@ struct SettingsView: View {
     }
   }
 }
+
+struct SettingsExternalLink: View {
+  let title: String
+  let systemImage: String
+  let destination: URL
+
+  var body: some View {
+    Link(destination: destination) {
+      HStack(spacing: 12) {
+        Image(systemName: systemImage)
+          .frame(width: 24)
+          .accessibilityHidden(true)
+        Text(title)
+        Spacer()
+        Image(systemName: "arrow.up.right")
+          .font(.footnote.weight(.semibold))
+          .accessibilityHidden(true)
+      }
+      .font(.subheadline.weight(.semibold))
+      .foregroundStyle(Premium.ink)
+      .frame(minHeight: 52)
+      .contentShape(Rectangle())
+    }
+  }
+}
+
 struct AddCardView: View {
   @EnvironmentObject private var store: AppStore
   @Environment(\.dismiss) private var dismiss
@@ -2511,7 +2558,9 @@ enum Strings {
     "notificationsAreOffBody": "Puedes activarlas más tarde en Ajustes.",
     "continue": "Continuar",
     "back": "Atrás",
-    "openIOSSettings": "Abrir Ajustes de iOS"
+    "openIOSSettings": "Abrir Ajustes de iOS",
+    "privacyPolicy": "Política de privacidad",
+    "support": "Soporte"
   ]
 
   private static let en = [
@@ -2601,7 +2650,9 @@ enum Strings {
     "notificationsAreOffBody": "You can enable them later in Settings.",
     "continue": "Continue",
     "back": "Back",
-    "openIOSSettings": "Open iOS Settings"
+    "openIOSSettings": "Open iOS Settings",
+    "privacyPolicy": "Privacy Policy",
+    "support": "Support"
   ]
 }
 
