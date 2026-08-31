@@ -39,8 +39,6 @@ jobs:
 
       - name: Capture English and Spanish runtime screenshots
         shell: bash
-        env:
-          CAPTURE_STORE_SCREENSHOTS: "1"
         run: |
           set -euo pipefail
           DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro-Max"
@@ -85,6 +83,8 @@ jobs:
           done
 
           find build/store-screenshots -type f -name '*.png' -print
+          SCREENSHOT_COUNT="$(find build/store-screenshots -type f -name '*.png' | wc -l | tr -d ' ')"
+          test "${SCREENSHOT_COUNT}" -eq 12
 
       - name: Upload store screenshot evidence
         uses: actions/upload-artifact@v4

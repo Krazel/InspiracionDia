@@ -3,10 +3,6 @@ import XCTest
 final class StoreScreenshotUITests: XCTestCase {
   override func setUpWithError() throws {
     continueAfterFailure = false
-    try XCTSkipUnless(
-      ProcessInfo.processInfo.environment["CAPTURE_STORE_SCREENSHOTS"] == "1",
-      "Store screenshots run only in the dedicated capture workflow."
-    )
   }
 
   func testCaptureEnglishStoreScreenshots() {
