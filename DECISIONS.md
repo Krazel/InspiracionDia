@@ -353,6 +353,14 @@ Resuelve la antigua PEND-013:
 - Se mantiene el tren previo al lanzamiento `1.0` y se usa build 29. La autorización comprende commit, push, firma, subida y asignación al grupo interno; no testers externos, Beta App Review, App Review ni publicación.
 - Resultado: commit `1d2b36c`; run `33399920401` pasó 41 pruebas unitarias y 2 UI, Analyze, firma, archive, exportación, validación y subida sin errores. Apple marcó build 29 como `VALID` y run `33401009451` la asignó a `Warm Words Internal`.
 
+### DEC-048 — Preparación de App Store y build 30 autorizadas
+
+- El propietario declaró el 2026-08-31 que la aplicación le gusta como está y autorizó preparar y enviar el candidato, incluyendo icono, imágenes y cualquier requisito restante.
+- El AppIcon C ya era el icono vigente y no se sustituye. Se conservan las pantallas y el diseño actuales.
+- Se publicaron páginas bilingües dedicadas de Privacidad y Soporte y build 30 añadió sus enlaces dentro de Ajustes. El enlace inteligente de compartir continúa fuera de 1.0.
+- Resultado técnico: commit fuente `77cf219`; run `33430292504` pasó 41 pruebas unitarias, 2 UI, Analyze, firma, archive, inspección, exportación, validación y subida. App Store Connect procesó build 30 y run `33431522703` la asignó a `Warm Words Internal`.
+- La autorización permite preparar la ficha y el envío, pero no permite inventar datos privados, derechos de terceros ni información DSA. Esos valores deben confirmarse de forma veraz justo antes de completar los formularios externos.
+
 ## Primera decisión pendiente del propietario
 
 ### PEND-009 — Trazabilidad editorial y derechos de assets
@@ -361,7 +369,7 @@ La dirección de producto de usar frases propias ya está aprobada. Antes de App
 
 ### PEND-010 — Privacidad y soporte públicos
 
-Las URL de GitHub guardadas provisionalmente en la ficha no son aptas para lanzamiento. Las rutas dedicadas `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` devolvían 404 el 2026-08-11. Hay que publicar las políticas bilingües exactas, crear y probar un alias exclusivo de soporte y sustituir las URL sin exponer repositorio ni datos personales. La respuesta App Privacy “no se recopilan datos” coincide con build 20 y sigue como borrador no publicado.
+Resuelto en el producto: las rutas dedicadas `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` están publicadas, son bilingües y se enlazan desde build 30. Pendiente externo: sustituir las URL provisionales en App Store Connect, probar recepción del alias y publicar la respuesta exacta `No data collected`.
 
 ### PEND-011 — Configuración comercial de App Store
 
@@ -369,7 +377,7 @@ Categorías, precio gratuito, 175 países, distribución pública, clasificació
 
 ### PEND-014 — QA Apple y autorización de distribución oficial
 
-El archive firmado, Validate App, upload y procesamiento TestFlight de build 20 ya pasaron. Faltan QA físico en iPhone, capturas inglesas/españolas y publicar la declaración de privacidad tras verificar el binario. Testers externos, App Review y publicación necesitan autorización expresa adicional en ese momento.
+El archive firmado, Validate App, upload, procesamiento y asignación interna de build 30 ya pasaron. Faltan QA físico en iPhone, validar/subir las capturas inglesas/españolas, completar datos obligatorios y publicar la declaración de privacidad. La autorización de preparación y envío existe, pero la acción final necesita los datos privados y confirmaciones veraces indicados en `PEND-009` y `PEND-015`.
 
 ### PEND-015 — Estado DSA trader
 

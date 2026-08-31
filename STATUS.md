@@ -277,7 +277,16 @@ Fuente histórica: `docs/audit/IOS_CLOSEOUT_AUDIT.md`
 - Validación Windows: `check-ios-closeout`, `check-quotes`, `git diff --check` y ausencia de cambios Android pasan. GitHub Actions run `32751996787` ejecutó **38 tests sin fallos**, Analyze Release, firma, archive, inspección, exportación y upload; Apple respondió `UPLOAD SUCCEEDED with no errors`.
 - `.gitignore` modificado y `store/store-manifest.json` sin seguimiento permanecen preservados y no forman parte de los commits.
 
-La auditoría de publicación vigente está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-08-24.md`: build 25 es suficiente para TestFlight interno y el catálogo ampliado queda preparado localmente para build 26. App Review sigue bloqueada por QA físico, privacidad/soporte públicos e internos, capturas, campos obligatorios, derechos y el enlace inteligente aprobado.
+La auditoría histórica está en `docs/audit/IOS_RELEASE_READINESS_AUDIT_2026-08-24.md`; el estado operativo actual es build 30 en TestFlight interno. El enlace inteligente queda fuera de 1.0 y no bloquea el envío.
+
+## Candidato App Store — build 30
+
+- Las páginas bilingües `https://krazel.github.io/warm-words/privacy/` y `https://krazel.github.io/warm-words/support/` están publicadas, responden HTTP 200 y usan el alias público `coderappskrazel+warmwords@gmail.com`.
+- Build 30 añade accesos a Privacidad y Soporte dentro de Ajustes sin rediseñar la pantalla existente.
+- El run `33430292504` pasó 41 pruebas unitarias, 2 pruebas UI de Ajustes, Analyze Release, firma, archive, inspección, exportación, validación y upload. La IPA pesa 6.417.481 bytes y tiene SHA-256 `8a5418e81653cf4e6669b7003aa1cd9ddbf38b4ef98568c5211c9d1d701660f5`.
+- App Store Connect muestra build 30 como `Ready to Submit` y asignada a `Warm Words Internal`; el run `33431522703` confirmó la asignación.
+- La ficha mantiene inglés como idioma principal y español localizado. App Privacy `No data collected` sigue siendo exacto para build 30, pero aún no se ha publicado.
+- El AppIcon C ya estaba aprobado, integrado y visible; no hace falta crear otro.
 
 ## Primer bloqueo material de App Store
 
@@ -285,12 +294,12 @@ El nombre público **Warm Words**, el AppIcon **C — Protected thought** y la d
 
 ## Puertas restantes
 
-1. Instalar build 29 desde TestFlight en limpio y completar QA físico: onboarding de categorías → hora/días → Today; abrir/cerrar/reabrir Ajustes; seleccionar Motivation; probar la notificación con la app abierta y en segundo plano; comprobar además alertas, Focus y Resumen programado de iOS.
+1. Instalar build 30 desde TestFlight en limpio y completar QA físico: onboarding de categorías → hora/días → Today; abrir/cerrar/reabrir Ajustes; abrir Privacidad/Soporte; seleccionar Motivation; probar la notificación con la app abierta y en segundo plano; comprobar además alertas, Focus y Resumen programado de iOS.
 2. Confirmar derechos comerciales de frases, fondos y AppIcon.
-3. Crear un alias exclusivo de soporte y publicar las páginas propias de privacidad/soporte; ambas rutas previstas devolvían 404 el 2026-08-11. Después, sustituir las URL provisionales de la ficha y publicar App Privacy solo con autorización.
-4. Preparar capturas inglesas y españolas, copyright mínimo exigido y contacto privado de revisión.
+3. Sustituir en App Store Connect las URL provisionales por las páginas ya publicadas y publicar App Privacy.
+4. Validar/subir las capturas inglesas y españolas; completar copyright mínimo, Content Rights y contacto privado de revisión.
 5. App Store Connect ya identifica al desarrollador como trader para esta app; comprobar que la información verificada que Apple publicará en la UE sigue siendo correcta.
-6. Revisar el candidato con el propietario. Testers externos, App Review y publicación siguen necesitando autorización expresa adicional.
+6. Seleccionar build 30, guardar las notas de revisión y ejecutar `Add for Review` / envío tras la confirmación inmediata del propietario y los datos privados obligatorios.
 
 El apoyo voluntario en Settings queda planificado para una fase posterior y no bloquea este candidato. Implementarlo requerirá StoreKit, productos mensuales en App Store Connect, restauración de compras, términos y privacidad; no se crearán ni enviarán productos sin autorización expresa.
 

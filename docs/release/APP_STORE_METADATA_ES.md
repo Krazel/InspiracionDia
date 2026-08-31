@@ -1,6 +1,6 @@
 # Metadatos de App Store — iOS 1.0 (Español)
 
-Estado: localización Española (España) guardada en la ficha privada de App Store Connect el 10 de agosto de 2026. La build 20 está en TestFlight interno. Faltan capturas, URL públicas dedicadas, copyright, confirmación DSA y contacto privado de App Review. No enviar ni publicar sin autorización expresa.
+Estado: la localización Español (España) existe en App Store Connect. La build 30 fue firmada, validada, subida, procesada por Apple y asignada a `Warm Words Internal` el 31 de agosto de 2026. Las páginas públicas de privacidad y soporte están operativas. Se están capturando las imágenes runtime finales; faltan copyright, Content Rights, verificación del contacto DSA, contacto privado de App Review, selección de build y publicación de App Privacy.
 
 ## Página de producto
 
@@ -13,14 +13,14 @@ Estado: localización Española (España) guardada en la ficha privada de App St
 - **Categoría secundaria:** Salud y forma física
 - **Precio:** Gratis
 - **Disponibilidad:** 175 países o regiones
-- **Clasificación por edades:** 9+ en 172 países o regiones; 12+ en Vietnam y Brasil; All en Corea del Sur
+- **Clasificación por edades:** 4+ global con los equivalentes regionales actuales de Apple
 - **Dispositivos:** iPhone; disponibilidad automática en Mac y Apple Vision Pro desactivada
 - **Versión:** 1.0
 - **Apple ID:** `6800058458`
 - **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
-- **URL de soporte:** `https://krazel.github.io/warm-words/support/` — obligatoria, actualmente devuelve 404 y no debe registrarse como final hasta que funcionen la página y el alias exclusivo
-- **URL de privacidad:** `https://krazel.github.io/warm-words/privacy/` — obligatoria, actualmente devuelve 404 y no debe registrarse como final hasta publicar la política exacta
+- **URL de soporte:** `https://krazel.github.io/warm-words/support/` — activa y bilingüe; alias público `coderappskrazel+warmwords@gmail.com`
+- **URL de privacidad:** `https://krazel.github.io/warm-words/privacy/` — activa y bilingüe
 - **URL de marketing:** dejar vacía en 1.0
 - **URL de opciones de privacidad:** dejar vacía; no hay cuenta, datos recopilados por el desarrollador ni controles de privacidad remotos
 - **Condiciones / EULA:** usar el contrato de licencia estándar de Apple; no añadir una URL de condiciones propia para 1.0
@@ -56,9 +56,9 @@ No necesitas una cuenta. Warm Words funciona sin conectarse a ningún servicio. 
 
 ## Pendiente antes de revisión
 
-- Capturas reales en español después del QA físico.
-- Publicar y verificar las páginas dedicadas de privacidad y soporte; no exponer repositorio, incidencias públicas, cuentas personales, domicilio, teléfono ni correo personal.
-- Crear y probar un alias exclusivo de soporte.
+- Validar y subir las seis capturas reales en español procedentes del runtime final.
+- Sustituir en App Store Connect las URL provisionales por las páginas dedicadas ya publicadas; no exponer repositorio, incidencias públicas, cuentas personales, domicilio, teléfono ni correo personal.
+- Confirmar recepción real del alias exclusivo de soporte.
 - Copyright con el valor legal público mínimo necesario.
 - Contacto de App Review con el nombre, correo y teléfono exactos que Apple exija, solo en los campos privados de revisión.
 - Confirmación veraz del estado DSA trader; aportar información pública adicional únicamente si corresponde legalmente.

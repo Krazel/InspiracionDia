@@ -1,8 +1,8 @@
 # Warm Words 1.0 — Data and permission inventory
 
-Audit date: **2026-08-24**
+Audit date: **2026-08-31**
 
-Release baseline: **iOS 1.0 build 25**, source commit `bdec7a0`, signed and inspected in run `32751996787`, accepted by Apple, processed as `VALID`, and assigned to the internal TestFlight group by run `32753132327`. The smart-link receiver exists in source, but its public-link feature gate is off, Associated Domains is not signed into the target, and this build shares an image only.
+Release baseline: **iOS 1.0 build 30**, source commit `77cf219`, signed and inspected in run `33430292504`, accepted and processed by Apple, and assigned to the internal TestFlight group by run `33431522703`. The smart-link receiver exists in source, but its public-link feature gate is off, Associated Domains is not signed into the target, and this build shares an image only.
 
 Scope: the iPhone target in `native-ios/`; no Android statement is made here.
 
@@ -32,7 +32,7 @@ The privacy manifest declares `NSPrivacyAccessedAPICategoryUserDefaults` with re
 |---|---|---|
 | Notifications | Yes, local notifications only | Authorization is requested only after the user chooses Set reminder, Save reminder, or a test notification. Denial leaves reminders off and the user can manage access in iOS Settings. |
 | Share sheet | Yes, after tapping Share | Warm Words renders a quote-card image and hands that image to the iOS share sheet. The chosen destination receives it under its own privacy terms; Warm Words receives no destination or recipient information. |
-| Universal Link and custom URL scheme | Not active in this candidate | Receiver and payload-validation code exist, but the public-link flag is off, the public landing is 404, and Associated Domains is not linked into the signed target. No URL is added to the share sheet in build 25. |
+| Universal Link and custom URL scheme | Not active in this candidate | Receiver and payload-validation code exist, but the public-link flag is off and Associated Domains is not linked into the signed target. No URL is added to the share sheet in build 30. |
 | Location, camera, microphone, photos, contacts, calendars, health, Bluetooth, local network, motion, speech, Face ID | No | No purpose strings, entitlements, or prompts should be added for 1.0. |
 | Remote notifications/background push | No | No APNs token, server, or push entitlement. |
 
@@ -63,10 +63,10 @@ Do not publish the repository, public issue tracker, owner's personal accounts, 
 
 ## Verified discrepancies and release gates
 
-1. `https://krazel.github.io/warm-words/privacy/`, `/support/`, and `/share/` still returned HTTP 404 on 2026-08-24. They cannot be used as final App Store URLs or as a smart-link fallback.
-2. Read-only inspection of App Store Connect on 2026-08-24 confirmed that the English and Spanish versions still use GitHub Issues as Support URL and the privacy field uses a repository-file URL. Marketing URL, copyright, build selection, and all four private App Review contact fields are empty. Replace the public URLs only after the dedicated pages and alias are live and tested; fill the required private review fields only when preparing an authorized submission.
-3. A dedicated support email alias does not yet exist in the repository record. Create and test it without exposing a personal address.
-4. App Store Privacy currently shows “No data collected,” no privacy-choices URL, and an available Publish action, confirming it remains unpublished. The answer is substantively correct for this candidate but must be rechecked against the signed archive before publication.
+1. `https://krazel.github.io/warm-words/privacy/` and `/support/` returned HTTP 200 on 2026-08-31 and expose only the product identity plus `coderappskrazel+warmwords@gmail.com`. The app links to both pages from Settings. The smart-share landing remains outside 1.0.
+2. Read-only inspection of App Store Connect on 2026-08-31 confirmed that the English and Spanish versions still use GitHub Issues as Support URL and the privacy field uses a repository-file URL. Marketing URL, copyright, build selection, and all four private App Review contact fields are empty. Replace the provisional URLs and fill the required private review fields only at the authorized submission boundary.
+3. The dedicated support alias is published, but actual inbound delivery has not been tested from an external sender.
+4. App Store Privacy currently shows “No data collected,” no privacy-choices URL, and an available Publish action, confirming it remains unpublished. The answer was rechecked against the build 30 source and signed archive evidence and remains accurate.
 5. App Store Connect currently records the developer as a **trader for this app**. If the app is distributed in the EU, Apple requires the verified trader contact information to appear on the product page; confirm that the already supplied facts remain correct rather than changing or omitting the classification.
 6. Re-run this inventory against the exact build selected for App Review whenever code, SDKs, permissions, sharing, monetization, or network behavior changes.
 
@@ -77,6 +77,6 @@ Do not publish the repository, public issue tracker, owner's personal accounts, 
 - `native-ios/Resources/PrivacyInfo.xcprivacy`
 - `native-ios/InspiracionDia.entitlements`
 - all Swift sources and tests under `native-ios/Sources/` and `native-ios/Tests/`
-- signed build 20 inspection and Apple validation recorded in `docs/release/TESTFLIGHT_PREP.md`
+- signed build 30 inspection and Apple validation recorded in `docs/release/TESTFLIGHT_PREP.md`
 - current privacy, support, metadata, QA, status, and decision documents
-- live HTTP status of the planned public privacy and support routes on 2026-08-11
+- live HTTP status of the public privacy and support routes on 2026-08-31
