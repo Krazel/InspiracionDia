@@ -19,7 +19,7 @@ Status: English localization exists in the private App Store Connect record. Bui
 - **Bundle ID:** `com.dmkr.inspiraciondia.B2X6D3A9J9`
 - **SKU:** `com.dmkr.inspiraciondia`
 - **Copyright:** `[REQUIRED LEGAL COPYRIGHT HOLDER — PRIVATE SOURCE, PUBLIC VALUE]`
-- **Support URL:** `https://krazel.github.io/warm-words/support/` — live and bilingual; public contact alias `coderappskrazel+warmwords@gmail.com`
+- **Support URL:** `https://krazel.github.io/warm-words/support/` — live and bilingual; verified public contact `coderappskrazel@gmail.com`
 - **Privacy Policy URL:** `https://krazel.github.io/warm-words/privacy/` — live and bilingual
 - **Marketing URL:** leave empty for 1.0
 - **Privacy choices URL:** leave empty; the app has no account, developer-collected data, or in-app privacy-choice flow
