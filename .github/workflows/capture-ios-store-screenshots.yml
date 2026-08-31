@@ -1,0 +1,99 @@
+name: Capture iOS App Store screenshots
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    if: github.actor == github.repository_owner
+    runs-on: macos-26
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout approved branch
+        uses: actions/checkout@v5
+
+      - name: Require the approved iOS branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${GITHUB_REF_NAME}" = "agent/warm-words-ios-ipa"
+
+      - name: Verify Xcode and install XcodeGen
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodebuild -version
+          brew install xcodegen
+
+      - name: Validate content and generate the project
+        shell: bash
+        run: |
+          set -euo pipefail
+          node scripts/check-quotes.mjs
+          node scripts/check-ios-closeout.mjs
+          (cd native-ios && xcodegen generate)
+
+      - name: Capture English and Spanish runtime screenshots
+        shell: bash
+        env:
+          CAPTURE_STORE_SCREENSHOTS: "1"
+        run: |
+          set -euo pipefail
+          DEVICE_TYPE="com.apple.CoreSimulator.SimDeviceType.iPhone-16-Pro-Max"
+          RUNTIME="$(xcrun simctl list runtimes --json | python3 -c 'import json,sys; data=json.load(sys.stdin); print(next(item["identifier"] for item in reversed(data["runtimes"]) if item["isAvailable"] and item["platform"] == "iOS"))')"
+          SIMULATOR_ID="$(xcrun simctl create 'Warm Words Store Capture' "${DEVICE_TYPE}" "${RUNTIME}")"
+          cleanup() {
+            xcrun simctl shutdown "${SIMULATOR_ID}" 2>/dev/null || true
+            xcrun simctl delete "${SIMULATOR_ID}" 2>/dev/null || true
+          }
+          trap cleanup EXIT
+
+          mkdir -p build/store-screenshots
+          for LANGUAGE in English Spanish; do
+            if [ "${LANGUAGE}" = "English" ]; then
+              TEST_NAME="testCaptureEnglishStoreScreenshots"
+              SLUG="en"
+            else
+              TEST_NAME="testCaptureSpanishStoreScreenshots"
+              SLUG="es"
+            fi
+
+            xcrun simctl shutdown "${SIMULATOR_ID}" 2>/dev/null || true
+            xcrun simctl erase "${SIMULATOR_ID}"
+            xcrun simctl boot "${SIMULATOR_ID}"
+            xcrun simctl bootstatus "${SIMULATOR_ID}" -b
+            RESULT_PATH="build/store-screenshots/${SLUG}.xcresult"
+            xcodebuild \
+              -project native-ios/InspiracionDia.xcodeproj \
+              -scheme InspiracionDia \
+              -destination "platform=iOS Simulator,id=${SIMULATOR_ID}" \
+              -derivedDataPath build/store-screenshot-derived \
+              -resultBundlePath "${RESULT_PATH}" \
+              -only-testing:"InspiracionDiaUITests/StoreScreenshotUITests/${TEST_NAME}" \
+              CODE_SIGNING_ALLOWED=NO \
+              test
+
+            OUTPUT_PATH="build/store-screenshots/${SLUG}"
+            mkdir -p "${OUTPUT_PATH}"
+            xcrun xcresulttool export attachments \
+              --path "${RESULT_PATH}" \
+              --output-path "${OUTPUT_PATH}"
+          done
+
+          find build/store-screenshots -type f -name '*.png' -print
+
+      - name: Upload store screenshot evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: Warm-Words-App-Store-Screenshots-build-30
+          path: |
+            build/store-screenshots/en/*.png
+            build/store-screenshots/es/*.png
+            build/store-screenshots/en/manifest.json
+            build/store-screenshots/es/manifest.json
+          if-no-files-found: error
+          retention-days: 7
